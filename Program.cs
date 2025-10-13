@@ -174,6 +174,12 @@ using (var scope = app.Services.CreateScope())
         if (harryPotter != null)
         {
             Console.WriteLine($"Harry Potter's current star count: {harryPotter.Stars}");
+            Console.WriteLine($"Harry Potter's ID: {harryPotter.Id}");
+            Console.WriteLine($"Harry Potter's full data: {System.Text.Json.JsonSerializer.Serialize(harryPotter)}");
+        }
+        else
+        {
+            Console.WriteLine("Harry Potter not found in database!");
         }
     }
 }

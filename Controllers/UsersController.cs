@@ -34,6 +34,12 @@ namespace QualityEducation.Controllers
                 return NotFound();
             }
 
+            // Add debugging for Harry Potter specifically
+            if (user.FirstName == "Harry" && user.LastName == "Potter")
+            {
+                Console.WriteLine($"API: Returning Harry Potter with {user.Stars} stars (ID: {user.Id})");
+            }
+
             return user;
         }
 
