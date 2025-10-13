@@ -864,28 +864,14 @@
                 <!-- Classrooms Tab -->
                 <div class="tab-pane fade show active" id="classrooms" role="tabpanel">
                     <h3>My Classrooms</h3>
-                      <div class="row">
-                        <div class="col-md-6">
-                            <div class="module-card">
-                                <h4>Grade 7 Math - Room 101</h4>
-                                <p>Students: 24 | Active: 18</p>
-                                <div class="btn-group">
-                                    <button class="btn btn-primary" onclick="viewClassroom('math7')">View Students</button>
-                                    <button class="btn btn-success" onclick="createQuiz('math7')">Create Quiz</button>
-                                </div>
-                            </div>
+                    <button class="btn btn-success mb-3" onclick="showCreateClassroom()">
+                        <i class="fas fa-plus"></i> Create New Classroom
+                    </button>
+                    <div id="teacherClassroomsList">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Loading your classrooms...
                         </div>
-                        <div class="col-md-6">
-                            <div class="module-card">
-                                <h4>Grade 8 Science - Room 203</h4>
-                                <p>Students: 22 | Active: 20</p>
-                                <div class="btn-group">
-                                    <button class="btn btn-primary" onclick="viewClassroom('science8')">View Students</button>
-                                    <button class="btn btn-success" onclick="createQuiz('science8')">Create Quiz</button>
-                        </div>
-                      </div>
-                        </div>
-                      </div>
+                    </div>
                 </div>
                 
                 <!-- Create Content Tab -->
@@ -961,6 +947,11 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link active" id="learning-tab" data-bs-toggle="tab" data-bs-target="#learning" type="button" role="tab">
                         <i class="fas fa-book"></i> Learning Modules
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="classrooms-student-tab" data-bs-toggle="tab" data-bs-target="#classrooms-student" type="button" role="tab">
+                        <i class="fas fa-chalkboard"></i> My Classrooms
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -1092,6 +1083,18 @@
                         </div>
                     </div>
                   </div>
+                  
+                <!-- My Classrooms Tab -->
+                <div class="tab-pane fade" id="classrooms-student" role="tabpanel">
+                    <h3>My Classrooms</h3>
+                    <p>View and access your classroom content.</p>
+                    
+                    <div id="studentClassroomsList">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Loading your classrooms...
+                        </div>
+                    </div>
+                </div>
                   
                 <!-- Games Tab -->
                 <div class="tab-pane fade" id="games" role="tabpanel">
@@ -1755,6 +1758,298 @@
             
             // Update teacher name
             document.getElementById('teacherName').textContent = currentUser.name;
+            
+            // Load teacher classrooms
+            loadTeacherClassrooms();
+        }
+        
+        // Load teacher's classrooms
+        async function loadTeacherClassrooms() {
+            if (!currentUser || currentUser.role !== 'teacher') return;
+            
+            const container = document.getElementById('teacherClassroomsList');
+            
+            try {
+                const classrooms = await apiCall(`classrooms/teacher/${currentUser.id}`);
+                
+                if (classrooms.length === 0) {
+                    container.innerHTML = `
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle"></i> You haven't created any classrooms yet. 
+                            Click "Create New Classroom" above to get started.
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Display classrooms
+                let html = '<div class="row">';
+                for (const classroom of classrooms) {
+                    const studentCount = JSON.parse(classroom.studentIds || '[]').length;
+                    
+                    html += `
+                        <div class="col-md-6 mb-3">
+                            <div class="module-card">
+                                <div class="module-header">
+                                    <div class="module-title">${classroom.name}</div>
+                                    <span class="badge bg-success">${classroom.subject}</span>
+                                </div>
+                                <div class="module-description">
+                                    <strong>Grade:</strong> ${classroom.grade}<br>
+                                    <strong>Students:</strong> ${studentCount}<br>
+                                    <strong>Classroom Code:</strong> 
+                                    <span class="badge bg-primary" style="font-size: 1.1rem; cursor: pointer;" 
+                                          onclick="copyClassroomCode('${classroom.code}')" 
+                                          title="Click to copy">
+                                        ${classroom.code} <i class="fas fa-copy"></i>
+                                    </span>
+                                    <br>
+                                    <small class="text-muted">Students can use this code to join your classroom</small>
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary btn-sm" onclick="viewClassroomStudents(${classroom.id})">
+                                        <i class="fas fa-users"></i> View Students
+                                    </button>
+                                    <button class="btn btn-success btn-sm" onclick="manageClassroomContent(${classroom.id})">
+                                        <i class="fas fa-edit"></i> Manage Content
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                html += '</div>';
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading classrooms:', error);
+                container.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i> Error loading classrooms. Please try again later.
+                    </div>
+                `;
+            }
+        }
+        
+        // Copy classroom code to clipboard
+        async function copyClassroomCode(code) {
+            try {
+                await navigator.clipboard.writeText(code);
+                
+                // Show success message
+                const tempAlert = document.createElement('div');
+                tempAlert.className = 'alert alert-success';
+                tempAlert.style.position = 'fixed';
+                tempAlert.style.top = '20px';
+                tempAlert.style.right = '20px';
+                tempAlert.style.zIndex = '9999';
+                tempAlert.innerHTML = `<i class="fas fa-check-circle"></i> Classroom code "${code}" copied to clipboard!`;
+                document.body.appendChild(tempAlert);
+                
+                setTimeout(() => {
+                    document.body.removeChild(tempAlert);
+                }, 3000);
+                
+            } catch (error) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = code;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-9999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    alert(`Classroom code "${code}" copied to clipboard!`);
+                } catch (err) {
+                    alert(`Classroom code: ${code}\n\nPlease copy this code manually.`);
+                }
+                
+                document.body.removeChild(textArea);
+            }
+        }
+        
+        // Show create classroom modal
+        function showCreateClassroom() {
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create New Classroom</h5>
+                            <button type="button" class="btn-close" onclick="closeCreateClassroomModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group mb-3">
+                                <label class="form-label">Classroom Name</label>
+                                <input type="text" class="form-control" id="newClassroomName" placeholder="e.g., Advanced Algebra">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Grade</label>
+                                <select class="form-control" id="newClassroomGrade">
+                                    <option value="">Select grade</option>
+                                    <option value="Grade 3">Grade 3</option>
+                                    <option value="Grade 4">Grade 4</option>
+                                    <option value="Grade 5">Grade 5</option>
+                                    <option value="Grade 6">Grade 6</option>
+                                    <option value="Grade 7">Grade 7</option>
+                                    <option value="Grade 8">Grade 8</option>
+                                    <option value="Grade 9">Grade 9</option>
+                                    <option value="Grade 10">Grade 10</option>
+                                    <option value="Grade 11">Grade 11</option>
+                                    <option value="Grade 12">Grade 12</option>
+                                </select>
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Subject</label>
+                                <input type="text" class="form-control" id="newClassroomSubject" placeholder="e.g., Mathematics, Science">
+                            </div>
+                            <div class="form-group mb-3">
+                                <label class="form-label">Description (Optional)</label>
+                                <textarea class="form-control" id="newClassroomDescription" rows="3" placeholder="Brief description of the classroom"></textarea>
+                            </div>
+                            <div id="createError" class="alert alert-danger" style="display: none;"></div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" onclick="createNewClassroom()">Create Classroom</button>
+                            <button class="btn btn-secondary" onclick="closeCreateClassroomModal()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            modal.setAttribute('id', 'createClassroomModal');
+        }
+        
+        // Create new classroom
+        async function createNewClassroom() {
+            const name = document.getElementById('newClassroomName').value.trim();
+            const grade = document.getElementById('newClassroomGrade').value;
+            const subject = document.getElementById('newClassroomSubject').value.trim();
+            const description = document.getElementById('newClassroomDescription').value.trim();
+            const errorDiv = document.getElementById('createError');
+            
+            errorDiv.style.display = 'none';
+            
+            if (!name || !grade || !subject) {
+                errorDiv.textContent = 'Please fill in all required fields';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
+            try {
+                const newClassroom = {
+                    name: name,
+                    grade: grade,
+                    subject: subject,
+                    description: description,
+                    teacherId: currentUser.id,
+                    studentIds: '[]',
+                    assignedContent: '[]'
+                };
+                
+                const result = await apiCall('classrooms', 'POST', newClassroom);
+                
+                // Show success message with the classroom code
+                alert(`Classroom created successfully!\n\nClassroom Code: ${result.code}\n\nShare this code with your students so they can join your classroom.`);
+                
+                closeCreateClassroomModal();
+                loadTeacherClassrooms();
+                
+            } catch (error) {
+                console.error('Error creating classroom:', error);
+                errorDiv.textContent = 'Error creating classroom. Please try again.';
+                errorDiv.style.display = 'block';
+            }
+        }
+        
+        // Close create classroom modal
+        function closeCreateClassroomModal() {
+            const modal = document.getElementById('createClassroomModal');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+        
+        // View classroom students
+        async function viewClassroomStudents(classroomId) {
+            try {
+                const classroom = await apiCall(`classrooms/${classroomId}`);
+                const studentIds = JSON.parse(classroom.studentIds || '[]');
+                
+                let studentsHtml = '';
+                if (studentIds.length === 0) {
+                    studentsHtml = '<div class="alert alert-info">No students have joined this classroom yet.</div>';
+                } else {
+                    studentsHtml = '<div class="list-group">';
+                    for (const studentId of studentIds) {
+                        try {
+                            const student = await apiCall(`users/${studentId}`);
+                            studentsHtml += `
+                                <div class="list-group-item d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <strong>${student.firstName} ${student.lastName}</strong>
+                                        <br>
+                                        <small class="text-muted">${student.email}</small>
+                                    </div>
+                                    <div>
+                                        <span class="badge bg-primary">${student.stars} stars</span>
+                                    </div>
+                                </div>
+                            `;
+                        } catch (e) {
+                            console.warn('Could not load student:', studentId, e);
+                        }
+                    }
+                    studentsHtml += '</div>';
+                }
+                
+                const modal = document.createElement('div');
+                modal.className = 'modal fade show';
+                modal.style.display = 'block';
+                modal.innerHTML = `
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${classroom.name} - Students</h5>
+                                <button type="button" class="btn-close" onclick="closeStudentsModal()"></button>
+                            </div>
+                            <div class="modal-body">
+                                <p><strong>Total Students:</strong> ${studentIds.length}</p>
+                                ${studentsHtml}
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" onclick="closeStudentsModal()">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                document.body.appendChild(modal);
+                modal.setAttribute('id', 'studentsModal');
+                
+            } catch (error) {
+                console.error('Error loading classroom students:', error);
+                alert('Error loading students. Please try again.');
+            }
+        }
+        
+        // Close students modal
+        function closeStudentsModal() {
+            const modal = document.getElementById('studentsModal');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+        
+        // Manage classroom content (placeholder)
+        function manageClassroomContent(classroomId) {
+            alert('Content management feature coming soon! You will be able to assign quizzes and lessons to your classroom.');
         }
         
         // Show student dashboard
@@ -1774,6 +2069,9 @@
             
             updateStarsDisplay();
             updateGameAvailability();
+            
+            // Load student classrooms
+            loadStudentClassrooms();
         }
         
         // Show join classroom modal
@@ -1786,125 +2084,202 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Join Classroom</h5>
-                            <button type="button" class="btn-close" onclick="closeModal()"></button>
+                            <button type="button" class="btn-close" onclick="closeJoinModal()"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="form-label">Classroom Code</label>
-                                <input type="text" class="form-control" id="classroomCode" placeholder="Enter classroom code">
+                                <input type="text" class="form-control" id="classroomCode" placeholder="Enter classroom code (e.g., TRANS7, POT7)">
                             </div>
                             <div class="alert alert-info">
-                                <strong>Available Classrooms:</strong><br>
-                                MATH101 - Grade 7 Math<br>
-                                SCI203 - Grade 8 Science
+                                <i class="fas fa-info-circle"></i> <strong>How to join:</strong><br>
+                                Ask your teacher for the classroom code and enter it above.
                             </div>
+                            <div id="joinError" class="alert alert-danger" style="display: none;"></div>
+                            <div id="joinSuccess" class="alert alert-success" style="display: none;"></div>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-primary" onclick="joinClassroom()">Join Classroom</button>
-                            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                            <button class="btn btn-secondary" onclick="closeJoinModal()">Cancel</button>
                         </div>
                     </div>
                 </div>
             `;
             
             document.body.appendChild(modal);
-            
-            window.joinClassroom = function() {
-                const code = document.getElementById('classroomCode').value.toUpperCase();
-                const classroom = Object.values(mockDatabase.classrooms).find(c => c.code === code);
-                
-                if (classroom) {
-                    // Add student to classroom
-                    mockDatabase.classrooms[Object.keys(mockDatabase.classrooms).find(k => mockDatabase.classrooms[k] === classroom)].students.push(currentUser.id);
-                    mockDatabase.students[currentUser.id].classroom = Object.keys(mockDatabase.classrooms).find(k => mockDatabase.classrooms[k] === classroom);
-                    
-                    alert(`Successfully joined ${classroom.name}!`);
-                    closeModal();
-                    userStars += 5;
-                    updateStarsDisplay();
-                } else {
-                    alert('Invalid classroom code');
-                }
-            };
-            
-            window.closeModal = function() {
-                document.body.removeChild(modal);
-            };
+            modal.setAttribute('id', 'joinClassroomModal');
         }
         
-        // Teacher functions
-        async function viewClassroom(classroomId) {
+        // Join classroom using API
+        async function joinClassroom() {
+            const code = document.getElementById('classroomCode').value.trim().toUpperCase();
+            const errorDiv = document.getElementById('joinError');
+            const successDiv = document.getElementById('joinSuccess');
+            
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            
+            if (!code) {
+                errorDiv.textContent = 'Please enter a classroom code';
+                errorDiv.style.display = 'block';
+                return;
+            }
+            
             try {
-                console.log('Fetching students for classroom:', classroomId);
+                const response = await apiCall('classrooms/join-by-code', 'POST', {
+                    code: code,
+                    studentId: currentUser.id
+                });
                 
-                // For now, we'll show all students since we don't have classroom assignments in the database yet
-                const response = await apiCall('users', 'GET');
-                console.log('API Response:', response);
+                successDiv.innerHTML = `<i class="fas fa-check-circle"></i> Successfully joined ${response.classroom.name}!`;
+                successDiv.style.display = 'block';
                 
-                const allUsers = response || [];
-                console.log('All users:', allUsers);
+                // Award stars for joining
+                userStars += 5;
+                currentUser.stars = userStars;
+                await saveToDatabase();
+                updateStarsDisplay();
                 
-                // Filter for students only
-                const students = allUsers.filter(user => user.role === 'student');
-                console.log('Filtered students:', students);
+                // Reload student classrooms
+                setTimeout(() => {
+                    closeJoinModal();
+                    loadStudentClassrooms();
+                }, 1500);
                 
-                if (students.length === 0) {
-                    alert('No students found in this classroom.');
+            } catch (error) {
+                console.error('Error joining classroom:', error);
+                errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid classroom code. Please check and try again.';
+                errorDiv.style.display = 'block';
+            }
+        }
+        
+        // Close join classroom modal
+        function closeJoinModal() {
+            const modal = document.getElementById('joinClassroomModal');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+        
+        // Load student's classrooms
+        async function loadStudentClassrooms() {
+            if (!currentUser || currentUser.role !== 'student') return;
+            
+            const container = document.getElementById('studentClassroomsList');
+            
+            try {
+                const classrooms = await apiCall(`classrooms/student/${currentUser.id}`);
+                
+                if (classrooms.length === 0) {
+                    container.innerHTML = `
+                        <div class="alert alert-warning">
+                            <i class="fas fa-info-circle"></i> You haven't joined any classrooms yet. 
+                            Use the "Join Classroom" button above to enter a classroom code from your teacher.
+                        </div>
+                    `;
                     return;
                 }
                 
-                // Create a modal to display students
-                const modalHtml = `
-                    <div class="modal fade" id="studentsModal" tabindex="-1">
-                        <div class="modal-dialog modal-lg">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">Classroom Students</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                // Display classrooms
+                let html = '<div class="row">';
+                for (const classroom of classrooms) {
+                    // Get teacher info
+                    let teacherName = 'Teacher';
+                    try {
+                        const teacher = await apiCall(`users/${classroom.teacherId}`);
+                        teacherName = `${teacher.firstName} ${teacher.lastName}`;
+                    } catch (e) {
+                        console.warn('Could not load teacher info:', e);
+                    }
+                    
+                    html += `
+                        <div class="col-md-6 mb-3">
+                            <div class="module-card">
+                                <div class="module-header">
+                                    <div class="module-title">${classroom.name}</div>
+                                    <span class="badge bg-primary">${classroom.subject}</span>
                                 </div>
-                                <div class="modal-body">
-                                    <div class="list-group">
-                                        ${students.map(student => `
-                                            <div class="list-group-item d-flex justify-content-between align-items-center">
-                                                <div>
-                                                    <strong>${student.firstName} ${student.lastName}</strong>
-                                                    <br>
-                                                    <small class="text-muted">Grade ${student.grade} • ${student.stars} stars</small>
-                                                </div>
-                                                <div>
-                                                    <span class="badge bg-primary">${student.completedModules || 0} modules completed</span>
-                                                </div>
-                                            </div>
-                                        `).join('')}
-                                    </div>
+                                <div class="module-description">
+                                    <strong>Teacher:</strong> ${teacherName}<br>
+                                    <strong>Grade:</strong> ${classroom.grade}<br>
+                                    <strong>Description:</strong> ${classroom.description || 'No description available'}
                                 </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="viewClassroomContent(${classroom.id})">
+                                        <i class="fas fa-eye"></i> View Content
+                                    </button>
                                 </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                html += '</div>';
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading classrooms:', error);
+                container.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i> Error loading classrooms. Please try again later.
+                    </div>
+                `;
+            }
+        }
+        
+        // View classroom content
+        async function viewClassroomContent(classroomId) {
+            try {
+                const classroom = await apiCall(`classrooms/${classroomId}`);
+                
+                const modal = document.createElement('div');
+                modal.className = 'modal fade show';
+                modal.style.display = 'block';
+                modal.innerHTML = `
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${classroom.name}</h5>
+                                <button type="button" class="btn-close" onclick="closeContentModal()"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h6>Classroom Information</h6>
+                                <p><strong>Subject:</strong> ${classroom.subject}</p>
+                                <p><strong>Grade:</strong> ${classroom.grade}</p>
+                                <p><strong>Description:</strong> ${classroom.description || 'No description available'}</p>
+                                
+                                <hr>
+                                
+                                <h6>Assigned Content</h6>
+                                <div class="alert alert-info">
+                                    <i class="fas fa-info-circle"></i> Your teacher will assign quizzes and lessons here. Check back regularly for updates!
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" onclick="closeContentModal()">Close</button>
                             </div>
                         </div>
                     </div>
                 `;
                 
-                // Remove existing modal if any
-                const existingModal = document.getElementById('studentsModal');
-                if (existingModal) {
-                    existingModal.remove();
-                }
-                
-                // Add modal to page
-                document.body.insertAdjacentHTML('beforeend', modalHtml);
-                
-                // Show modal
-                const modal = new bootstrap.Modal(document.getElementById('studentsModal'));
-                modal.show();
+                document.body.appendChild(modal);
+                modal.setAttribute('id', 'contentModal');
                 
             } catch (error) {
-                console.error('Error fetching students:', error);
-                alert('Error loading students. Please try again.');
+                console.error('Error loading classroom content:', error);
+                alert('Error loading classroom content. Please try again.');
             }
         }
         
+        // Close content modal
+        function closeContentModal() {
+            const modal = document.getElementById('contentModal');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+        
+        // Teacher utility functions
         function createQuiz(classroomId) {
             alert('Quiz creation tool coming soon! This will allow teachers to create custom quizzes for their students.');
         }

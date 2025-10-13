@@ -10,6 +10,7 @@ namespace QualityEducation.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Classroom> Classrooms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -30,6 +31,21 @@ namespace QualityEducation.Data
                 entity.Property(e => e.RecentActivity).HasColumnType("TEXT");
                 entity.Property(e => e.CreatedAt).IsRequired();
                 entity.Property(e => e.LastLogin).IsRequired();
+                entity.Property(e => e.IsActive).IsRequired();
+            });
+
+            // Configure Classroom entity
+            modelBuilder.Entity<Classroom>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Grade).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Subject).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Code).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.StudentIds).HasColumnType("TEXT");
+                entity.Property(e => e.AssignedContent).HasColumnType("TEXT");
+                entity.Property(e => e.Description).HasMaxLength(500);
+                entity.Property(e => e.CreatedAt).IsRequired();
                 entity.Property(e => e.IsActive).IsRequired();
             });
 
@@ -132,6 +148,66 @@ namespace QualityEducation.Data
                     }
                 );
             }
+
+            // Seed Classrooms
+            modelBuilder.Entity<Classroom>().HasData(
+                new Classroom
+                {
+                    Id = 1,
+                    Name = "Transfiguration - Grade 7",
+                    Grade = "Grade 7",
+                    Subject = "Transfiguration",
+                    TeacherId = 3, // Minerva McGonagall
+                    Code = "TRANS7",
+                    StudentIds = "[10,11,12,13,16]", // Harry, Hermione, Ron, Neville, Draco
+                    AssignedContent = "[]",
+                    Description = "Advanced Transfiguration for 7th year students",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
+                },
+                new Classroom
+                {
+                    Id = 2,
+                    Name = "Potions - Grade 7",
+                    Grade = "Grade 7",
+                    Subject = "Potions",
+                    TeacherId = 4, // Severus Snape
+                    Code = "POT7",
+                    StudentIds = "[10,11,12,13,16]", // Harry, Hermione, Ron, Neville, Draco
+                    AssignedContent = "[]",
+                    Description = "Advanced Potions and brewing techniques",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
+                },
+                new Classroom
+                {
+                    Id = 3,
+                    Name = "Defense Against Dark Arts - Grade 7",
+                    Grade = "Grade 7",
+                    Subject = "Defense Against Dark Arts",
+                    TeacherId = 5, // Remus Lupin
+                    Code = "DADA7",
+                    StudentIds = "[10,11,12,13,16]", // Harry, Hermione, Ron, Neville, Draco
+                    AssignedContent = "[]",
+                    Description = "Practical defense against dark creatures and spells",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
+                },
+                new Classroom
+                {
+                    Id = 4,
+                    Name = "Charms - Grade 6",
+                    Grade = "Grade 6",
+                    Subject = "Charms",
+                    TeacherId = 6, // Filius Flitwick
+                    Code = "CHARM6",
+                    StudentIds = "[14,15]", // Luna, Ginny
+                    AssignedContent = "[]",
+                    Description = "Essential charms and their applications",
+                    CreatedAt = DateTime.UtcNow,
+                    IsActive = true
+                }
+            );
         }
     }
 }
