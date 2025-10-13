@@ -272,3 +272,4 @@ C:\Users\jessw\OneDrive\Documents\GitHub\testReadyFridays\obj\Debug\net8.0\refin
 C:\Users\jessw\OneDrive\Documents\GitHub\testReadyFridays\obj\Debug\net8.0\QualityEducation.pdb
 C:\Users\jessw\OneDrive\Documents\GitHub\testReadyFridays\obj\Debug\net8.0\QualityEducation.genruntimeconfig.cache
 C:\Users\jessw\OneDrive\Documents\GitHub\testReadyFridays\obj\Debug\net8.0\ref\QualityEducation.dll
+C:\Users\jessw\OneDrive\Documents\GitHub\testReadyFridays\obj\Debug\net8.0\QualityEducation.sourcelink.json
