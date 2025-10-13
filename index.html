@@ -1581,7 +1581,7 @@
                     };
                     
                     // Register user via API
-                    await apiCall('/users', 'POST', newUser);
+                    await apiCall('users', 'POST', newUser);
                     
                     alert('Registration successful! You can now login.');
                     showLogin();
@@ -1692,7 +1692,7 @@
                 
                 // Login via API
                 console.log('Login attempt:', { email, password, userId });
-                const user = await apiCall('/users/login', 'POST', {
+                const user = await apiCall('users/login', 'POST', {
                     email: email,
                     password: password
                 });
