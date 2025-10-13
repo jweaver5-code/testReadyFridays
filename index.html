@@ -1639,6 +1639,11 @@
                     // If user is logged in, show appropriate dashboard
                     if (currentUser.role === 'student') {
                         showStudentDashboard();
+                        // Force update display after dashboard is shown
+                        setTimeout(() => {
+                            updateStarsDisplay();
+                            updateGameAvailability();
+                        }, 100);
                     } else if (currentUser.role === 'teacher') {
                         showTeacherDashboard();
                     } else if (currentUser.role === 'admin') {
@@ -1698,6 +1703,12 @@
                         completedModules: currentUser.completedModules,
                         gamesPlayed: currentUser.gamesPlayed
                     });
+                    
+                    // Force update the display immediately after sync
+                    if (currentUser.role === 'student') {
+                        updateStarsDisplay();
+                        updateGameAvailability();
+                    }
                 } else {
                     console.log('No user data received from database');
                 }
@@ -2171,6 +2182,8 @@
                     userStars = user.stars; // Use actual star count from database
                     
                     console.log('Set userStars to:', userStars);
+                    console.log('Current userStars value after login:', userStars);
+                    console.log('Current user object after login:', currentUser);
                     
                     // Update lastLogin in database
                     try {
@@ -3309,8 +3322,23 @@
         // Update stars display
         function updateStarsDisplay() {
             console.log('Updating stars display with value:', userStars);
-            document.getElementById('studentStars').textContent = userStars;
-            document.getElementById('totalStars').textContent = userStars;
+            
+            const studentStarsElement = document.getElementById('studentStars');
+            const totalStarsElement = document.getElementById('totalStars');
+            
+            if (studentStarsElement) {
+                studentStarsElement.textContent = userStars;
+                console.log('Updated studentStars element to:', userStars);
+            } else {
+                console.warn('studentStars element not found');
+            }
+            
+            if (totalStarsElement) {
+                totalStarsElement.textContent = userStars;
+                console.log('Updated totalStars element to:', userStars);
+            } else {
+                console.warn('totalStars element not found');
+            }
         }
 
         // Update game availability
