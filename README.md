@@ -4,12 +4,6 @@ A Khan Academy-style educational web application built with vanilla HTML, CSS, J
 
 ## Features
 
-### 🎓 **Comprehensive Course Catalog**
-- **8 Subject Areas**: Math, Science, English, History, Computer Science, Foreign Languages, Art & Music, and College Gen Eds
-- **4 Grade Levels**: K-5 (Elementary), 6-8 (Middle School), 9-12 (High School), and College
-- **Interactive Filtering**: Filter by subject, grade level, and search terms
-- **Progress Tracking**: Visual progress bars for each course
-
 ### 📚 **Learning Modules**
 - **Structured Content**: Each course contains multiple learning modules
 - **Rich Content**: Detailed explanations and examples for each topic
