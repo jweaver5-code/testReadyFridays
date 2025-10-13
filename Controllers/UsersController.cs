@@ -57,8 +57,11 @@ namespace QualityEducation.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutUser(int id, User user)
         {
+            Console.WriteLine($"PUT request for user {id}: {System.Text.Json.JsonSerializer.Serialize(user)}");
+            
             if (id != user.Id)
             {
+                Console.WriteLine($"Bad request: ID mismatch - {id} != {user.Id}");
                 return BadRequest();
             }
 
@@ -67,6 +70,7 @@ namespace QualityEducation.Controllers
             try
             {
                 await _context.SaveChangesAsync();
+                Console.WriteLine($"Successfully updated user {id} with {user.Stars} stars");
             }
             catch (DbUpdateConcurrencyException)
             {

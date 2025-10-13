@@ -1733,7 +1733,7 @@
                 const dataToSave = {
                     id: currentUser.id,
                     email: currentUser.email,
-                    password: currentUser.password,
+                    password: currentUser.password, // Password from login response
                     firstName: currentUser.firstName,
                     lastName: currentUser.lastName,
                     grade: currentUser.grade,
@@ -2175,7 +2175,8 @@
                         stars: user.stars,
                         email: user.email,
                         firstName: user.firstName,
-                        lastName: user.lastName
+                        lastName: user.lastName,
+                        password: user.password
                     };
                     
                     userGrade = user.grade;
