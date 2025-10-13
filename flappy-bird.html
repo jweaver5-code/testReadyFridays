@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flappy Bird - Student Games</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .game-container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .game-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .game-header h1 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .score-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .game-canvas-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        #flappyCanvas {
+            border: 3px solid #333;
+            border-radius: 10px;
+            background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .game-controls {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .game-controls p {
+            font-size: 1.1rem;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            justify-content: center;
+        }
+        
+        .btn {
+            border-radius: 25px;
+            font-weight: bold;
+            padding: 10px 20px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+            border: none;
+            color: #212529;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            border: none;
+        }
+        
+        .game-over-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+        
+        .game-over-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            max-width: 400px;
+        }
+        
+        .game-over-content h2 {
+            color: #e74c3c;
+            margin-bottom: 20px;
+        }
+        
+        .game-over-content p {
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .back-btn:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+    </style>
+</head>
+<body>
+    <button class="back-btn" onclick="goBack()" title="Back to Dashboard">
+        <i class="fas fa-arrow-left"></i>
+    </button>
+    
+    <div class="game-container">
+        <div class="game-header">
+            <h1><i class="fas fa-dove"></i> Flappy Bird</h1>
+            <div class="score-display">
+                Score: <span id="currentScore">0</span>
+            </div>
+        </div>
+        
+        <div class="game-canvas-container">
+            <canvas id="flappyCanvas" width="400" height="600"></canvas>
+        </div>
+        
+        <div class="game-controls">
+            <p>Press SPACE or Click to jump!</p>
+            <div class="btn-group">
+                <button id="startFlappyBtn" class="btn btn-warning">Start Game</button>
+                <button id="pauseBtn" class="btn btn-primary" style="display: none;">Pause</button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" class="game-over-screen">
+        <div class="game-over-content">
+            <h2>Game Over!</h2>
+            <p>Final Score: <span id="finalScore">0</span></p>
+            <div class="btn-group">
+                <button id="restartBtn" class="btn btn-primary">Play Again</button>
+                <button onclick="goBack()" class="btn btn-success">Back to Dashboard</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Flappy Bird Game
+        class FlappyBirdGame {
+            constructor() {
+                this.canvas = document.getElementById('flappyCanvas');
+                this.ctx = this.canvas.getContext('2d');
+                this.bird = {
+            x: 50,
+            y: 250,
+            width: 30,
+            height: 30,
+                    velocity: 0
+                };
+                this.pipes = [];
+                this.score = 0;
+                this.gameRunning = false;
+                this.isPaused = false;
+                this.gravity = 0.5;
+                this.jumpPower = -8;
+                this.pipeSpeed = 2;
+                this.pipeWidth = 60;
+                this.pipeGap = 150;
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.draw();
+            }
+
+            setupEventListeners() {
+                // Start button
+                const startBtn = document.getElementById('startFlappyBtn');
+                if (startBtn) {
+                    startBtn.onclick = () => this.startGame();
+                }
+
+                // Pause button
+                const pauseBtn = document.getElementById('pauseBtn');
+                if (pauseBtn) {
+                    pauseBtn.onclick = () => this.togglePause();
+                }
+
+                // Restart button
+                const restartBtn = document.getElementById('restartBtn');
+                if (restartBtn) {
+                    restartBtn.onclick = () => this.restartGame();
+                }
+
+                // Keyboard controls
+                document.addEventListener('keydown', (e) => this.handleKeyPress(e));
+                
+                // Mouse/touch controls
+                this.canvas.addEventListener('click', (e) => this.handleClick(e));
+            }
+
+            startGame() {
+                console.log('Starting Flappy Bird game...');
+                
+                // Hide start button, show pause button
+                const startBtn = document.getElementById('startFlappyBtn');
+                const pauseBtn = document.getElementById('pauseBtn');
+                if (startBtn) startBtn.style.display = 'none';
+                if (pauseBtn) pauseBtn.style.display = 'inline-block';
+
+                // Reset game state
+                this.bird.y = 250;
+                this.bird.velocity = 0;
+                this.pipes = [];
+                this.score = 0;
+                this.gameRunning = true;
+                this.isPaused = false;
+
+                // Start game loop
+                this.gameLoop();
+            }
+
+            togglePause() {
+                this.isPaused = !this.isPaused;
+                const pauseBtn = document.getElementById('pauseBtn');
+                if (pauseBtn) {
+                    pauseBtn.textContent = this.isPaused ? 'Resume' : 'Pause';
+                }
+            }
+
+            restartGame() {
+                console.log('Restarting Flappy Bird game...');
+                
+                // Hide game over screen
+                const gameOverScreen = document.getElementById('gameOverScreen');
+                if (gameOverScreen) {
+                    gameOverScreen.style.display = 'none';
+                }
+
+                // Start new game
+                this.startGame();
+            }
+
+            handleKeyPress(e) {
+                if (e.code === 'Space' && this.gameRunning && !this.isPaused) {
+                    e.preventDefault();
+                    this.bird.velocity = this.jumpPower;
+                }
+            }
+
+            handleClick(e) {
+                if (this.gameRunning && !this.isPaused) {
+                    this.bird.velocity = this.jumpPower;
+                }
+            }
+
+            gameLoop() {
+                if (!this.gameRunning) return;
+                
+                if (!this.isPaused) {
+                    this.update();
+                }
+                this.draw();
+                requestAnimationFrame(() => this.gameLoop());
+            }
+
+            update() {
+                // Update bird
+                this.bird.velocity += this.gravity;
+                this.bird.y += this.bird.velocity;
+
+                // Add new pipes
+                if (this.pipes.length === 0 || this.pipes[this.pipes.length - 1].x < this.canvas.width - 200) {
+                    this.addPipe();
+                }
+
+                // Update pipes
+                for (let i = this.pipes.length - 1; i >= 0; i--) {
+                    this.pipes[i].x -= this.pipeSpeed;
+
+                // Remove pipes that are off screen
+                    if (this.pipes[i].x + this.pipeWidth < 0) {
+                        this.pipes.splice(i, 1);
+                        this.score++;
+                        this.updateScore();
+                    }
+                }
+
+                // Check collisions
+                if (this.checkCollision()) {
+                    this.gameOver();
+                }
+            }
+
+            addPipe() {
+                const pipeHeight = Math.random() * (this.canvas.height - this.pipeGap - 100) + 50;
+                this.pipes.push({
+                    x: this.canvas.width,
+                    topHeight: pipeHeight,
+                    bottomY: pipeHeight + this.pipeGap
+                });
+            }
+
+            checkCollision() {
+                // Check ground and ceiling
+                if (this.bird.y + this.bird.height > this.canvas.height || this.bird.y < 0) {
+                    return true;
+                }
+
+                // Check pipes
+                for (let pipe of this.pipes) {
+                    if (this.bird.x < pipe.x + this.pipeWidth && this.bird.x + this.bird.width > pipe.x) {
+                        if (this.bird.y < pipe.topHeight || this.bird.y + this.bird.height > pipe.bottomY) {
+                            return true;
+                        }
+                    }
+                }
+                return false;
+            }
+
+            draw() {
+            // Clear canvas
+                this.ctx.fillStyle = '#87CEEB';
+                this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+                // Draw bird
+                this.ctx.fillStyle = '#FFD700';
+                this.ctx.fillRect(this.bird.x, this.bird.y, this.bird.width, this.bird.height);
+
+            // Draw pipes
+                this.ctx.fillStyle = '#228B22';
+                for (let pipe of this.pipes) {
+                // Top pipe
+                    this.ctx.fillRect(pipe.x, 0, this.pipeWidth, pipe.topHeight);
+                // Bottom pipe
+                    this.ctx.fillRect(pipe.x, pipe.bottomY, this.pipeWidth, this.canvas.height - pipe.bottomY);
+                }
+
+                // Draw pause overlay
+                if (this.isPaused) {
+                    this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
+                    this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+                    this.ctx.fillStyle = 'white';
+                    this.ctx.font = '48px Arial';
+                    this.ctx.textAlign = 'center';
+                    this.ctx.fillText('PAUSED', this.canvas.width / 2, this.canvas.height / 2);
+                }
+            }
+
+            updateScore() {
+                const scoreElement = document.getElementById('currentScore');
+                if (scoreElement) {
+                    scoreElement.textContent = this.score;
+                }
+            }
+
+            gameOver() {
+                this.gameRunning = false;
+                
+                // Show game over screen
+                const gameOverScreen = document.getElementById('gameOverScreen');
+                const finalScore = document.getElementById('finalScore');
+                
+                if (gameOverScreen) {
+                    gameOverScreen.style.display = 'flex';
+                }
+                
+                if (finalScore) {
+                    finalScore.textContent = this.score;
+                }
+                
+                console.log('Game Over! Final Score:', this.score);
+            }
+        }
+
+        // Initialize game when page loads
+        document.addEventListener('DOMContentLoaded', () => {
+            window.flappyGame = new FlappyBirdGame();
+        });
+
+        // Play again function
+        function playAgain() {
+            console.log('Playing again...');
+            
+            // Check if we have enough stars to play again
+            if (window.opener && !window.opener.closed) {
+                // Try to deduct stars from parent window
+                try {
+                    window.opener.postMessage({
+                        type: 'playGame',
+                        gameType: 'flappy',
+                        cost: 10
+                    }, '*');
+                    
+                    // Listen for response
+                    const messageHandler = (event) => {
+                        if (event.data.type === 'insufficientStars') {
+                            window.removeEventListener('message', messageHandler);
+                            return; // Don't start the game
+                        }
+                    };
+                    window.addEventListener('message', messageHandler);
+                    
+                    // Start the game after a short delay to allow for star check
+                    setTimeout(() => {
+                        if (window.flappyGame) {
+                            window.flappyGame.reset();
+                            window.flappyGame.start();
+                        }
+                    }, 100);
+                    
+                } catch (error) {
+                    console.error('Could not communicate with parent window:', error);
+                    alert('Unable to deduct stars. Please close and reopen the game.');
+                    return;
+                }
+            } else {
+                // If no parent window, just start the game
+                if (window.flappyGame) {
+                    window.flappyGame.reset();
+                    window.flappyGame.start();
+                }
+            }
+        }
+        
+        // Back to dashboard function
+        function goBack() {
+            // Check if we came from the dashboard
+            if (window.opener && !window.opener.closed) {
+                // Close this window and return to dashboard
+                window.close();
+            } else {
+                // If opened directly, go to dashboard
+                window.location.href = 'index.html';
+            }
+        }
+    </script>
+</body>
+</html>

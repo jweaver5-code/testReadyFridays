@@ -1,0 +1,283 @@
+/* General Styles */
+body {
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    font-family: 'Arial', sans-serif;
+    min-height: 100vh;
+}
+
+.container-fluid {
+    padding: 0;
+    height: 100vh;
+}
+
+/* Sidebar */
+.sidebar {
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+.game-menu .btn {
+    font-size: 1.1rem;
+    padding: 12px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+}
+
+.game-menu .btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4);
+}
+
+/* Main Content */
+.main-content {
+    padding: 20px;
+    height: 100vh;
+    overflow-y: auto;
+}
+
+.game-section {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 15px;
+    padding: 30px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    min-height: 80vh;
+}
+
+.welcome-screen {
+    text-align: center;
+    padding: 50px;
+}
+
+.welcome-screen h1 {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 2.5rem;
+}
+
+/* Flappy Bird Styles */
+.game-container {
+    text-align: center;
+}
+
+.game-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding: 0 20px;
+}
+
+.score-display {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+}
+
+#flappyCanvas {
+    border: 3px solid #333;
+    border-radius: 10px;
+    background: linear-gradient(to bottom, #87CEEB 0%, #98FB98 100%);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+}
+
+.game-controls {
+    margin-top: 15px;
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.game-over-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.game-over-content {
+    background: white;
+    padding: 40px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+.game-over-content h2 {
+    color: #e74c3c;
+    margin-bottom: 20px;
+}
+
+.game-over-content p {
+    font-size: 1.2rem;
+    margin-bottom: 20px;
+}
+
+/* Memory Game Styles */
+.memory-start-screen {
+    text-align: center;
+    padding: 40px;
+}
+
+.memory-start-screen h3 {
+    color: #333;
+    margin-bottom: 30px;
+}
+
+.form-select {
+    font-size: 1.1rem;
+    padding: 10px;
+    border-radius: 8px;
+    border: 2px solid #ddd;
+}
+
+.memory-stats {
+    display: flex;
+    justify-content: space-around;
+    margin-bottom: 30px;
+    padding: 15px;
+    background: #f8f9fa;
+    border-radius: 10px;
+}
+
+.stat-item {
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.memory-grid {
+    display: grid;
+    gap: 10px;
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.memory-col {
+    padding: 5px;
+}
+
+.memory-card {
+    width: 100%;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border: 3px solid transparent;
+}
+
+.memory-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.memory-card.flipped {
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    color: #333;
+    transform: rotateY(180deg);
+}
+
+.memory-card.matched {
+    background: linear-gradient(135deg, #4CAF50 0%, #8BC34A 100%);
+    color: white;
+    border-color: #2E7D32;
+}
+
+.memory-complete-screen {
+    text-align: center;
+    padding: 40px;
+}
+
+.memory-complete-screen h2 {
+    color: #4CAF50;
+    margin-bottom: 20px;
+}
+
+.memory-complete-screen p {
+    font-size: 1.2rem;
+    margin-bottom: 15px;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .sidebar {
+        height: auto;
+        padding: 15px;
+    }
+    
+    .main-content {
+        height: auto;
+        padding: 15px;
+    }
+    
+    .game-section {
+        padding: 20px;
+        min-height: auto;
+    }
+    
+    #flappyCanvas {
+        width: 100%;
+        max-width: 400px;
+        height: auto;
+    }
+    
+    .memory-grid {
+        max-width: 100%;
+    }
+    
+    .memory-card {
+        height: 60px;
+        font-size: 1.5rem;
+    }
+}
+
+/* Button Styles */
+.btn {
+    border-radius: 8px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    border: none;
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+    border: none;
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+    border: none;
+    color: #212529;
+}

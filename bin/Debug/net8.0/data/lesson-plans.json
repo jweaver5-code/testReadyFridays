@@ -1,0 +1,500 @@
+{
+  "lessonPlans": [
+    {
+      "id": 1,
+      "title": "Grade 3 Math: Addition & Subtraction for State Tests",
+      "grade": "Grade 3",
+      "subject": "Mathematics",
+      "duration": "45 minutes",
+      "objectives": [
+        "Master addition and subtraction within 1000 for state testing",
+        "Solve multi-step word problems using test-taking strategies",
+        "Apply place value understanding to solve problems efficiently"
+      ],
+      "standards": [
+        "3.NBT.A.2 - Fluently add and subtract within 1000",
+        "3.OA.D.8 - Solve two-step word problems using addition and subtraction",
+        "3.NBT.A.1 - Use place value understanding to round whole numbers"
+      ],
+      "activities": [
+        "Video lesson: Addition within 1000 with place value understanding (10 minutes)",
+        "Interactive practice: Subtraction with regrouping strategies (10 minutes)",
+        "Guided practice: Two-step word problems with visual models (15 minutes)",
+        "Independent practice: State test prep exercises with immediate feedback (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Finding missing addends using place value",
+        "Practice exercises: Addition and subtraction within 1000",
+        "Word problem worksheets: Two-step addition and subtraction problems",
+        "Assessment: Mastery check with 8 problems covering all skills"
+      ],
+      "assessment": "State test simulation with 15 problems",
+      "testPrep": true
+    },
+    {
+      "id": 2,
+      "title": "Grade 3 Reading: Test Prep Reading Comprehension",
+      "grade": "Grade 3",
+      "subject": "English Language Arts",
+      "duration": "45 minutes",
+      "objectives": [
+        "Master reading comprehension strategies for state tests",
+        "Identify main idea and supporting details in test passages",
+        "Use context clues to determine word meanings in test questions"
+      ],
+      "standards": [
+        "RI.3.1 - Ask and answer questions to demonstrate understanding",
+        "RI.3.2 - Determine the main idea of a text",
+        "RI.3.4 - Determine the meaning of general academic words"
+      ],
+      "activities": [
+        "Video lesson: Main idea identification strategies (10 minutes)",
+        "Interactive practice: Context clues and vocabulary building (15 minutes)",
+        "Guided practice: Reading comprehension with immediate feedback (10 minutes)",
+        "Independent practice: Test-style passage analysis (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Finding the main idea in informational texts",
+        "Practice exercises: Context clues and vocabulary",
+        "Reading passages: Grade-level appropriate texts with questions",
+        "Assessment: Comprehension quiz with 10 questions"
+      ],
+      "assessment": "Reading comprehension test with 10 questions",
+      "testPrep": true
+    },
+    {
+      "id": 3,
+      "title": "Grade 4 Math: Multiplication & Division for State Tests",
+      "grade": "Grade 4",
+      "subject": "Mathematics",
+      "duration": "50 minutes",
+      "objectives": [
+        "Master multiplication and division for state testing",
+        "Solve multi-step word problems using test strategies",
+        "Apply multiplication properties to solve problems efficiently"
+      ],
+      "standards": [
+        "4.NBT.B.5 - Multiply multi-digit numbers",
+        "4.NBT.B.6 - Find whole-number quotients and remainders",
+        "4.OA.A.3 - Solve multi-step word problems"
+      ],
+      "activities": [
+        "Video lesson: Multi-digit multiplication strategies (15 minutes)",
+        "Interactive practice: Division with remainders (10 minutes)",
+        "Guided practice: Word problems with multiplication and division (15 minutes)",
+        "Independent practice: State test prep exercises (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Multi-digit multiplication methods",
+        "Practice exercises: Division with remainders",
+        "Word problem worksheets: Multi-step multiplication and division",
+        "Assessment: Mastery check with 10 problems"
+      ],
+      "assessment": "State test simulation with 20 problems",
+      "testPrep": true
+    },
+    {
+      "id": 4,
+      "title": "Grade 4 Reading: Test Prep Text Analysis",
+      "grade": "Grade 4",
+      "subject": "English Language Arts",
+      "duration": "50 minutes",
+      "objectives": [
+        "Master text structure analysis for state tests",
+        "Identify cause/effect, compare/contrast, and sequence in test passages",
+        "Use text features to locate information quickly"
+      ],
+      "standards": [
+        "RI.4.5 - Describe the overall structure of events, ideas, or concepts",
+        "RI.4.7 - Interpret information from visual elements",
+        "RI.4.3 - Explain events, procedures, ideas, or concepts"
+      ],
+      "activities": [
+        "Video lesson: Text structure identification (15 minutes)",
+        "Interactive practice: Cause and effect relationships (10 minutes)",
+        "Guided practice: Compare and contrast analysis (15 minutes)",
+        "Independent practice: Test-style text analysis (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Understanding text structure",
+        "Practice exercises: Cause and effect identification",
+        "Reading passages: Compare and contrast texts",
+        "Assessment: Text structure analysis with 12 questions"
+      ],
+      "assessment": "Text structure analysis with 12 questions",
+      "testPrep": true
+    },
+    {
+      "id": 5,
+      "title": "Grade 5 Math: Fractions & Decimals for State Tests",
+      "grade": "Grade 5",
+      "subject": "Mathematics",
+      "duration": "50 minutes",
+      "objectives": [
+        "Master fraction and decimal operations for state testing",
+        "Convert between fractions, decimals, and percents efficiently",
+        "Solve real-world problems involving fractions and decimals"
+      ],
+      "standards": [
+        "5.NF.A.1 - Add and subtract fractions with unlike denominators",
+        "5.NF.B.4 - Apply and extend multiplication of fractions",
+        "5.NBT.A.3 - Read, write, and compare decimals"
+      ],
+      "activities": [
+        "Video lesson: Adding and subtracting fractions (15 minutes)",
+        "Interactive practice: Multiplying fractions (10 minutes)",
+        "Guided practice: Decimal operations and conversions (15 minutes)",
+        "Independent practice: State test prep problems (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Fraction operations with visual models",
+        "Practice exercises: Decimal operations",
+        "Conversion worksheets: Fractions, decimals, and percents",
+        "Assessment: Mastery check on fraction and decimal operations"
+      ],
+      "assessment": "State test simulation with 18 problems",
+      "testPrep": true
+    },
+    {
+      "id": 6,
+      "title": "Grade 5 Reading: Test Prep Literary Analysis",
+      "grade": "Grade 5",
+      "subject": "English Language Arts",
+      "duration": "50 minutes",
+      "objectives": [
+        "Master theme and literary analysis for state tests",
+        "Compare and contrast characters, settings, and events",
+        "Analyze how visual elements contribute to meaning"
+      ],
+      "standards": [
+        "RL.5.2 - Determine theme and summarize text",
+        "RL.5.3 - Compare and contrast characters, settings, or events",
+        "RL.5.7 - Analyze how visual elements contribute to meaning"
+      ],
+      "activities": [
+        "Video lesson: Theme identification strategies (15 minutes)",
+        "Interactive practice: Character analysis techniques (10 minutes)",
+        "Guided practice: Literary device identification (15 minutes)",
+        "Independent practice: Test-style literature analysis (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Understanding theme in literature",
+        "Practice exercises: Character analysis",
+        "Literary texts: Short stories with rich themes",
+        "Assessment: Literary analysis questions based on short story"
+      ],
+      "assessment": "Literary analysis test with 15 questions",
+      "testPrep": true
+    },
+    {
+      "id": 7,
+      "title": "Grade 6 Math: Ratios & Proportions for State Tests",
+      "grade": "Grade 6",
+      "subject": "Mathematics",
+      "duration": "50 minutes",
+      "objectives": [
+        "Master ratio and proportion concepts for state testing",
+        "Solve problems involving unit rates and percentages",
+        "Apply proportional relationships to real-world test problems"
+      ],
+      "standards": [
+        "6.RP.A.1 - Understand ratio concepts and use ratio language",
+        "6.RP.A.3 - Use ratio reasoning to solve problems",
+        "6.RP.A.3c - Find percent of a quantity"
+      ],
+      "activities": [
+        "Video lesson: Introduction to ratios and rates (15 minutes)",
+        "Interactive practice: Unit rates and percentages (15 minutes)",
+        "Guided practice: Proportional relationships (10 minutes)",
+        "Independent practice: State test prep problems (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Understanding ratios and rates",
+        "Practice exercises: Percentage calculations",
+        "Real-world problems: Ratio and proportion applications",
+        "Assessment: Mastery check on ratios, rates, and percentages"
+      ],
+      "assessment": "State test simulation with 16 problems",
+      "testPrep": true
+    },
+    {
+      "id": 8,
+      "title": "Grade 6 Reading: Test Prep Argument Analysis",
+      "grade": "Grade 6",
+      "subject": "English Language Arts",
+      "duration": "50 minutes",
+      "objectives": [
+        "Master argument analysis for state tests",
+        "Distinguish between fact and opinion in test passages",
+        "Analyze how authors use evidence to support claims"
+      ],
+      "standards": [
+        "RI.6.8 - Trace and evaluate argument and claims",
+        "RI.6.6 - Determine author's point of view",
+        "RI.6.1 - Cite textual evidence to support analysis"
+      ],
+      "activities": [
+        "Video lesson: Argument analysis strategies (15 minutes)",
+        "Interactive practice: Fact vs. opinion identification (10 minutes)",
+        "Guided practice: Evidence evaluation techniques (15 minutes)",
+        "Independent practice: Test-style argument questions (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Analyzing arguments and claims",
+        "Practice exercises: Fact and opinion identification",
+        "Argumentative texts: Short essays with clear claims",
+        "Assessment: Argument analysis essay based on provided text"
+      ],
+      "assessment": "Argument analysis test with 14 questions",
+      "testPrep": true
+    },
+    {
+      "id": 9,
+      "title": "Grade 7 Math: Algebra for State Tests",
+      "grade": "Grade 7",
+      "subject": "Mathematics",
+      "duration": "55 minutes",
+      "objectives": [
+        "Master algebraic expressions for state testing",
+        "Solve linear equations with rational coefficients",
+        "Apply algebraic thinking to solve test problems efficiently"
+      ],
+      "standards": [
+        "7.EE.A.1 - Apply properties to add, subtract, factor, and expand",
+        "7.EE.A.2 - Rewrite expressions in different forms",
+        "7.EE.B.4 - Use variables to solve problems"
+      ],
+      "activities": [
+        "Video lesson: Algebraic expressions and properties (15 minutes)",
+        "Interactive practice: Solving linear equations (15 minutes)",
+        "Guided practice: Word problems with variables (15 minutes)",
+        "Independent practice: State test prep exercises (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Combining like terms and simplifying expressions",
+        "Practice exercises: Linear equation solving",
+        "Word problem worksheets: Algebraic applications",
+        "Assessment: Mastery check on expressions, equations, and inequalities"
+      ],
+      "assessment": "State test simulation with 20 problems",
+      "testPrep": true
+    },
+    {
+      "id": 10,
+      "title": "Grade 7 Reading: Test Prep Writing & Analysis",
+      "grade": "Grade 7",
+      "subject": "English Language Arts",
+      "duration": "60 minutes",
+      "objectives": [
+        "Master argumentative writing for state tests",
+        "Analyze how authors structure arguments in test passages",
+        "Use precise language and formal style for test responses"
+      ],
+      "standards": [
+        "W.7.1 - Write arguments to support claims with clear reasons",
+        "W.7.1a - Introduce claim and acknowledge opposing views",
+        "W.7.1b - Support claims with logical reasoning and evidence"
+      ],
+      "activities": [
+        "Video lesson: Argumentative writing structure (20 minutes)",
+        "Interactive practice: Essay organization techniques (15 minutes)",
+        "Guided practice: Evidence gathering and analysis (15 minutes)",
+        "Independent practice: Test-style writing prompts (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Argumentative writing strategies",
+        "Practice exercises: Essay structure and organization",
+        "Writing prompts: State test-style argumentative topics",
+        "Assessment: Argumentative essay with rubric"
+      ],
+      "assessment": "Argumentative essay with rubric",
+      "testPrep": true
+    },
+    {
+      "id": 11,
+      "title": "Grade 8 Math: Functions for State Tests",
+      "grade": "Grade 8",
+      "subject": "Mathematics",
+      "duration": "55 minutes",
+      "objectives": [
+        "Master linear functions for state testing",
+        "Solve systems of linear equations efficiently",
+        "Apply linear functions to model real-world test problems"
+      ],
+      "standards": [
+        "8.F.A.1 - Understand that a function is a rule",
+        "8.EE.C.8 - Analyze and solve pairs of simultaneous linear equations",
+        "8.F.B.4 - Construct a function to model a linear relationship"
+      ],
+      "activities": [
+        "Video lesson: Linear functions and graphing (15 minutes)",
+        "Interactive practice: Graphing linear equations (15 minutes)",
+        "Guided practice: Systems of equations (15 minutes)",
+        "Independent practice: State test prep problems (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Understanding functions and linear relationships",
+        "Practice exercises: Graphing and solving linear equations",
+        "Real-world applications: Linear function modeling",
+        "Assessment: Mastery check on functions and linear equations"
+      ],
+      "assessment": "State test simulation with 18 problems",
+      "testPrep": true
+    },
+    {
+      "id": 12,
+      "title": "Grade 8 Reading: Test Prep Critical Analysis",
+      "grade": "Grade 8",
+      "subject": "English Language Arts",
+      "duration": "55 minutes",
+      "objectives": [
+        "Master critical analysis for state tests",
+        "Analyze author's purpose and point of view in test passages",
+        "Evaluate the effectiveness of arguments in test questions"
+      ],
+      "standards": [
+        "RI.8.6 - Determine author's point of view and purpose",
+        "RI.8.8 - Delineate and evaluate argument and claims",
+        "RI.8.9 - Analyze how two texts address similar themes"
+      ],
+      "activities": [
+        "Video lesson: Critical analysis strategies (15 minutes)",
+        "Interactive practice: Author's purpose identification (15 minutes)",
+        "Guided practice: Text comparison techniques (15 minutes)",
+        "Independent practice: Test-style analysis questions (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Critical analysis and evaluation",
+        "Practice exercises: Author's purpose and point of view",
+        "Comparative texts: Multiple perspectives on similar topics",
+        "Assessment: Critical analysis test with 16 questions"
+      ],
+      "assessment": "Critical analysis test with 16 questions",
+      "testPrep": true
+    },
+    {
+      "id": 13,
+      "title": "Grade 9-10 Math: Quadratic Functions for State Tests",
+      "grade": "Grade 9-10",
+      "subject": "Mathematics",
+      "duration": "60 minutes",
+      "objectives": [
+        "Master quadratic functions for state testing",
+        "Solve quadratic equations using multiple methods",
+        "Apply quadratic functions to model real-world test problems"
+      ],
+      "standards": [
+        "HSA-SSE.B.3 - Choose and produce equivalent expressions",
+        "HSA-REI.B.4 - Solve quadratic equations in one variable",
+        "HSF-IF.C.7 - Graph functions expressed symbolically"
+      ],
+      "activities": [
+        "Video lesson: Quadratic functions and properties (20 minutes)",
+        "Interactive practice: Factoring quadratics (15 minutes)",
+        "Guided practice: Quadratic formula applications (15 minutes)",
+        "Independent practice: State test prep problems (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Introduction to quadratic functions",
+        "Practice exercises: Factoring and solving quadratics",
+        "Real-world problems: Quadratic function applications",
+        "Assessment: Mastery check on quadratic functions and equations"
+      ],
+      "assessment": "State test simulation with 22 problems",
+      "testPrep": true
+    },
+    {
+      "id": 14,
+      "title": "Grade 9-10 Reading: Test Prep Complex Analysis",
+      "grade": "Grade 9-10",
+      "subject": "English Language Arts",
+      "duration": "60 minutes",
+      "objectives": [
+        "Master complex text analysis for state tests",
+        "Determine central ideas and themes in challenging passages",
+        "Analyze how authors develop and refine ideas in test texts"
+      ],
+      "standards": [
+        "RL.9-10.1 - Cite strong textual evidence",
+        "RL.9-10.2 - Determine theme and analyze its development",
+        "RI.9-10.2 - Determine central ideas and analyze their development"
+      ],
+      "activities": [
+        "Video lesson: Complex text analysis strategies (20 minutes)",
+        "Interactive practice: Theme analysis techniques (15 minutes)",
+        "Guided practice: Central idea identification (15 minutes)",
+        "Independent practice: Test-style complex passages (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Analyzing complex texts",
+        "Practice exercises: Theme and central idea analysis",
+        "Complex texts: Challenging passages for analysis",
+        "Assessment: Complex text analysis with 18 questions"
+      ],
+      "assessment": "Complex text analysis with 18 questions",
+      "testPrep": true
+    },
+    {
+      "id": 15,
+      "title": "Grade 11-12 Math: Advanced Functions for State Tests",
+      "grade": "Grade 11-12",
+      "subject": "Mathematics",
+      "duration": "60 minutes",
+      "objectives": [
+        "Master advanced functions for state testing",
+        "Analyze polynomial, rational, and trigonometric functions",
+        "Apply advanced mathematical concepts to solve test problems"
+      ],
+      "standards": [
+        "HSF-IF.C.7 - Graph functions expressed symbolically",
+        "HSF-TF.A.1 - Understand radian measure and unit circle",
+        "HSA-REI.B.3 - Solve linear equations and inequalities"
+      ],
+      "activities": [
+        "Video lesson: Advanced functions and transformations (20 minutes)",
+        "Interactive practice: Polynomial function analysis (15 minutes)",
+        "Guided practice: Trigonometric function applications (15 minutes)",
+        "Independent practice: State test prep problems (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Advanced function modeling",
+        "Practice exercises: Polynomial and trigonometric functions",
+        "Real-world applications: Advanced function modeling",
+        "Assessment: Project-based assessment using functions"
+      ],
+      "assessment": "State test simulation with 25 problems",
+      "testPrep": true
+    },
+    {
+      "id": 16,
+      "title": "Grade 11-12 Reading: Test Prep Research & Synthesis",
+      "grade": "Grade 11-12",
+      "subject": "English Language Arts",
+      "duration": "60 minutes",
+      "objectives": [
+        "Master research and synthesis for state tests",
+        "Synthesize information from multiple sources in test passages",
+        "Write research-based arguments with proper citations for test responses"
+      ],
+      "standards": [
+        "RI.11-12.7 - Integrate and evaluate multiple sources",
+        "W.11-12.1 - Write arguments to support claims with evidence",
+        "W.11-12.8 - Gather relevant information from multiple sources"
+      ],
+      "activities": [
+        "Video lesson: Research and synthesis strategies (20 minutes)",
+        "Interactive practice: Source evaluation techniques (15 minutes)",
+        "Guided practice: Multi-source analysis (15 minutes)",
+        "Independent practice: Test-style research questions (10 minutes)"
+      ],
+      "materials": [
+        "Interactive video: Research and synthesis methods",
+        "Practice exercises: Source evaluation and analysis",
+        "Research materials: Multiple sources on complex topics",
+        "Assessment: Research synthesis project with rubric"
+      ],
+      "assessment": "Research synthesis project with rubric",
+      "testPrep": true
+    }
+  ]
+}

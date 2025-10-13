@@ -1,0 +1,2339 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TestReady Fridays</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        
+        .login-container {
+            min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+            padding: 20px;
+        }
+        
+        .login-card {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.3);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .logo {
+            font-size: 3rem;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+        
+        .login-title {
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        .role-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .role-btn {
+            padding: 15px 20px;
+            border: 2px solid #e9ecef;
+            background: white;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            color: #666;
+        }
+        
+        .role-btn:hover {
+            border-color: #667eea;
+            color: #667eea;
+            transform: translateY(-2px);
+        }
+        
+        .role-btn.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-color: #667eea;
+        }
+        
+        .login-form {
+            display: none;
+        }
+        
+        .login-form.active {
+            display: block;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        
+        .form-label {
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 8px;
+        }
+        
+        .form-control {
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px 15px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-control:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .login-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            color: white;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 1.1rem;
+            width: 100%;
+            transition: all 0.3s ease;
+        }
+        
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+        
+        .back-btn {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(220, 53, 69, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: none;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .back-btn:hover {
+            background: rgba(220, 53, 69, 1);
+            transform: scale(1.1);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .dashboard {
+            display: none;
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .dashboard.active {
+            display: block;
+        }
+        
+        .dashboard-header {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .user-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .stars-display {
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            color: #333;
+            font-size: 1.2rem;
+        }
+        
+        .content-tabs {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .nav-tabs {
+            border-bottom: 3px solid #e9ecef;
+            margin-bottom: 20px;
+        }
+        
+        .nav-tabs .nav-link {
+            border: none;
+            color: #666;
+            font-weight: bold;
+            padding: 15px 25px;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 10px 10px 0 0;
+        }
+        
+        .tab-content {
+            padding: 20px 0;
+        }
+        
+        .learning-modules {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+        
+        .module-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .module-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+        
+        .module-card.completed {
+            border-color: #28a745;
+            background: linear-gradient(135deg, #d4edda 0%, #c3e6cb 100%);
+        }
+        
+        .module-card.locked {
+            opacity: 0.5;
+            background: #f8f9fa;
+            border-color: #dee2e6;
+            cursor: not-allowed;
+        }
+        
+        .module-card.locked .module-title::after {
+            content: " (Locked)";
+            color: #6c757d;
+            font-size: 0.8rem;
+        }
+        
+        .module-card.locked .module-actions button {
+            background: #6c757d;
+            cursor: not-allowed;
+        }
+        
+        .module-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .module-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #333;
+        }
+        
+        .module-stars {
+            background: #ffd700;
+            color: #333;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-weight: bold;
+        }
+        
+        .module-description {
+            color: #666;
+            margin-bottom: 20px;
+        }
+        
+        .module-progress {
+            margin-bottom: 15px;
+        }
+        
+        .progress-bar {
+            height: 8px;
+            border-radius: 4px;
+            background: #e9ecef;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            transition: width 0.3s ease;
+        }
+        
+        .module-actions {
+            display: flex;
+            gap: 10px;
+        }
+        
+        .btn {
+            border-radius: 25px;
+            font-weight: bold;
+            padding: 8px 20px;
+            border: none;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .btn-success {
+            background: linear-gradient(135deg, #28a745 0%, #1e7e34 100%);
+            color: white;
+        }
+        
+        .btn-warning {
+            background: linear-gradient(135deg, #ffc107 0%, #e0a800 100%);
+            color: #212529;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+        
+        .game-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border: 3px solid transparent;
+            transition: all 0.3s ease;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            border-color: #667eea;
+        }
+        
+        .game-card.locked {
+            opacity: 0.6;
+            background: #f8f9fa;
+        }
+        
+        .game-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+        
+        .game-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        
+        .game-cost {
+            color: #ffd700;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        
+        .game-description {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+        }
+        
+        .play-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 25px;
+            font-weight: bold;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+        
+        .play-btn:hover {
+            transform: scale(1.05);
+            color: white;
+            text-decoration: none;
+        }
+        
+        .play-btn:disabled {
+            background: #6c757d;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        /* Test Interface Styles */
+        .modal {
+            background: rgba(0, 0, 0, 0.5);
+        }
+        
+        .question-text {
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        
+        .options-container {
+            display: grid;
+            gap: 10px;
+        }
+        
+        .option-btn {
+            text-align: left;
+            padding: 15px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .option-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .list-group-numbered > li {
+            padding: 10px 15px;
+            margin-bottom: 5px;
+            border-radius: 5px;
+            background: #f8f9fa;
+        }
+        
+        .alert {
+            border-radius: 8px;
+        }
+        
+        .alert-info {
+            background: linear-gradient(135deg, #d1ecf1 0%, #bee5eb 100%);
+            border-color: #bee5eb;
+            color: #0c5460;
+        }
+        
+        .alert-warning {
+            background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+            border-color: #ffeaa7;
+            color: #856404;
+        }
+        
+        .alert-light {
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-color: #e9ecef;
+            color: #495057;
+        }
+        
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .login-card {
+            background: rgba(44, 62, 80, 0.95);
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .dashboard-container {
+            background: rgba(44, 62, 80, 0.95);
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .dashboard-header {
+            background: rgba(52, 73, 94, 0.95);
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .content-tabs {
+            background: rgba(52, 73, 94, 0.95);
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .module-card {
+            background: rgba(52, 73, 94, 0.8);
+            color: #ecf0f1;
+            border-color: #34495e;
+        }
+        
+        body.dark-mode .module-card:hover {
+            border-color: #3498db;
+        }
+        
+        body.dark-mode .module-card.completed {
+            border-color: #27ae60;
+            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+        }
+        
+        body.dark-mode .game-card {
+            background: rgba(52, 73, 94, 0.8);
+            color: #ecf0f1;
+            border-color: #34495e;
+        }
+        
+        body.dark-mode .game-card:hover {
+            border-color: #3498db;
+        }
+        
+        body.dark-mode .game-card.locked {
+            background: rgba(44, 62, 80, 0.6);
+            opacity: 0.6;
+        }
+        
+        body.dark-mode .form-control {
+            background: rgba(52, 73, 94, 0.8);
+            border-color: #34495e;
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .form-control:focus {
+            background: rgba(52, 73, 94, 0.9);
+            border-color: #3498db;
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .nav-tabs .nav-link {
+            color: #bdc3c7;
+        }
+        
+        body.dark-mode .nav-tabs .nav-link:hover {
+            background: rgba(52, 73, 94, 0.8);
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .nav-tabs .nav-link.active {
+            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
+            color: white;
+        }
+        
+        body.dark-mode .modal-content {
+            background: rgba(44, 62, 80, 0.95);
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .modal-header {
+            border-bottom-color: #34495e;
+        }
+        
+        body.dark-mode .modal-footer {
+            border-top-color: #34495e;
+        }
+        
+        body.dark-mode .list-group-item {
+            background: rgba(52, 73, 94, 0.8);
+            border-color: #34495e;
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .alert-info {
+            background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
+            border-color: #3498db;
+            color: #85c1e9;
+        }
+        
+        body.dark-mode .alert-warning {
+            background: linear-gradient(135deg, #2d2419 0%, #3e2723 100%);
+            border-color: #f39c12;
+            color: #f7dc6f;
+        }
+        
+        body.dark-mode .alert-light {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            border-color: #34495e;
+            color: #bdc3c7;
+        }
+        
+        /* Theme Toggle Button */
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.9);
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.2rem;
+            color: #333;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            z-index: 1000;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .theme-toggle:hover {
+            background: white;
+            transform: scale(1.1);
+        }
+        
+        body.dark-mode .theme-toggle {
+            background: rgba(44, 62, 80, 0.9);
+            color: #ecf0f1;
+        }
+        
+        body.dark-mode .theme-toggle:hover {
+            background: rgba(52, 73, 94, 0.9);
+        }
+    </style>
+</head>
+<body>
+    <!-- Theme Toggle Button -->
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
+        <i class="fas fa-moon" id="themeIcon"></i>
+    </button>
+    
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-card">
+            <div class="logo">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+            <h1 class="login-title">Albam Classroom Connect</h1>
+            <p class="text-muted mb-4">Sign in with your ID or email</p>
+
+            <!-- Universal Login Form -->
+            <div id="universalLogin" class="login-form active">
+                <h3>Sign In</h3>
+                <form onsubmit="loginAuto(event)">
+                    <div class="form-group">
+                        <label class="form-label">ID or Email</label>
+                        <input type="text" class="form-control" id="loginId" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="loginPassword" required>
+                    </div>
+                    <button type="submit" class="login-btn">Login</button>
+                </form>
+            </div>
+
+            <!-- Hide old role selection UI -->
+            <div class="role-buttons" style="display:none;">
+                <button class="role-btn" onclick="selectRole('student')">
+                    <i class="fas fa-user-graduate"></i><br>
+                    Student
+                </button>
+                <button class="role-btn" onclick="selectRole('teacher')">
+                    <i class="fas fa-chalkboard-teacher"></i><br>
+                    Teacher
+                </button>
+                <button class="role-btn" onclick="selectRole('admin')">
+                    <i class="fas fa-user-shield"></i><br>
+                    Admin
+                </button>
+            </div>
+            
+            <div class="text-center mt-3">
+                <small class="text-muted">Don't have an account? <a href="#" onclick="showRegistration()" style="color: #667eea;">Register here</a></small>
+                    </div>
+            
+            <!-- Student Login Form (hidden) -->
+            <div id="studentForm" class="login-form" style="display:none;">
+                <h3>Student Login</h3>
+                <form onsubmit="return false;">
+                    <div class="form-group">
+                        <label class="form-label">Student ID</label>
+                        <input type="text" class="form-control" id="studentId" required>
+                  </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="studentPassword" required>
+                </div>
+                    <button type="submit" class="login-btn">Login as Student</button>
+                </form>
+              </div>
+            
+            <!-- Student Registration Form -->
+            <div id="studentRegistration" class="login-form">
+                <h3>Student Registration</h3>
+                <form onsubmit="register('student', event)">
+                    <div class="form-group">
+                        <label class="form-label">Full Name</label>
+                        <input type="text" class="form-control" id="regStudentName" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Student ID</label>
+                        <input type="text" class="form-control" id="regStudentId" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Grade Level</label>
+                        <select class="form-control" id="regStudentGrade" required>
+                            <option value="">Select your grade</option>
+                            <option value="3">Grade 3</option>
+                            <option value="4">Grade 4</option>
+                            <option value="5">Grade 5</option>
+                            <option value="6">Grade 6</option>
+                            <option value="7">Grade 7</option>
+                            <option value="8">Grade 8</option>
+                            <option value="9">Grade 9</option>
+                            <option value="10">Grade 10</option>
+                            <option value="11">Grade 11</option>
+                            <option value="12">Grade 12</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="regStudentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Confirm Password</label>
+                        <input type="password" class="form-control" id="regStudentConfirmPassword" required>
+                    </div>
+                    <button type="submit" class="login-btn">Register as Student</button>
+                    <button type="button" class="btn btn-secondary mt-2" onclick="showLogin()">Back to Login</button>
+                </form>
+            </div>
+            
+            <!-- Teacher Login Form (hidden) -->
+            <div id="teacherForm" class="login-form" style="display:none;">
+                <h3>Teacher Login</h3>
+                <form onsubmit="return false;">
+                    <div class="form-group">
+                        <label class="form-label">Teacher ID</label>
+                        <input type="text" class="form-control" id="teacherId" required>
+                    </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="teacherPassword" required>
+                    </div>
+                    <button type="submit" class="login-btn">Login as Teacher</button>
+                </form>
+            </div>
+            
+            <!-- Admin Login Form (hidden) -->
+            <div id="adminForm" class="login-form" style="display:none;">
+                <h3>Admin Login</h3>
+                <form onsubmit="return false;">
+                    <div class="form-group">
+                        <label class="form-label">Admin ID</label>
+                        <input type="text" class="form-control" id="adminId" required>
+          </div>
+                    <div class="form-group">
+                        <label class="form-label">Password</label>
+                        <input type="password" class="form-control" id="adminPassword" required>
+          </div>
+                    <button type="submit" class="login-btn">Login as Admin</button>
+                </form>
+        </div>
+      </div>
+    </div>
+    
+    <!-- Admin Dashboard -->
+    <div id="adminDashboard" class="dashboard">
+        <button class="back-btn" onclick="logout()" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+        
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div>
+                    <h2><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
+                    <p>Welcome back, <span id="adminName">Admin</span>!</p>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-light" onclick="testSync()" title="Test Sync">
+                        <i class="fas fa-sync-alt"></i> Test Sync
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-tabs">
+            <ul class="nav nav-tabs" id="adminTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="users-tab" data-bs-toggle="tab" data-bs-target="#users" type="button" role="tab">
+                        <i class="fas fa-users"></i> All Users
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="analytics-tab" data-bs-toggle="tab" data-bs-target="#analytics" type="button" role="tab">
+                        <i class="fas fa-chart-bar"></i> Analytics
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="settings-tab" data-bs-toggle="tab" data-bs-target="#settings" type="button" role="tab">
+                        <i class="fas fa-cog"></i> Settings
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="adminTabContent">
+                <!-- Users Tab -->
+                <div class="tab-pane fade show active" id="users" role="tabpanel">
+                    <h3>All Users</h3>
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i> User management features coming soon!
+                    </div>
+                </div>
+                
+                <!-- Analytics Tab -->
+                <div class="tab-pane fade" id="analytics" role="tabpanel">
+                    <h3>System Analytics</h3>
+                    <div class="alert alert-info">
+                        <i class="fas fa-chart-line"></i> Analytics dashboard coming soon!
+                    </div>
+                </div>
+                
+                <!-- Settings Tab -->
+                <div class="tab-pane fade" id="settings" role="tabpanel">
+                    <h3>System Settings</h3>
+                    <div class="alert alert-info">
+                        <i class="fas fa-cogs"></i> System configuration coming soon!
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Teacher Dashboard -->
+    <div id="teacherDashboard" class="dashboard">
+        <button class="back-btn" onclick="logout()" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+        
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div>
+                    <h2><i class="fas fa-chalkboard-teacher"></i> Teacher Dashboard</h2>
+                    <p>Welcome back, <span id="teacherName">Teacher</span>!</p>
+                </div>
+                <div>
+                    <button class="btn btn-sm btn-outline-light" onclick="testSync()" title="Test Sync">
+                        <i class="fas fa-sync-alt"></i> Test Sync
+                    </button>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-tabs">
+            <ul class="nav nav-tabs" id="teacherTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="classrooms-tab" data-bs-toggle="tab" data-bs-target="#classrooms" type="button" role="tab">
+                        <i class="fas fa-chalkboard"></i> My Classrooms
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="create-tab" data-bs-toggle="tab" data-bs-target="#create" type="button" role="tab">
+                        <i class="fas fa-plus"></i> Create Content
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="competitions-tab" data-bs-toggle="tab" data-bs-target="#competitions" type="button" role="tab">
+                        <i class="fas fa-trophy"></i> Competitions
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="teacherTabContent">
+                <!-- Classrooms Tab -->
+                <div class="tab-pane fade show active" id="classrooms" role="tabpanel">
+                    <h3>My Classrooms</h3>
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="module-card">
+                                <h4>Grade 7 Math - Room 101</h4>
+                                <p>Students: 24 | Active: 18</p>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" onclick="viewClassroom('math7')">View Students</button>
+                                    <button class="btn btn-success" onclick="createQuiz('math7')">Create Quiz</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="module-card">
+                                <h4>Grade 8 Science - Room 203</h4>
+                                <p>Students: 22 | Active: 20</p>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" onclick="viewClassroom('science8')">View Students</button>
+                                    <button class="btn btn-success" onclick="createQuiz('science8')">Create Quiz</button>
+                        </div>
+                      </div>
+                        </div>
+                      </div>
+                </div>
+                
+                <!-- Create Content Tab -->
+                <div class="tab-pane fade" id="create" role="tabpanel">
+                    <h3>Create Content</h3>
+                      <div class="row">
+                        <div class="col-md-4">
+                            <div class="game-card">
+                                <div class="game-icon" style="color: #667eea;">📝</div>
+                                <div class="game-title">Create Quiz</div>
+                                <div class="game-description">Create custom quizzes for your students</div>
+                                <button class="play-btn" onclick="createQuiz()">Create Quiz</button>
+                        </div>
+                      </div>
+                        <div class="col-md-4">
+                            <div class="game-card">
+                                <div class="game-icon" style="color: #28a745;">🏆</div>
+                                <div class="game-title">Start Competition</div>
+                                <div class="game-description">Create engaging competitions</div>
+                                <button class="play-btn" onclick="createCompetition()">Start Competition</button>
+                        </div>
+                      </div>
+                        <div class="col-md-4">
+                            <div class="game-card">
+                                <div class="game-icon" style="color: #ffc107;">📊</div>
+                                <div class="game-title">View Analytics</div>
+                                <div class="game-description">Track student progress and performance</div>
+                                <button class="play-btn" onclick="viewAnalytics()">View Analytics</button>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <!-- Competitions Tab -->
+                <div class="tab-pane fade" id="competitions" role="tabpanel">
+                    <h3>Active Competitions</h3>
+                    <div class="module-card">
+                        <h4>Math Speed Challenge</h4>
+                        <p>Ends in 2 days | 15 participants</p>
+                        <div class="btn-group">
+                            <button class="btn btn-primary">View Leaderboard</button>
+                            <button class="btn btn-warning">Edit Competition</button>
+              </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Dashboard -->
+    <div id="studentDashboard" class="dashboard">
+        <button class="back-btn" onclick="logout()" title="Logout">
+            <i class="fas fa-sign-out-alt"></i>
+        </button>
+        
+        <div class="dashboard-header">
+            <div class="user-info">
+                <div>
+                    <h2><i class="fas fa-user-graduate"></i> Student Dashboard</h2>
+                    <p>Welcome back, <span id="studentName">Student</span>!</p>
+                </div>
+                <div class="stars-display">
+                    <i class="fas fa-star"></i> <span id="studentStars">50</span> Stars
+                    <small class="text-muted ms-2" id="syncStatus" style="display: none;">
+                        <i class="fas fa-sync-alt fa-spin"></i> Syncing...
+                    </small>
+                </div>
+            </div>
+        </div>
+        
+        <div class="content-tabs">
+            <ul class="nav nav-tabs" id="studentTabs" role="tablist">
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link active" id="learning-tab" data-bs-toggle="tab" data-bs-target="#learning" type="button" role="tab">
+                        <i class="fas fa-book"></i> Learning Modules
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="games-tab" data-bs-toggle="tab" data-bs-target="#games" type="button" role="tab">
+                        <i class="fas fa-gamepad"></i> Games
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="progress-tab" data-bs-toggle="tab" data-bs-target="#progress" type="button" role="tab">
+                        <i class="fas fa-chart-line"></i> Progress
+                    </button>
+                </li>
+            </ul>
+            
+            <div class="tab-content" id="studentTabContent">
+                <!-- Learning Tab -->
+                <div class="tab-pane fade show active" id="learning" role="tabpanel">
+                    <h3>Learning Modules</h3>
+                    <p>Complete modules to earn stars and unlock games!</p>
+                    
+                    <!-- Classroom Section -->
+                    <div class="module-card mb-4">
+                        <div class="module-header">
+                            <div class="module-title">Join Classroom</div>
+                            <div class="module-stars">+5 ⭐</div>
+                  </div>
+                        <div class="module-description">
+                            Join your teacher's classroom to access custom quizzes and competitions!
+                  </div>
+                        <div class="module-actions">
+                            <button class="btn btn-primary" onclick="showJoinClassroom()">Join Classroom</button>
+                </div>
+              </div>
+              
+                    <div class="learning-modules">
+                        <div class="module-card" id="module1">
+                            <div class="module-header">
+                                <div class="module-title">Grade 3 Math Test Prep</div>
+                                <div class="module-stars">+10 ⭐</div>
+                    </div>
+                            <div class="module-description">
+                                Master addition, subtraction, multiplication, and division for state testing. Includes practice problems and test strategies.
+                            </div>
+                            <div class="module-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <small>Progress: <span id="module1Progress">0</span>%</small>
+                            </div>
+                            <div class="module-actions">
+                                <button class="btn btn-primary" onclick="startModule('module1')">Start Test Prep</button>
+                    </div>
+                  </div>
+                  
+                        <div class="module-card" id="module2">
+                            <div class="module-header">
+                                <div class="module-title">Grade 4 Math Practice</div>
+                                <div class="module-stars">+12 ⭐</div>
+            </div>
+                            <div class="module-description">
+                                Fractions, decimals, geometry, and measurement for standardized tests. Practice with real test questions.
+              </div>
+                            <div class="module-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                   </div>
+                                <small>Progress: <span id="module2Progress">0</span>%</small>
+                 </div>
+                            <div class="module-actions">
+                                <button class="btn btn-primary" onclick="startModule('module2')">Start Test Prep</button>
+                 </div>
+               </div>
+                        
+                        <div class="module-card" id="module3">
+                            <div class="module-header">
+                                <div class="module-title">Grade 7 Writing Practice</div>
+                                <div class="module-stars">+15 ⭐</div>
+                      </div>
+                            <div class="module-description">
+                                Argumentative essay writing with rubric-based scoring. Practice with real writing prompts and feedback.
+                            </div>
+                            <div class="module-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <small>Progress: <span id="module3Progress">0</span>%</small>
+                            </div>
+                            <div class="module-actions">
+                                <button class="btn btn-primary" onclick="startModule('module3')">Start Test Prep</button>
+                    </div>
+                  </div>
+                  
+                        <div class="module-card" id="module4">
+                            <div class="module-header">
+                                <div class="module-title">Grade 8 Algebra Prep</div>
+                                <div class="module-stars">+18 ⭐</div>
+            </div>
+                            <div class="module-description">
+                                Linear equations, slope, and algebraic reasoning for high school readiness tests.
+              </div>
+                            <div class="module-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                      </div>
+                                <small>Progress: <span id="module4Progress">0</span>%</small>
+                    </div>
+                            <div class="module-actions">
+                                <button class="btn btn-primary" onclick="startModule('module4')">Start Test Prep</button>
+                  </div>
+                </div>
+                
+                        <div class="module-card" id="module5">
+                            <div class="module-header">
+                                <div class="module-title">Test-Taking Strategies</div>
+                                <div class="module-stars">+8 ⭐</div>
+                    </div>
+                            <div class="module-description">
+                                Master general test strategies, time management, and anxiety reduction techniques.
+                            </div>
+                            <div class="module-progress">
+                                <div class="progress-bar">
+                                    <div class="progress-fill" style="width: 0%"></div>
+                                </div>
+                                <small>Progress: <span id="module5Progress">0</span>%</small>
+                            </div>
+                            <div class="module-actions">
+                                <button class="btn btn-primary" onclick="startModule('module5')">Start Learning</button>
+                            </div>
+                        </div>
+                    </div>
+                  </div>
+                  
+                <!-- Games Tab -->
+                <div class="tab-pane fade" id="games" role="tabpanel">
+                    <h3>Games</h3>
+                    <p>Spend stars to play games and have fun!</p>
+                    
+                    <div class="games-grid">
+                        <div class="game-card" id="flappyGameCard">
+                            <div class="game-icon" style="color: #FFD700;">🎮</div>
+                            <div class="game-title">Flappy Bird</div>
+                            <div class="game-cost">Cost: 10 ⭐</div>
+                            <div class="game-description">Test your reflexes and timing!</div>
+                            <button class="play-btn" onclick="playGame('flappy')" id="flappyBtn">Play Game</button>
+                    </div>
+                        
+                        <div class="game-card" id="snakesGameCard">
+                            <div class="game-icon" style="color: #4CAF50;">🐍</div>
+                            <div class="game-title">Snakes</div>
+                            <div class="game-cost">Cost: 15 ⭐</div>
+                            <div class="game-description">Control the snake and grow longer!</div>
+                            <button class="play-btn" onclick="playGame('snakes')" id="snakesBtn">Play Game</button>
+                        </div>
+                        
+                        <div class="game-card" id="memoryGameCard">
+                            <div class="game-icon" style="color: #FF6B6B;">🧠</div>
+                            <div class="game-title">Memory Game</div>
+                            <div class="game-cost">Cost: 12 ⭐</div>
+                            <div class="game-description">Challenge your memory skills!</div>
+                            <button class="play-btn" onclick="playGame('memory')" id="memoryBtn">Play Game</button>
+                        </div>
+                    </div>
+                  </div>
+                  
+                <!-- Progress Tab -->
+                <div class="tab-pane fade" id="progress" role="tabpanel">
+                    <h3>Your Progress</h3>
+                    <p>Track your learning journey and achievements.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="module-card">
+                                <h4>Total Stars Earned</h4>
+                                <div class="stars-display" style="font-size: 2rem;">
+                                    <i class="fas fa-star"></i> <span id="totalStars">50</span>
+                    </div>
+                      </div>
+                    </div>
+                        <div class="col-md-6">
+                            <div class="module-card">
+                                <h4>Modules Completed</h4>
+                                <div style="font-size: 2rem; color: #28a745;">
+                                    <i class="fas fa-trophy"></i> <span id="completedModules">0</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Global variables
+        let currentUser = null;
+        let userStars = 0;
+        let userGrade = null;
+        let moduleProgress = {
+            module1: 0,
+            module2: 0,
+            module3: 0,
+            module4: 0,
+            module5: 0
+        };
+        let completedModules = 0;
+        
+        // Theme management
+        let isDarkMode = localStorage.getItem('darkMode') === 'true';
+        
+        // Load saved user data from localStorage and sync with database
+        async function loadSavedUserData() {
+            const savedUser = localStorage.getItem('currentUser');
+            const savedStars = localStorage.getItem('userStars');
+            const savedGrade = localStorage.getItem('userGrade');
+            
+            if (savedUser && savedStars && savedGrade) {
+                try {
+                    currentUser = JSON.parse(savedUser);
+                    userGrade = savedGrade;
+                    
+                    // Sync with database to get latest data
+                    await syncWithDatabase();
+                    
+                    // Start periodic sync with database
+                    startPeriodicSync();
+                    
+                    // If user is logged in, show appropriate dashboard
+                    if (currentUser.role === 'student') {
+                        showStudentDashboard();
+                    } else if (currentUser.role === 'teacher') {
+                        showTeacherDashboard();
+                    } else if (currentUser.role === 'admin') {
+                        showAdminDashboard();
+                    }
+                } catch (error) {
+                    console.error('Error loading saved user data:', error);
+                    clearSavedUserData();
+                }
+            }
+        }
+        
+        // Sync user data with database
+        async function syncWithDatabase() {
+            if (!currentUser) {
+                console.log('No current user, skipping sync');
+                return;
+            }
+            
+            try {
+                console.log('Starting sync with database...');
+                console.log('Current local stars:', userStars);
+                console.log('Current user ID:', currentUser.id);
+                
+                // First, try to save any local changes to database
+                console.log('Saving local changes to database...');
+                try {
+                    await saveToDatabase();
+                    console.log('Successfully saved local changes to database');
+                } catch (saveError) {
+                    console.warn('Failed to save to database, continuing with fetch:', saveError.message);
+                    // Continue with fetch even if save failed
+                }
+                
+                // Then get latest user data from database
+                console.log('Fetching latest data from database...');
+                const latestUser = await apiCall(`users/${currentUser.id}`);
+                
+                if (latestUser) {
+                    console.log('Database user data:', {
+                        id: latestUser.id,
+                        stars: latestUser.stars,
+                        completedModules: latestUser.completedModules,
+                        gamesPlayed: latestUser.gamesPlayed
+                    });
+                    
+                    // Update local variables with database values
+                    const oldStars = userStars;
+                    userStars = latestUser.stars;
+                    currentUser.stars = latestUser.stars;
+                    currentUser.completedModules = latestUser.completedModules;
+                    currentUser.completedQuizzes = latestUser.completedQuizzes;
+                    currentUser.gamesPlayed = latestUser.gamesPlayed;
+                    currentUser.recentActivity = latestUser.recentActivity;
+                    
+                    // Save updated data to localStorage
+                    saveUserData();
+                    
+                    console.log('Sync completed:', {
+                        oldStars: oldStars,
+                        newStars: userStars,
+                        completedModules: currentUser.completedModules,
+                        gamesPlayed: currentUser.gamesPlayed
+                    });
+                } else {
+                    console.log('No user data received from database');
+                }
+            } catch (error) {
+                console.error('Failed to sync with database:', error);
+                // Fallback to localStorage data
+                const localStars = parseInt(localStorage.getItem('userStars')) || 0;
+                console.log('Falling back to localStorage stars:', localStars);
+                userStars = localStars;
+            }
+        }
+        
+        // Save current state to database
+        async function saveToDatabase() {
+            if (!currentUser) {
+                console.log('No current user, cannot save to database');
+                return;
+            }
+            
+            try {
+                // Ensure we have the correct data format for the User model
+                const dataToSave = {
+                    id: currentUser.id,
+                    email: currentUser.email,
+                    password: currentUser.password,
+                    firstName: currentUser.firstName,
+                    lastName: currentUser.lastName,
+                    grade: currentUser.grade,
+                    role: currentUser.role,
+                    stars: userStars,
+                    completedModules: currentUser.completedModules || '[]',
+                    completedQuizzes: currentUser.completedQuizzes || '[]',
+                    gamesPlayed: currentUser.gamesPlayed || 0,
+                    recentActivity: currentUser.recentActivity || '[]',
+                    // Don't send createdAt and lastLogin as they might cause validation issues
+                    // The API will handle these automatically
+                    isActive: currentUser.isActive !== undefined ? currentUser.isActive : true
+                };
+                
+                console.log('Saving to database:', {
+                    userId: currentUser.id,
+                    stars: userStars,
+                    data: dataToSave
+                });
+                
+                const result = await apiCall(`users/${currentUser.id}`, 'PUT', dataToSave);
+                console.log('Successfully saved to database:', result);
+            } catch (error) {
+                console.error('Failed to save to database:', error);
+                console.error('Error details:', {
+                    message: error.message,
+                    currentUser: currentUser,
+                    userStars: userStars
+                });
+                throw error; // Re-throw so sync knows it failed
+            }
+        }
+        
+        // Save user data to localStorage
+        function saveUserData() {
+            if (currentUser) {
+                localStorage.setItem('currentUser', JSON.stringify(currentUser));
+                localStorage.setItem('userStars', userStars.toString());
+                localStorage.setItem('userGrade', userGrade || '');
+            }
+        }
+        
+        // Clear saved user data
+        function clearSavedUserData() {
+            localStorage.removeItem('currentUser');
+            localStorage.removeItem('userStars');
+            localStorage.removeItem('userGrade');
+        }
+        
+        // Periodic sync with database (every 2 minutes)
+        function startPeriodicSync() {
+            if (currentUser) {
+                setInterval(async () => {
+                    showSyncIndicator();
+                    await syncWithDatabase();
+                    updateStarsDisplay();
+                    updateGameAvailability();
+                    hideSyncIndicator();
+                }, 120000); // Sync every 2 minutes
+            }
+        }
+        
+        // Show sync indicator
+        function showSyncIndicator() {
+            const syncStatus = document.getElementById('syncStatus');
+            if (syncStatus) {
+                syncStatus.style.display = 'inline';
+            }
+        }
+        
+        // Hide sync indicator
+        function hideSyncIndicator() {
+            const syncStatus = document.getElementById('syncStatus');
+            if (syncStatus) {
+                syncStatus.style.display = 'none';
+            }
+        }
+        
+        // Test sync function for debugging
+        async function testSync() {
+            console.log('=== MANUAL SYNC TEST ===');
+            console.log('Current user:', currentUser);
+            console.log('Current stars:', userStars);
+            
+            try {
+                showSyncIndicator();
+                await syncWithDatabase();
+                updateStarsDisplay();
+                updateGameAvailability();
+                hideSyncIndicator();
+                console.log('Manual sync test completed successfully');
+            } catch (error) {
+                console.error('Manual sync test failed:', error);
+                hideSyncIndicator();
+            }
+        }
+        
+        
+        // API Configuration
+        const API_BASE_URL = 'http://localhost:3000/api';
+        
+        // API Helper Functions
+        async function apiCall(endpoint, method = 'GET', data = null) {
+            try {
+                const options = {
+                    method: method,
+                    headers: {
+                        'Content-Type': 'application/json',
+                    }
+                };
+                
+                if (data) {
+                    options.body = JSON.stringify(data);
+                }
+                
+                console.log('API Call:', `${API_BASE_URL}${endpoint}`, { method, data });
+                console.log('Data being sent:', JSON.stringify(data, null, 2));
+                
+                const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+                
+                console.log('Response status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('API Error:', response.status, errorText);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const result = await response.json();
+                console.log('API Success:', result);
+                return result;
+            } catch (error) {
+                console.error('API call failed:', error);
+                throw error;
+            }
+        }
+        
+        // Test content data
+        const testContent = {
+            module1: {
+                title: "Grade 3 Math Test Prep",
+                questions: [
+                    {
+                        question: "What is 7 × 8?",
+                        options: ["56", "54", "58", "60"],
+                        correct: 0,
+                        explanation: "7 × 8 = 56. You can think of this as 7 groups of 8, or 8 + 8 + 8 + 8 + 8 + 8 + 8 = 56."
+                    },
+                    {
+                        question: "Sarah has 24 stickers. She wants to put them equally into 6 bags. How many stickers will be in each bag?",
+                        options: ["3", "4", "5", "6"],
+                        correct: 1,
+                        explanation: "24 ÷ 6 = 4. This is a division problem where we're sharing 24 stickers equally among 6 bags."
+                    },
+                    {
+                        question: "Which fraction is equivalent to 1/2?",
+                        options: ["2/4", "1/3", "3/4", "2/3"],
+                        correct: 0,
+                        explanation: "1/2 = 2/4 because both represent the same amount. 1/2 means 1 out of 2 parts, and 2/4 means 2 out of 4 parts."
+                    }
+                ]
+            },
+            module2: {
+                title: "Grade 4 Math Practice",
+                questions: [
+                    {
+                        question: "What is 3/4 + 1/4?",
+                        options: ["4/8", "1", "4/4", "2/4"],
+                        correct: 1,
+                        explanation: "3/4 + 1/4 = 4/4 = 1. When adding fractions with the same denominator, add the numerators."
+                    },
+                    {
+                        question: "Convert 0.5 to a fraction.",
+                        options: ["1/2", "5/10", "1/5", "5/1"],
+                        correct: 0,
+                        explanation: "0.5 = 5/10 = 1/2. The decimal 0.5 represents half of a whole."
+                    }
+                ]
+            },
+            module3: {
+                title: "Grade 7 Writing Practice",
+                prompt: "Write an argumentative essay about whether students should have homework on weekends. Support your position with at least two reasons and evidence.",
+                rubric: {
+                    thesis: "Clear position statement (10 points)",
+                    evidence: "Two or more supporting reasons with evidence (20 points)",
+                    organization: "Logical structure with introduction, body, conclusion (15 points)",
+                    language: "Appropriate word choice and sentence variety (10 points)",
+                    conventions: "Correct grammar, spelling, and punctuation (5 points)"
+                }
+            },
+            module4: {
+                title: "Grade 8 Algebra Prep",
+                questions: [
+                    {
+                        question: "Solve for x: 2x + 5 = 13",
+                        options: ["x = 4", "x = 6", "x = 8", "x = 9"],
+                        correct: 0,
+                        explanation: "2x + 5 = 13, so 2x = 13 - 5 = 8, therefore x = 8 ÷ 2 = 4"
+                    },
+                    {
+                        question: "What is the slope of the line y = 3x + 2?",
+                        options: ["2", "3", "5", "6"],
+                        correct: 1,
+                        explanation: "In the equation y = mx + b, m is the slope. So the slope of y = 3x + 2 is 3."
+                    }
+                ]
+            },
+            module5: {
+                title: "Test-Taking Strategies",
+                strategies: [
+                    "Read all directions carefully before starting",
+                    "Answer easy questions first, then return to difficult ones",
+                    "Use process of elimination for multiple choice questions",
+                    "Show all work for math problems, even if not required",
+                    "Manage time effectively - don't spend too long on one question",
+                    "Review answers if time permits",
+                    "Stay calm and focused throughout the test"
+                ]
+            }
+        };
+
+        // Role selection
+        function selectRole(role) {
+            // Remove active class from all role buttons
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            // Add active class to selected role
+            event.target.classList.add('active');
+            
+            // Hide all forms
+            document.querySelectorAll('.login-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Show selected form
+            document.getElementById(role + 'Form').classList.add('active');
+        }
+        
+        // Show registration form
+        function showRegistration() {
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelectorAll('.login-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            document.getElementById('studentRegistration').classList.add('active');
+        }
+        
+        // Show login form
+        function showLogin() {
+            document.querySelectorAll('.login-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            document.getElementById('studentForm').classList.add('active');
+        }
+        
+        // Student registration
+        async function register(role, event) {
+            event.preventDefault();
+            
+            if (role === 'student') {
+                const name = document.getElementById('regStudentName').value;
+                const id = document.getElementById('regStudentId').value;
+                const grade = document.getElementById('regStudentGrade').value;
+                const password = document.getElementById('regStudentPassword').value;
+                const confirmPassword = document.getElementById('regStudentConfirmPassword').value;
+                
+                if (!name || !id || !grade || !password || !confirmPassword) {
+                    alert('Please fill in all fields');
+            return;
+          }
+
+                if (password !== confirmPassword) {
+                    alert('Passwords do not match');
+                    return;
+                }
+                
+                try {
+                    // Create user object
+                    const [firstName, ...lastNameParts] = name.split(' ');
+                    const lastName = lastNameParts.join(' ') || '';
+                    
+                    const newUser = {
+                        firstName: firstName,
+                        lastName: lastName,
+                        email: `${id}@student.qualityeducation.com`,
+                        password: password,
+                        role: 'student',
+                        grade: `Grade ${grade}`,
+                        stars: 50,
+                        completedModules: '[]',
+                        completedQuizzes: '[]',
+                        gamesPlayed: 0,
+                        recentActivity: '[]',
+                        isActive: true
+                    };
+                    
+                    // Register user via API
+                    await apiCall('/users', 'POST', newUser);
+                    
+                    alert('Registration successful! You can now login.');
+                    showLogin();
+                } catch (error) {
+                    alert('Registration failed. Please try again.');
+                    console.error('Registration error:', error);
+                }
+            }
+        }
+
+        // Theme toggle function
+        function toggleTheme() {
+            isDarkMode = !isDarkMode;
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeIcon').className = 'fas fa-sun';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('themeIcon').className = 'fas fa-moon';
+            }
+        }
+        
+        // Initialize theme on page load
+        function initializeTheme() {
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.getElementById('themeIcon').className = 'fas fa-sun';
+            }
+        }
+        
+        // Grade-based module access
+        function getModuleAccess(grade) {
+            const gradeNum = parseInt(grade);
+            const access = {
+                module1: gradeNum >= 3, // Grade 3 Math
+                module2: gradeNum >= 4, // Grade 4 Math
+                module3: gradeNum >= 7, // Grade 7 Writing
+                module4: gradeNum >= 8, // Grade 8 Algebra
+                module5: gradeNum >= 3  // Test strategies (all grades)
+            };
+            return access;
+        }
+        
+        // Update module visibility based on grade
+        function updateModuleAccess() {
+            if (!userGrade) return;
+            
+            const access = getModuleAccess(userGrade);
+            
+            Object.keys(access).forEach(moduleId => {
+                const module = document.getElementById(moduleId);
+                if (module) {
+                    if (access[moduleId]) {
+                        module.style.display = 'block';
+                        module.classList.remove('locked');
+        } else {
+                        module.style.display = 'none';
+                        module.classList.add('locked');
+                    }
+                }
+            });
+        }
+        
+        // New universal login (infers role from API response)
+        async function loginAuto(event) {
+            event.preventDefault();
+            
+            const userId = document.getElementById('loginId').value;
+            const password = document.getElementById('loginPassword').value;
+            
+            if (!userId || !password) {
+                alert('Please enter both ID and password');
+            return;
+          }
+          
+            try {
+                let email = userId;
+                
+                // Check if it's a known demo user and convert to proper email format
+                const demoUsers = {
+                    'harry.potter': 'harry.potter@hogwarts.edu',
+                    'hermione.granger': 'hermione.granger@hogwarts.edu',
+                    'ron.weasley': 'ron.weasley@hogwarts.edu',
+                    'luna.lovegood': 'luna.lovegood@hogwarts.edu',
+                    'draco.malfoy': 'draco.malfoy@hogwarts.edu',
+                    'albus.dumbledore': 'albus.dumbledore@hogwarts.edu',
+                    'minerva.mcgonagall': 'minerva.mcgonagall@hogwarts.edu',
+                    'severus.snape': 'severus.snape@hogwarts.edu',
+                    'admin': 'admin@qualityeducation.com'
+                };
+                
+                // Check if userId is already a full email address
+                if (userId.includes('@')) {
+                    email = userId; // Use as-is if it's already an email
+                } else if (demoUsers[userId]) {
+                    email = demoUsers[userId]; // Use demo user mapping
+                } else {
+                    // Fallback: try common domains in order
+                    const candidates = [
+                        `${userId}@student.qualityeducation.com`,
+                        `${userId}@teacher.qualityeducation.com`,
+                        `${userId}@qualityeducation.com`
+                    ];
+                    email = candidates[0];
+                }
+                
+                // Login via API
+                console.log('Login attempt:', { email, password, userId });
+                const user = await apiCall('/users/login', 'POST', {
+                    email: email,
+                    password: password
+                });
+                console.log('Login response:', user);
+                
+                if (user) {
+                    currentUser = {
+                        id: user.id,
+                        role: user.role,
+                        name: `${user.firstName} ${user.lastName}`,
+                        grade: user.grade,
+                        stars: user.stars,
+                        email: user.email
+                    };
+                    
+                    userGrade = user.grade;
+                    userStars = user.stars; // Use actual star count from database
+                    
+                    // Save user data to localStorage
+                    saveUserData();
+                    
+                    // Start periodic sync with database
+                    startPeriodicSync();
+                    
+                    if (user.role === 'student') {
+                        showStudentDashboard();
+                    } else if (user.role === 'teacher') {
+                        showTeacherDashboard();
+                    } else if (user.role === 'admin') {
+                        showAdminDashboard();
+                    }
+                }
+            } catch (error) {
+                alert('Invalid credentials. Please try again.');
+                console.error('Login error:', error);
+            }
+        }
+
+        // Show admin dashboard
+        function showAdminDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('adminDashboard').classList.add('active');
+            
+            // Show logout button for admin dashboard
+            const adminLogoutBtn = document.querySelector('#adminDashboard .back-btn');
+            if (adminLogoutBtn) adminLogoutBtn.style.display = 'block';
+            
+            // Update admin name
+            document.getElementById('adminName').textContent = currentUser.name;
+        }
+        
+        // Show teacher dashboard
+        function showTeacherDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('teacherDashboard').classList.add('active');
+            
+            // Show logout button for teacher dashboard
+            const teacherLogoutBtn = document.querySelector('#teacherDashboard .back-btn');
+            if (teacherLogoutBtn) teacherLogoutBtn.style.display = 'block';
+            
+            // Update teacher name
+            document.getElementById('teacherName').textContent = currentUser.name;
+        }
+        
+        // Show student dashboard
+        function showStudentDashboard() {
+            document.getElementById('loginPage').style.display = 'none';
+            document.getElementById('studentDashboard').classList.add('active');
+            
+            // Show logout button for student dashboard
+            const studentLogoutBtn = document.querySelector('#studentDashboard .back-btn');
+            if (studentLogoutBtn) studentLogoutBtn.style.display = 'block';
+            
+            // Update student name and grade display
+            document.getElementById('studentName').textContent = currentUser.name;
+            
+            // Update module access based on grade
+            updateModuleAccess();
+            
+            updateStarsDisplay();
+            updateGameAvailability();
+        }
+        
+        // Show join classroom modal
+        function showJoinClassroom() {
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Join Classroom</h5>
+                            <button type="button" class="btn-close" onclick="closeModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group">
+                                <label class="form-label">Classroom Code</label>
+                                <input type="text" class="form-control" id="classroomCode" placeholder="Enter classroom code">
+                            </div>
+                            <div class="alert alert-info">
+                                <strong>Available Classrooms:</strong><br>
+                                MATH101 - Grade 7 Math<br>
+                                SCI203 - Grade 8 Science
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" onclick="joinClassroom()">Join Classroom</button>
+                            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            window.joinClassroom = function() {
+                const code = document.getElementById('classroomCode').value.toUpperCase();
+                const classroom = Object.values(mockDatabase.classrooms).find(c => c.code === code);
+                
+                if (classroom) {
+                    // Add student to classroom
+                    mockDatabase.classrooms[Object.keys(mockDatabase.classrooms).find(k => mockDatabase.classrooms[k] === classroom)].students.push(currentUser.id);
+                    mockDatabase.students[currentUser.id].classroom = Object.keys(mockDatabase.classrooms).find(k => mockDatabase.classrooms[k] === classroom);
+                    
+                    alert(`Successfully joined ${classroom.name}!`);
+                    closeModal();
+                    userStars += 5;
+                    updateStarsDisplay();
+                } else {
+                    alert('Invalid classroom code');
+                }
+            };
+            
+            window.closeModal = function() {
+                document.body.removeChild(modal);
+            };
+        }
+        
+        // Teacher functions
+        async function viewClassroom(classroomId) {
+            try {
+                console.log('Fetching students for classroom:', classroomId);
+                
+                // For now, we'll show all students since we don't have classroom assignments in the database yet
+                const response = await apiCall('users', 'GET');
+                console.log('API Response:', response);
+                
+                const allUsers = response || [];
+                console.log('All users:', allUsers);
+                
+                // Filter for students only
+                const students = allUsers.filter(user => user.role === 'student');
+                console.log('Filtered students:', students);
+                
+                if (students.length === 0) {
+                    alert('No students found in this classroom.');
+                    return;
+                }
+                
+                // Create a modal to display students
+                const modalHtml = `
+                    <div class="modal fade" id="studentsModal" tabindex="-1">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">Classroom Students</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="list-group">
+                                        ${students.map(student => `
+                                            <div class="list-group-item d-flex justify-content-between align-items-center">
+                                                <div>
+                                                    <strong>${student.firstName} ${student.lastName}</strong>
+                                                    <br>
+                                                    <small class="text-muted">Grade ${student.grade} • ${student.stars} stars</small>
+                                                </div>
+                                                <div>
+                                                    <span class="badge bg-primary">${student.completedModules || 0} modules completed</span>
+                                                </div>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Remove existing modal if any
+                const existingModal = document.getElementById('studentsModal');
+                if (existingModal) {
+                    existingModal.remove();
+                }
+                
+                // Add modal to page
+                document.body.insertAdjacentHTML('beforeend', modalHtml);
+                
+                // Show modal
+                const modal = new bootstrap.Modal(document.getElementById('studentsModal'));
+                modal.show();
+                
+            } catch (error) {
+                console.error('Error fetching students:', error);
+                alert('Error loading students. Please try again.');
+            }
+        }
+        
+        function createQuiz(classroomId) {
+            alert('Quiz creation tool coming soon! This will allow teachers to create custom quizzes for their students.');
+        }
+        
+        function createCompetition() {
+            alert('Competition creation tool coming soon! This will allow teachers to create engaging competitions for their students.');
+        }
+        
+        function viewAnalytics() {
+            alert('Analytics dashboard coming soon! This will show detailed student progress and performance metrics.');
+        }
+
+        // Start learning module
+        function startModule(moduleId) {
+            const module = document.getElementById(moduleId);
+            const progressElement = document.getElementById(moduleId + 'Progress');
+            const progressBar = module.querySelector('.progress-fill');
+            
+            // Show test content based on module type
+            if (moduleId === 'module5') {
+                showTestStrategies(moduleId);
+            } else if (moduleId === 'module3') {
+                showWritingPrompt(moduleId);
+            } else {
+                showTestQuestions(moduleId);
+            }
+        }
+        
+        // Show test questions for math modules
+        function showTestQuestions(moduleId) {
+            const content = testContent[moduleId];
+            const questions = content.questions;
+            let currentQuestion = 0;
+            let correctAnswers = 0;
+            
+            // Create modal for test questions
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${content.title}</h5>
+                            <button type="button" class="btn-close" onclick="closeTestModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div id="questionContainer">
+                                <h6>Question ${currentQuestion + 1} of ${questions.length}</h6>
+                                <p class="question-text">${questions[currentQuestion].question}</p>
+                                <div class="options-container">
+                                    ${questions[currentQuestion].options.map((option, index) => 
+                                        `<button class="btn btn-outline-primary option-btn" onclick="selectAnswer(${index}, ${questions[currentQuestion].correct})">${option}</button>`
+                                    ).join('')}
+                                </div>
+                                <div id="explanation" class="mt-3" style="display: none;">
+                                    <div class="alert alert-info">
+                                        <strong>Explanation:</strong> <span id="explanationText"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-primary" id="nextBtn" onclick="nextQuestion()" style="display: none;">Next Question</button>
+                            <button class="btn btn-success" id="finishBtn" onclick="finishTest()" style="display: none;">Finish Test</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Global functions for the test
+            window.selectAnswer = function(selectedIndex, correctIndex) {
+                const isCorrect = selectedIndex === correctIndex;
+                if (isCorrect) correctAnswers++;
+                
+                // Show explanation
+                document.getElementById('explanationText').textContent = questions[currentQuestion].explanation;
+                document.getElementById('explanation').style.display = 'block';
+                
+                // Disable all options
+                document.querySelectorAll('.option-btn').forEach(btn => {
+                    btn.disabled = true;
+                    if (btn.textContent === questions[currentQuestion].options[correctIndex]) {
+                        btn.classList.remove('btn-outline-primary');
+                        btn.classList.add('btn-success');
+                    } else if (btn.textContent === questions[currentQuestion].options[selectedIndex] && !isCorrect) {
+                        btn.classList.remove('btn-outline-primary');
+                        btn.classList.add('btn-danger');
+                    }
+                });
+                
+                // Show next button
+                if (currentQuestion < questions.length - 1) {
+                    document.getElementById('nextBtn').style.display = 'inline-block';
+                } else {
+                    document.getElementById('finishBtn').style.display = 'inline-block';
+                }
+            };
+            
+            window.nextQuestion = function() {
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    document.getElementById('questionContainer').innerHTML = `
+                        <h6>Question ${currentQuestion + 1} of ${questions.length}</h6>
+                        <p class="question-text">${questions[currentQuestion].question}</p>
+                        <div class="options-container">
+                            ${questions[currentQuestion].options.map((option, index) => 
+                                `<button class="btn btn-outline-primary option-btn" onclick="selectAnswer(${index}, ${questions[currentQuestion].correct})">${option}</button>`
+                            ).join('')}
+                        </div>
+                        <div id="explanation" class="mt-3" style="display: none;">
+                            <div class="alert alert-info">
+                                <strong>Explanation:</strong> <span id="explanationText"></span>
+                            </div>
+                        </div>
+                    `;
+                    document.getElementById('nextBtn').style.display = 'none';
+                    document.getElementById('finishBtn').style.display = 'none';
+                }
+            };
+            
+            window.finishTest = function() {
+                const score = Math.round((correctAnswers / questions.length) * 100);
+                alert(`Test completed! You scored ${score}% (${correctAnswers}/${questions.length} correct)`);
+                closeTestModal();
+                completeModule(moduleId);
+            };
+            
+            window.closeTestModal = function() {
+                document.body.removeChild(modal);
+            };
+        }
+        
+        // Show writing prompt for module 3
+        function showWritingPrompt(moduleId) {
+            const content = testContent[moduleId];
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${content.title}</h5>
+                            <button type="button" class="btn-close" onclick="closeTestModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="mb-3">
+                                <h6>Writing Prompt:</h6>
+                                <p class="alert alert-light">${content.prompt}</p>
+                            </div>
+                            <div class="mb-3">
+                                <h6>Rubric:</h6>
+                                <ul class="list-group">
+                                    <li class="list-group-item"><strong>Thesis:</strong> ${content.rubric.thesis}</li>
+                                    <li class="list-group-item"><strong>Evidence:</strong> ${content.rubric.evidence}</li>
+                                    <li class="list-group-item"><strong>Organization:</strong> ${content.rubric.organization}</li>
+                                    <li class="list-group-item"><strong>Language:</strong> ${content.rubric.language}</li>
+                                    <li class="list-group-item"><strong>Conventions:</strong> ${content.rubric.conventions}</li>
+                                </ul>
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label">Your Essay:</label>
+                                <textarea class="form-control" rows="15" id="essayText" placeholder="Write your essay here..."></textarea>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" onclick="submitEssay()">Submit Essay</button>
+                            <button class="btn btn-secondary" onclick="closeTestModal()">Cancel</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            window.submitEssay = function() {
+                const essay = document.getElementById('essayText').value;
+                if (essay.trim().length < 100) {
+                    alert('Please write at least 100 words for your essay.');
+                    return;
+                }
+                alert('Essay submitted! Great job on your writing practice.');
+                closeTestModal();
+                completeModule(moduleId);
+            };
+            
+            window.closeTestModal = function() {
+                document.body.removeChild(modal);
+            };
+        }
+        
+        // Show test strategies for module 5
+        function showTestStrategies(moduleId) {
+            const content = testContent[moduleId];
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-lg">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${content.title}</h5>
+                            <button type="button" class="btn-close" onclick="closeTestModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <h6>Essential Test-Taking Strategies:</h6>
+                            <ol class="list-group list-group-numbered">
+                                ${content.strategies.map(strategy => 
+                                    `<li class="list-group-item">${strategy}</li>`
+                                ).join('')}
+                            </ol>
+                            <div class="alert alert-warning mt-3">
+                                <strong>Remember:</strong> Practice these strategies regularly to build confidence and improve your test performance!
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" onclick="completeStrategies()">I Understand</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            window.completeStrategies = function() {
+                closeTestModal();
+                completeModule(moduleId);
+            };
+            
+            window.closeTestModal = function() {
+                document.body.removeChild(modal);
+            };
+        }
+
+        // Complete module
+        async function completeModule(moduleId) {
+            const module = document.getElementById(moduleId);
+            const starsEarned = parseInt(module.querySelector('.module-stars').textContent.match(/\d+/)[0]);
+            
+            // Add stars
+            userStars += starsEarned;
+            completedModules++;
+            
+            // Update progress
+            moduleProgress[moduleId] = 100;
+            const progressElement = document.getElementById(moduleId + 'Progress');
+            const progressBar = module.querySelector('.progress-fill');
+            if (progressElement) progressElement.textContent = '100';
+            if (progressBar) progressBar.style.width = '100%';
+            
+            // Update UI
+            module.classList.add('completed');
+            module.querySelector('.module-actions').innerHTML = '<button class="btn btn-success">Completed!</button>';
+            updateStarsDisplay();
+            updateGameAvailability();
+            
+            // Save progress to database
+            try {
+                const completedModulesList = JSON.parse(currentUser.completedModules || '[]');
+                if (!completedModulesList.includes(moduleId)) {
+                    completedModulesList.push(moduleId);
+                }
+                
+                // Update currentUser
+                currentUser.stars = userStars;
+                currentUser.completedModules = JSON.stringify(completedModulesList);
+                
+                // Save to database and localStorage
+                await saveToDatabase();
+                saveUserData();
+            } catch (error) {
+                console.error('Failed to save progress:', error);
+            }
+            
+            alert(`Congratulations! You completed ${testContent[moduleId].title} and earned ${starsEarned} stars!`);
+        }
+
+        // Play game
+        async function playGame(gameType) {
+            const gameCosts = {
+                flappy: 10,
+                snakes: 15,
+                memory: 12
+            };
+            
+            const cost = gameCosts[gameType];
+            
+            if (userStars >= cost) {
+                userStars -= cost;
+                updateStarsDisplay();
+                updateGameAvailability();
+                
+                // Save star spending to database
+                try {
+                    // Update currentUser
+                    currentUser.stars = userStars;
+                    currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+                    
+                    // Save to database and localStorage
+                    await saveToDatabase();
+                    saveUserData();
+                } catch (error) {
+                    console.error('Failed to save game play:', error);
+                }
+                
+                // Open game in new window
+                const gamePages = {
+                    flappy: 'flappy-bird.html',
+                    snakes: 'snakes.html',
+                    memory: 'memory.html'
+                };
+                
+                const gameWindow = window.open(gamePages[gameType], '_blank', 'width=800,height=700,scrollbars=yes,resizable=yes');
+                
+                // Focus on the new window
+                if (gameWindow) {
+                    gameWindow.focus();
+          }
+        } else {
+                alert(`You need ${cost} stars to play this game. You have ${userStars} stars.`);
+            }
+        }
+
+        // Update stars display
+        function updateStarsDisplay() {
+            document.getElementById('studentStars').textContent = userStars;
+            document.getElementById('totalStars').textContent = userStars;
+        }
+
+        // Update game availability
+        function updateGameAvailability() {
+            const gameCosts = {
+                flappy: 10,
+                snakes: 15,
+                memory: 12
+            };
+            
+            Object.keys(gameCosts).forEach(game => {
+                const btn = document.getElementById(game + 'Btn');
+                const card = document.getElementById(game + 'GameCard');
+                
+                if (userStars >= gameCosts[game]) {
+                    btn.disabled = false;
+                    card.classList.remove('locked');
+                } else {
+                    btn.disabled = true;
+                    card.classList.add('locked');
+                }
+            });
+        }
+
+        // Logout
+        function logout() {
+            console.log('Logging out user:', currentUser);
+            
+            currentUser = null;
+            userGrade = null;
+            userStars = 0;
+            
+            // Clear saved user data
+            clearSavedUserData();
+            
+            // Hide all dashboards
+            document.getElementById('studentDashboard').classList.remove('active');
+            document.getElementById('teacherDashboard').classList.remove('active');
+            document.getElementById('adminDashboard').classList.remove('active');
+            
+            // Hide all logout buttons
+            document.querySelectorAll('.back-btn').forEach(btn => {
+                btn.style.display = 'none';
+            });
+            
+            // Show login page
+            document.getElementById('loginPage').style.display = 'flex';
+            
+            // Reset all login forms
+            document.querySelectorAll('.login-form').forEach(form => {
+                form.classList.remove('active');
+            });
+            
+            // Reset role buttons
+            document.querySelectorAll('.role-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            
+            console.log('Logout completed');
+        }
+
+        // Listen for messages from game windows
+        window.addEventListener('message', function(event) {
+            if (event.data.type === 'playGame') {
+                const { gameType, cost } = event.data;
+                
+                if (userStars >= cost) {
+                    userStars -= cost;
+                    updateStarsDisplay();
+                    updateGameAvailability();
+                    
+                    // Save star spending to database
+                    if (currentUser) {
+                        // Update currentUser
+                        currentUser.stars = userStars;
+                        currentUser.gamesPlayed = (currentUser.gamesPlayed || 0) + 1;
+                        
+                        // Save to database and localStorage
+                        saveToDatabase().then(() => {
+                            saveUserData();
+                        }).catch(error => {
+                            console.error('Failed to save game play:', error);
+                        });
+                    }
+                } else {
+                    alert(`You need ${cost} stars to play this game. You have ${userStars} stars.`);
+                    // Send message back to game window to prevent play again
+                    event.source.postMessage({ type: 'insufficientStars' }, '*');
+                }
+            }
+        });
+
+        // Initialize
+        document.addEventListener('DOMContentLoaded', async () => {
+            initializeTheme();
+            await loadSavedUserData(); // Load saved user data first
+            updateStarsDisplay();
+            updateGameAvailability();
+        });
+    </script>
+  </body>
+</html>

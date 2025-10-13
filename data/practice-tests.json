@@ -1,0 +1,148 @@
+{
+  "practiceTests": [
+    {
+      "id": 1,
+      "grade": "Grade 3",
+      "subject": "Mathematics",
+      "title": "Grade 3 Math Practice Test",
+      "questions": [
+        {
+          "id": 1,
+          "question": "What is 7 × 8?",
+          "options": ["56", "54", "58", "60"],
+          "correctAnswer": "56",
+          "explanation": "7 × 8 = 56. You can think of this as 7 groups of 8, or 8 + 8 + 8 + 8 + 8 + 8 + 8 = 56."
+        },
+        {
+          "id": 2,
+          "question": "Sarah has 24 stickers. She wants to put them equally into 6 bags. How many stickers will be in each bag?",
+          "options": ["3", "4", "5", "6"],
+          "correctAnswer": "4",
+          "explanation": "24 ÷ 6 = 4. This is a division problem where we're sharing 24 stickers equally among 6 bags."
+        },
+        {
+          "id": 3,
+          "question": "Which fraction is equivalent to 1/2?",
+          "options": ["2/4", "1/3", "3/4", "2/3"],
+          "correctAnswer": "2/4",
+          "explanation": "1/2 = 2/4 because both represent the same amount. 1/2 means 1 out of 2 parts, and 2/4 means 2 out of 4 parts."
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "grade": "Grade 4",
+      "subject": "English Language Arts",
+      "title": "Grade 4 Reading Comprehension Practice",
+      "passage": "The Great Migration was a period in American history when millions of African Americans moved from the rural South to the urban North, Midwest, and West. This movement occurred between 1916 and 1970. People moved for many reasons, including better job opportunities, escape from racial discrimination, and the hope for a better life for their children.",
+      "questions": [
+        {
+          "id": 1,
+          "question": "What was the Great Migration?",
+          "options": [
+            "A war between the North and South",
+            "A movement of African Americans from South to North",
+            "A period of economic growth",
+            "A time when people moved to the South"
+          ],
+          "correctAnswer": "A movement of African Americans from South to North",
+          "explanation": "The passage states that the Great Migration was when millions of African Americans moved from the rural South to the urban North, Midwest, and West."
+        },
+        {
+          "id": 2,
+          "question": "When did the Great Migration occur?",
+          "options": ["1910-1950", "1916-1970", "1920-1980", "1900-1960"],
+          "correctAnswer": "1916-1970",
+          "explanation": "The passage clearly states that the Great Migration occurred between 1916 and 1970."
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "grade": "Grade 5",
+      "subject": "Science",
+      "title": "Grade 5 Science Practice Test",
+      "questions": [
+        {
+          "id": 1,
+          "question": "What is the first step in the scientific method?",
+          "options": ["Form a hypothesis", "Make observations", "Conduct an experiment", "Draw conclusions"],
+          "correctAnswer": "Make observations",
+          "explanation": "The scientific method begins with making observations about the natural world, which leads to asking questions."
+        },
+        {
+          "id": 2,
+          "question": "Which of the following is a producer in a food chain?",
+          "options": ["Rabbit", "Grass", "Hawk", "Snake"],
+          "correctAnswer": "Grass",
+          "explanation": "Producers are organisms that make their own food through photosynthesis. Grass is a plant that produces its own food using sunlight."
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "grade": "Grade 6",
+      "subject": "Mathematics",
+      "title": "Grade 6 Math Practice Test",
+      "questions": [
+        {
+          "id": 1,
+          "question": "What is 3/4 as a decimal?",
+          "options": ["0.25", "0.5", "0.75", "0.8"],
+          "correctAnswer": "0.75",
+          "explanation": "To convert 3/4 to a decimal, divide 3 by 4: 3 ÷ 4 = 0.75"
+        },
+        {
+          "id": 2,
+          "question": "If a recipe calls for 2 cups of flour for every 3 cups of sugar, what is the ratio of flour to sugar?",
+          "options": ["2:3", "3:2", "2:5", "3:5"],
+          "correctAnswer": "2:3",
+          "explanation": "The ratio of flour to sugar is 2:3, meaning 2 cups of flour for every 3 cups of sugar."
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "grade": "Grade 7",
+      "subject": "English Language Arts",
+      "title": "Grade 7 Writing Practice",
+      "prompt": "Write an argumentative essay about whether students should have homework on weekends. Support your position with at least two reasons and evidence.",
+      "rubric": {
+        "thesis": "Clear position statement (10 points)",
+        "evidence": "Two or more supporting reasons with evidence (20 points)",
+        "organization": "Logical structure with introduction, body, conclusion (15 points)",
+        "language": "Appropriate word choice and sentence variety (10 points)",
+        "conventions": "Correct grammar, spelling, and punctuation (5 points)"
+      }
+    },
+    {
+      "id": 6,
+      "grade": "Grade 8",
+      "subject": "Mathematics",
+      "title": "Grade 8 Algebra Practice Test",
+      "questions": [
+        {
+          "id": 1,
+          "question": "Solve for x: 2x + 5 = 13",
+          "options": ["x = 4", "x = 6", "x = 8", "x = 9"],
+          "correctAnswer": "x = 4",
+          "explanation": "2x + 5 = 13, so 2x = 13 - 5 = 8, therefore x = 8 ÷ 2 = 4"
+        },
+        {
+          "id": 2,
+          "question": "What is the slope of the line y = 3x + 2?",
+          "options": ["2", "3", "5", "6"],
+          "correctAnswer": "3",
+          "explanation": "In the equation y = mx + b, m is the slope. So the slope of y = 3x + 2 is 3."
+        }
+      ]
+    }
+  ]
+}
+
+
+
+
+
+
+

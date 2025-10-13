@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simple Texture Test</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #f0f0f0;
+            font-family: Arial, sans-serif;
+        }
+        .test-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .test-result {
+            padding: 10px;
+            margin: 10px 0;
+            border-radius: 5px;
+        }
+        .success {
+            background: #e8f5e8;
+            color: #2e7d32;
+            border: 1px solid #4caf50;
+        }
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            border: 1px solid #f44336;
+        }
+        .info {
+            background: #e3f2fd;
+            color: #1565c0;
+            border: 1px solid #2196f3;
+        }
+        .image-test {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .image-item {
+            text-align: center;
+            border: 2px solid #ddd;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        .image-item img {
+            max-width: 100px;
+            max-height: 100px;
+            border: 1px solid #ccc;
+        }
+        canvas {
+            border: 2px solid #333;
+            display: block;
+            margin: 20px auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-container">
+        <h1>Simple Texture Loading Test</h1>
+        
+        <div id="test-results"></div>
+        
+        <div class="image-test">
+            <div class="image-item">
+                <h4>Player Texture</h4>
+                <img id="player-img" src="subway/Subway-Surfers/assets/player.png" alt="Player" onload="imageLoaded('player')" onerror="imageError('player')">
+                <div id="player-status">Loading...</div>
+            </div>
+            
+            <div class="image-item">
+                <h4>Ground Texture</h4>
+                <img id="ground-img" src="subway/Subway-Surfers/assets/ground.png" alt="Ground" onload="imageLoaded('ground')" onerror="imageError('ground')">
+                <div id="ground-status">Loading...</div>
+            </div>
+            
+            <div class="image-item">
+                <h4>Track Texture</h4>
+                <img id="track-img" src="subway/Subway-Surfers/assets/track.jpeg" alt="Track" onload="imageLoaded('track')" onerror="imageError('track')">
+                <div id="track-status">Loading...</div>
+            </div>
+            
+            <div class="image-item">
+                <h4>Coin Texture</h4>
+                <img id="coin-img" src="subway/Subway-Surfers/assets/coin.png" alt="Coin" onload="imageLoaded('coin')" onerror="imageError('coin')">
+                <div id="coin-status">Loading...</div>
+            </div>
+        </div>
+        
+        <canvas id="testCanvas" width="512" height="512"></canvas>
+        
+        <div class="info">
+            <h3>Instructions:</h3>
+            <p>1. Check if the images above load properly</p>
+            <p>2. If images load, the WebGL test below should work</p>
+            <p>3. If you see broken image icons, there's a path or server issue</p>
+        </div>
+    </div>
+
+    <script>
+        let loadedImages = 0;
+        const totalImages = 4;
+
+        function addResult(message, type = 'info') {
+            const results = document.getElementById('test-results');
+            const div = document.createElement('div');
+            div.className = `test-result ${type}`;
+            div.textContent = message;
+            results.appendChild(div);
+        }
+
+        function imageLoaded(name) {
+            loadedImages++;
+            document.getElementById(name + '-status').textContent = '✅ Loaded';
+            document.getElementById(name + '-status').style.color = 'green';
+            
+            addResult(`✅ ${name} texture loaded successfully`, 'success');
+            
+            if (loadedImages === totalImages) {
+                addResult('🎉 All textures loaded! Testing WebGL...', 'success');
+                testWebGL();
+            }
+        }
+
+        function imageError(name) {
+            document.getElementById(name + '-status').textContent = '❌ Failed';
+            document.getElementById(name + '-status').style.color = 'red';
+            addResult(`❌ ${name} texture failed to load`, 'error');
+        }
+
+        function testWebGL() {
+            const canvas = document.getElementById('testCanvas');
+            const gl = canvas.getContext('webgl') || canvas.getContext('experimental-webgl');
+            
+            if (!gl) {
+                addResult('❌ WebGL not supported', 'error');
+                return;
+            }
+            
+            addResult('✅ WebGL context created', 'success');
+            
+            const vsSource = `
+                attribute vec4 aVertexPosition;
+                void main() {
+                    gl_Position = aVertexPosition;
+                }
+            `;
+            
+            const fsSource = `
+                precision mediump float;
+                void main() {
+                    gl_FragColor = vec4(0.0, 1.0, 0.0, 1.0);
+                }
+            `;
+            
+            const shaderProgram = initShaderProgram(gl, vsSource, fsSource);
+            
+            if (!shaderProgram) {
+                addResult('❌ Failed to create shader program', 'error');
+                return;
+            }
+            
+            const positions = [
+                0.0, 0.5,
+                -0.5, -0.5,
+                0.5, -0.5
+            ];
+            
+            const positionBuffer = gl.createBuffer();
+            gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+            gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+            
+            gl.clearColor(0.0, 0.0, 0.0, 1.0);
+            gl.clear(gl.COLOR_BUFFER_BIT);
+            
+            gl.useProgram(shaderProgram);
+            const positionLocation = gl.getAttribLocation(shaderProgram, 'aVertexPosition');
+            gl.enableVertexAttribArray(positionLocation);
+            gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+            
+            gl.drawArrays(gl.TRIANGLES, 0, 3);
+            
+            addResult('✅ WebGL rendering test completed - you should see a green triangle above', 'success');
+        }
+
+        function initShaderProgram(gl, vsSource, fsSource) {
+            const vertexShader = loadShader(gl, gl.VERTEX_SHADER, vsSource);
+            const fragmentShader = loadShader(gl, gl.FRAGMENT_SHADER, fsSource);
+
+            const shaderProgram = gl.createProgram();
+            gl.attachShader(shaderProgram, vertexShader);
+            gl.attachShader(shaderProgram, fragmentShader);
+            gl.linkProgram(shaderProgram);
+
+            if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+                addResult('Unable to initialize the shader program: ' + gl.getProgramInfoLog(shaderProgram), 'error');
+                return null;
+            }
+
+            return shaderProgram;
+        }
+
+        function loadShader(gl, type, source) {
+            const shader = gl.createShader(type);
+            gl.shaderSource(shader, source);
+            gl.compileShader(shader);
+
+            if (!gl.getShaderParameter(shader, gl.COMPILE_STATUS)) {
+                addResult('An error occurred compiling the shaders: ' + gl.getShaderInfoLog(shader), 'error');
+                gl.deleteShader(shader);
+                return null;
+            }
+
+            return shader;
+        }
+
+        addResult('Starting texture loading test...', 'info');
+    </script>
+</body>
+</html>

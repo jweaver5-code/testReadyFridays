@@ -1,0 +1,96 @@
+{
+  "testPrepGuide": {
+    "generalStrategies": [
+      "Read all directions carefully before starting",
+      "Answer easy questions first, then return to difficult ones",
+      "Use process of elimination for multiple choice questions",
+      "Show all work for math problems, even if not required",
+      "Manage time effectively - don't spend too long on one question",
+      "Review answers if time permits",
+      "Stay calm and focused throughout the test"
+    ],
+    "gradeLevelStrategies": {
+      "Elementary (Grades 3-5)": [
+        "Use highlighters to mark important information",
+        "Draw pictures or diagrams to solve problems",
+        "Read questions twice to ensure understanding",
+        "Use scratch paper for calculations",
+        "Ask for clarification if directions are unclear"
+      ],
+      "Middle School (Grades 6-8)": [
+        "Preview the entire test before starting",
+        "Use graphic organizers for reading comprehension",
+        "Show step-by-step work for math problems",
+        "Use context clues for vocabulary questions",
+        "Eliminate obviously wrong answers first"
+      ],
+      "High School (Grades 9-12)": [
+        "Skim passages quickly before reading in detail",
+        "Use advanced time management techniques",
+        "Apply critical thinking skills to complex questions",
+        "Use evidence from text to support answers",
+        "Practice with full-length practice tests"
+      ]
+    ],
+    "subjectSpecificTips": {
+      "Mathematics": [
+        "Show all work clearly and neatly",
+        "Check calculations by working backwards",
+        "Use estimation to verify reasonableness of answers",
+        "Draw diagrams for geometry problems",
+        "Memorize key formulas and conversions"
+      ],
+      "English Language Arts": [
+        "Read passages carefully and take notes",
+        "Identify main idea and supporting details",
+        "Use context clues for unfamiliar vocabulary",
+        "Pay attention to author's tone and purpose",
+        "Support answers with evidence from the text"
+      ],
+      "Science": [
+        "Understand the scientific method",
+        "Read data tables and graphs carefully",
+        "Look for patterns in experimental data",
+        "Use process of elimination for multiple choice",
+        "Apply scientific reasoning to new situations"
+      ],
+      "Social Studies": [
+        "Know key historical events and dates",
+        "Understand cause and effect relationships",
+        "Analyze primary and secondary sources",
+        "Use maps and charts effectively",
+        "Connect events to broader themes"
+      ]
+    },
+    "testAnxietyManagement": [
+      "Practice deep breathing exercises",
+      "Get adequate sleep the night before",
+      "Eat a healthy breakfast",
+      "Arrive early to avoid rushing",
+      "Use positive self-talk",
+      "Focus on one question at a time",
+      "Take breaks if allowed"
+    ],
+    "timeManagement": {
+      "Before the Test": [
+        "Review the test format and time limits",
+        "Practice with timed practice tests",
+        "Create a pacing strategy",
+        "Gather all necessary materials"
+      ],
+      "During the Test": [
+        "Allocate time based on question point values",
+        "Skip difficult questions and return later",
+        "Use remaining time to review answers",
+        "Don't change answers unless certain"
+      ]
+    }
+  }
+}
+
+
+
+
+
+
+
