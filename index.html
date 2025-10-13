@@ -969,6 +969,11 @@
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="testprep-tab" data-bs-toggle="tab" data-bs-target="#testprep" type="button" role="tab">
+                        <i class="fas fa-graduation-cap"></i> Test Prep
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
                     <button class="nav-link" id="progress-tab" data-bs-toggle="tab" data-bs-target="#progress" type="button" role="tab">
                         <i class="fas fa-chart-line"></i> Progress
                     </button>
@@ -1125,6 +1130,161 @@
                     </div>
                   </div>
                   
+                <!-- Test Prep Tab -->
+                <div class="tab-pane fade" id="testprep" role="tabpanel">
+                    <h3>Standardized Test Prep</h3>
+                    <p>Watch helpful videos and practice questions to prepare for standardized tests. Earn stars for your efforts!</p>
+                    
+                    <!-- Video Section -->
+                    <div class="mb-5">
+                        <h4 class="mb-3"><i class="fas fa-video"></i> Test Prep Videos</h4>
+                        <p class="text-muted mb-3">Watch videos to learn test-taking strategies and subject reviews. Earn 5 stars for each video completed!</p>
+                        <div class="learning-modules">
+                            <div class="module-card" id="video1">
+                                <div class="module-header">
+                                    <div class="module-title">Test-Taking Strategies</div>
+                                    <div class="module-stars">+5 ⭐</div>
+                                </div>
+                                <div class="module-description">
+                                    Learn essential strategies for multiple-choice tests, time management, and reducing test anxiety.
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="watchVideo('video1', 'Test-Taking Strategies', 'https://www.youtube.com/embed/meLuJuhY608')">
+                                        <i class="fas fa-play"></i> Watch Video
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="module-card" id="video2">
+                                <div class="module-header">
+                                    <div class="module-title">Math Problem Solving</div>
+                                    <div class="module-stars">+5 ⭐</div>
+                                </div>
+                                <div class="module-description">
+                                    Master techniques for solving math problems quickly and accurately on standardized tests.
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="watchVideo('video2', 'Math Problem Solving', 'https://www.youtube.com/embed/PQ_-T2qrmrg')">
+                                        <i class="fas fa-play"></i> Watch Video
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="module-card" id="video3">
+                                <div class="module-header">
+                                    <div class="module-title">Reading Comprehension Tips</div>
+                                    <div class="module-stars">+5 ⭐</div>
+                                </div>
+                                <div class="module-description">
+                                    Improve your reading comprehension skills with proven strategies for understanding passages and answering questions.
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="watchVideo('video3', 'Reading Comprehension Tips', 'https://www.youtube.com/embed/Zc292b0QFZU')">
+                                        <i class="fas fa-play"></i> Watch Video
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="module-card" id="video4">
+                                <div class="module-header">
+                                    <div class="module-title">Science Test Strategies</div>
+                                    <div class="module-stars">+5 ⭐</div>
+                                </div>
+                                <div class="module-description">
+                                    Learn how to analyze data, interpret graphs, and apply scientific reasoning on tests.
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="watchVideo('video4', 'Science Test Strategies', 'https://www.youtube.com/embed/5HNQM25k8UY')">
+                                        <i class="fas fa-play"></i> Watch Video
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="module-card" id="video5">
+                                <div class="module-header">
+                                    <div class="module-title">English Writing & Grammar</div>
+                                    <div class="module-stars">+5 ⭐</div>
+                                </div>
+                                <div class="module-description">
+                                    Master essay writing, grammar rules, and literary analysis techniques for standardized tests.
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="watchVideo('video5', 'English Writing & Grammar', 'https://www.youtube.com/embed/eZ0DQNaHWLg')">
+                                        <i class="fas fa-play"></i> Watch Video
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Practice Questions Section -->
+                    <div class="mb-5">
+                        <h4 class="mb-3"><i class="fas fa-question-circle"></i> Practice Questions</h4>
+                        <p class="text-muted mb-3">Answer practice questions similar to those on standardized tests. Earn 3 stars for each correct answer!</p>
+                        <div class="learning-modules">
+                            <div class="module-card">
+                                <div class="module-header">
+                                    <div class="module-title">Math Practice Questions</div>
+                                    <div class="module-stars">+3 ⭐ each</div>
+                                </div>
+                                <div class="module-description">
+                                    Practice with 10 math questions covering algebra, geometry, and problem-solving.
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="startPracticeTest('math')">
+                                        <i class="fas fa-pencil-alt"></i> Start Practice
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="module-card">
+                                <div class="module-header">
+                                    <div class="module-title">Reading Practice Questions</div>
+                                    <div class="module-stars">+3 ⭐ each</div>
+                                </div>
+                                <div class="module-description">
+                                    Answer 10 reading comprehension questions based on sample passages.
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="startPracticeTest('reading')">
+                                        <i class="fas fa-pencil-alt"></i> Start Practice
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="module-card">
+                                <div class="module-header">
+                                    <div class="module-title">Science Practice Questions</div>
+                                    <div class="module-stars">+3 ⭐ each</div>
+                                </div>
+                                <div class="module-description">
+                                    Test your knowledge with 10 science questions on various topics.
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="startPracticeTest('science')">
+                                        <i class="fas fa-pencil-alt"></i> Start Practice
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <div class="module-card">
+                                <div class="module-header">
+                                    <div class="module-title">English Practice Questions</div>
+                                    <div class="module-stars">+3 ⭐ each</div>
+                                </div>
+                                <div class="module-description">
+                                    Practice grammar, vocabulary, and writing skills with 10 English questions.
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="startPracticeTest('english')">
+                                        <i class="fas fa-pencil-alt"></i> Start Practice
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                  
                 <!-- Progress Tab -->
                 <div class="tab-pane fade" id="progress" role="tabpanel">
                     <h3>Your Progress</h3>
@@ -1167,6 +1327,13 @@
             module5: 0
         };
         let completedModules = 0;
+        let watchedVideos = [];
+        let practiceTestProgress = {
+            math: [],
+            reading: [],
+            science: [],
+            english: []
+        };
         
         // Theme management
         let isDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -1499,6 +1666,348 @@
                     "Stay calm and focused throughout the test"
                 ]
             }
+        };
+        
+        // Practice test questions
+        const practiceQuestions = {
+            math: [
+                {
+                    question: "If 3x - 7 = 20, what is the value of x?",
+                    options: ["7", "9", "11", "13"],
+                    correct: 1,
+                    explanation: "Add 7 to both sides: 3x = 27. Then divide by 3: x = 9"
+                },
+                {
+                    question: "What is the area of a rectangle with length 8 cm and width 5 cm?",
+                    options: ["13 cm²", "26 cm²", "40 cm²", "80 cm²"],
+                    correct: 2,
+                    explanation: "Area = length × width = 8 × 5 = 40 cm²"
+                },
+                {
+                    question: "What is 25% of 80?",
+                    options: ["15", "20", "25", "30"],
+                    correct: 1,
+                    explanation: "25% = 0.25, so 0.25 × 80 = 20"
+                },
+                {
+                    question: "If a train travels 240 miles in 4 hours, what is its average speed?",
+                    options: ["50 mph", "60 mph", "70 mph", "80 mph"],
+                    correct: 1,
+                    explanation: "Speed = distance ÷ time = 240 ÷ 4 = 60 mph"
+                },
+                {
+                    question: "What is the value of 2³ + 3²?",
+                    options: ["13", "15", "17", "19"],
+                    correct: 2,
+                    explanation: "2³ = 8 and 3² = 9, so 8 + 9 = 17"
+                },
+                {
+                    question: "If the ratio of boys to girls in a class is 3:5 and there are 15 boys, how many girls are there?",
+                    options: ["20", "25", "30", "35"],
+                    correct: 1,
+                    explanation: "3:5 = 15:x, so x = (5 × 15) ÷ 3 = 25"
+                },
+                {
+                    question: "What is the perimeter of a square with side length 6 cm?",
+                    options: ["12 cm", "18 cm", "24 cm", "36 cm"],
+                    correct: 2,
+                    explanation: "Perimeter = 4 × side = 4 × 6 = 24 cm"
+                },
+                {
+                    question: "Simplify: 5(x + 3) - 2x",
+                    options: ["3x + 15", "3x + 3", "7x + 15", "7x + 3"],
+                    correct: 0,
+                    explanation: "5(x + 3) - 2x = 5x + 15 - 2x = 3x + 15"
+                },
+                {
+                    question: "What is the median of the data set: 12, 8, 15, 9, 11?",
+                    options: ["9", "10", "11", "12"],
+                    correct: 2,
+                    explanation: "First sort: 8, 9, 11, 12, 15. The middle value is 11"
+                },
+                {
+                    question: "If y = 2x + 5 and x = 3, what is y?",
+                    options: ["8", "9", "10", "11"],
+                    correct: 3,
+                    explanation: "y = 2(3) + 5 = 6 + 5 = 11"
+                }
+            ],
+            reading: [
+                {
+                    passage: "The Amazon rainforest is the world's largest tropical rainforest. It covers 5.5 million square kilometers and is home to millions of species of plants and animals. Scientists believe that many species in the Amazon have not yet been discovered. The rainforest also plays a crucial role in regulating Earth's climate by absorbing carbon dioxide from the atmosphere.",
+                    question: "According to the passage, why is the Amazon rainforest important for Earth's climate?",
+                    options: [
+                        "It produces oxygen for animals",
+                        "It absorbs carbon dioxide from the atmosphere",
+                        "It provides homes for millions of species",
+                        "It covers 5.5 million square kilometers"
+                    ],
+                    correct: 1,
+                    explanation: "The passage states that the rainforest 'plays a crucial role in regulating Earth's climate by absorbing carbon dioxide from the atmosphere.'"
+                },
+                {
+                    passage: "Thomas Edison is often credited with inventing the light bulb, but this is not entirely accurate. Several inventors had created forms of electric light before Edison. However, Edison's major achievement was developing a practical, long-lasting light bulb that could be manufactured affordably for widespread use.",
+                    question: "What was Edison's main contribution to the light bulb?",
+                    options: [
+                        "He invented the first electric light",
+                        "He made a practical, affordable version",
+                        "He discovered electricity",
+                        "He invented the first battery"
+                    ],
+                    correct: 1,
+                    explanation: "The passage states that Edison's 'major achievement was developing a practical, long-lasting light bulb that could be manufactured affordably.'"
+                },
+                {
+                    passage: "Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to create oxygen and energy in the form of sugar. This process is essential for life on Earth because it provides oxygen for animals to breathe and serves as the foundation of most food chains.",
+                    question: "What do plants produce during photosynthesis?",
+                    options: [
+                        "Water and carbon dioxide",
+                        "Oxygen and sugar",
+                        "Sunlight and water",
+                        "Carbon dioxide and sugar"
+                    ],
+                    correct: 1,
+                    explanation: "The passage clearly states that plants 'create oxygen and energy in the form of sugar' during photosynthesis."
+                },
+                {
+                    passage: "The Great Wall of China is one of the most impressive architectural achievements in history. Built over many centuries by different dynasties, the wall stretches over 13,000 miles. Contrary to popular belief, it is not visible from space with the naked eye.",
+                    question: "What does the passage say about viewing the Great Wall from space?",
+                    options: [
+                        "It is clearly visible from space",
+                        "It can only be seen with a telescope",
+                        "It is not visible with the naked eye",
+                        "The passage doesn't mention this"
+                    ],
+                    correct: 2,
+                    explanation: "The passage states: 'Contrary to popular belief, it is not visible from space with the naked eye.'"
+                },
+                {
+                    passage: "Hibernation is a state of inactivity and metabolic depression in animals, characterized by lower body temperature, slower breathing, and lower metabolic rate. It allows animals to conserve energy during winter when food is scarce.",
+                    question: "According to the passage, what is the main purpose of hibernation?",
+                    options: [
+                        "To stay warm during winter",
+                        "To sleep for long periods",
+                        "To conserve energy when food is scarce",
+                        "To lower body temperature"
+                    ],
+                    correct: 2,
+                    explanation: "The passage states that hibernation 'allows animals to conserve energy during winter when food is scarce.'"
+                },
+                {
+                    passage: "Marie Curie was a pioneering scientist who conducted groundbreaking research on radioactivity. She was the first woman to win a Nobel Prize and remains the only person to win Nobel Prizes in two different sciences: Physics and Chemistry.",
+                    question: "What makes Marie Curie unique among Nobel Prize winners?",
+                    options: [
+                        "She was the first woman to win",
+                        "She won prizes in two different sciences",
+                        "She studied radioactivity",
+                        "She was a pioneering scientist"
+                    ],
+                    correct: 1,
+                    explanation: "The passage states she 'remains the only person to win Nobel Prizes in two different sciences.'"
+                },
+                {
+                    passage: "Earthquakes occur when tectonic plates in the Earth's crust suddenly shift or break. The point where the earthquake starts underground is called the hypocenter, while the point directly above it on the surface is called the epicenter.",
+                    question: "What is the epicenter of an earthquake?",
+                    options: [
+                        "Where the earthquake starts underground",
+                        "The point on the surface above where it starts",
+                        "Where tectonic plates meet",
+                        "The strongest point of the earthquake"
+                    ],
+                    correct: 1,
+                    explanation: "The passage defines the epicenter as 'the point directly above it on the surface.'"
+                },
+                {
+                    passage: "Bees play a vital role in agriculture through pollination. As bees collect nectar from flowers, pollen sticks to their bodies and is transferred to other flowers, allowing plants to reproduce. Without bees, many crops would fail to produce fruits and vegetables.",
+                    question: "How do bees help plants reproduce?",
+                    options: [
+                        "By collecting nectar",
+                        "By transferring pollen between flowers",
+                        "By eating fruits and vegetables",
+                        "By making honey"
+                    ],
+                    correct: 1,
+                    explanation: "The passage explains that 'pollen sticks to their bodies and is transferred to other flowers, allowing plants to reproduce.'"
+                },
+                {
+                    passage: "The water cycle is the continuous movement of water on, above, and below the surface of Earth. Water evaporates from oceans and lakes, forms clouds, falls as precipitation, and eventually returns to bodies of water, completing the cycle.",
+                    question: "What happens to water after it evaporates in the water cycle?",
+                    options: [
+                        "It falls as precipitation",
+                        "It forms clouds",
+                        "It returns to oceans",
+                        "It freezes"
+                    ],
+                    correct: 1,
+                    explanation: "The passage describes the sequence: water evaporates, 'forms clouds,' then 'falls as precipitation.'"
+                },
+                {
+                    passage: "Shakespeare wrote 37 plays during his lifetime, including comedies, tragedies, and histories. His works have been translated into every major language and are performed more often than those of any other playwright.",
+                    question: "What can be inferred about Shakespeare's influence?",
+                    options: [
+                        "He only wrote tragedies",
+                        "His works are still very popular today",
+                        "He wrote in many languages",
+                        "He wrote 37 books"
+                    ],
+                    correct: 1,
+                    explanation: "The passage indicates his works 'are performed more often than those of any other playwright,' showing continued popularity."
+                }
+            ],
+            science: [
+                {
+                    question: "What is the chemical symbol for water?",
+                    options: ["H₂O", "CO₂", "O₂", "H₂"],
+                    correct: 0,
+                    explanation: "Water is composed of two hydrogen atoms and one oxygen atom, written as H₂O."
+                },
+                {
+                    question: "Which planet is known as the Red Planet?",
+                    options: ["Venus", "Mars", "Jupiter", "Saturn"],
+                    correct: 1,
+                    explanation: "Mars is called the Red Planet due to iron oxide (rust) on its surface."
+                },
+                {
+                    question: "What is the powerhouse of the cell?",
+                    options: ["Nucleus", "Ribosome", "Mitochondria", "Chloroplast"],
+                    correct: 2,
+                    explanation: "Mitochondria produce energy (ATP) for the cell, earning them the nickname 'powerhouse of the cell.'"
+                },
+                {
+                    question: "What type of energy does a moving car have?",
+                    options: ["Potential energy", "Kinetic energy", "Chemical energy", "Nuclear energy"],
+                    correct: 1,
+                    explanation: "Kinetic energy is the energy of motion, which a moving car possesses."
+                },
+                {
+                    question: "What is the process by which plants make their own food?",
+                    options: ["Respiration", "Digestion", "Photosynthesis", "Fermentation"],
+                    correct: 2,
+                    explanation: "Photosynthesis is the process where plants use sunlight to convert carbon dioxide and water into glucose and oxygen."
+                },
+                {
+                    question: "Which of the following is NOT a state of matter?",
+                    options: ["Solid", "Liquid", "Gas", "Energy"],
+                    correct: 3,
+                    explanation: "Energy is not a state of matter. The three common states are solid, liquid, and gas."
+                },
+                {
+                    question: "What force pulls objects toward the center of the Earth?",
+                    options: ["Friction", "Magnetism", "Gravity", "Tension"],
+                    correct: 2,
+                    explanation: "Gravity is the force that attracts objects toward each other, including toward the center of the Earth."
+                },
+                {
+                    question: "Which organ in the human body pumps blood?",
+                    options: ["Liver", "Lungs", "Heart", "Kidney"],
+                    correct: 2,
+                    explanation: "The heart pumps blood throughout the body, delivering oxygen and nutrients."
+                },
+                {
+                    question: "What is the center of an atom called?",
+                    options: ["Electron", "Proton", "Neutron", "Nucleus"],
+                    correct: 3,
+                    explanation: "The nucleus is the center of an atom and contains protons and neutrons."
+                },
+                {
+                    question: "Which of these is a renewable energy source?",
+                    options: ["Coal", "Natural gas", "Solar power", "Oil"],
+                    correct: 2,
+                    explanation: "Solar power is renewable because sunlight is constantly available, unlike fossil fuels which are finite."
+                }
+            ],
+            english: [
+                {
+                    question: "Which sentence uses correct subject-verb agreement?",
+                    options: [
+                        "The group of students are going on a field trip.",
+                        "The group of students is going on a field trip.",
+                        "The group of students were going on a field trip.",
+                        "The group of students have going on a field trip."
+                    ],
+                    correct: 1,
+                    explanation: "The subject is 'group' (singular), so it requires the singular verb 'is.' The phrase 'of students' is just a prepositional phrase modifying 'group.'"
+                },
+                {
+                    question: "Identify the sentence with the correct use of a comma.",
+                    options: [
+                        "After the game we went out for pizza.",
+                        "After the game, we went out for pizza.",
+                        "After, the game we went out for pizza.",
+                        "After the game we went, out for pizza."
+                    ],
+                    correct: 1,
+                    explanation: "A comma is needed after an introductory phrase ('After the game') to separate it from the main clause."
+                },
+                {
+                    question: "Which word is a synonym for 'diligent'?",
+                    options: ["Lazy", "Hardworking", "Careless", "Slow"],
+                    correct: 1,
+                    explanation: "'Diligent' means showing care and effort in one's work, which is synonymous with 'hardworking.'"
+                },
+                {
+                    question: "What is the past tense of the verb 'to write'?",
+                    options: ["Writed", "Wrote", "Written", "Writing"],
+                    correct: 1,
+                    explanation: "'Wrote' is the simple past tense of the irregular verb 'to write.' 'Written' is the past participle."
+                },
+                {
+                    question: "Which sentence uses 'their' correctly?",
+                    options: [
+                        "Their going to the store later.",
+                        "The students left there backpacks in the classroom.",
+                        "The team celebrated their victory.",
+                        "Put the books over their."
+                    ],
+                    correct: 2,
+                    explanation: "'Their' is a possessive pronoun. The team possessed the victory. 'They're' = they are, 'there' = location."
+                },
+                {
+                    question: "Identify the sentence fragment.",
+                    options: [
+                        "Running through the park on a sunny day.",
+                        "She ran through the park.",
+                        "The children played in the park.",
+                        "We enjoyed our time at the park."
+                    ],
+                    correct: 0,
+                    explanation: "A sentence fragment lacks a complete subject-verb structure. 'Running through the park on a sunny day' has no subject performing the action."
+                },
+                {
+                    question: "Which is the correct plural form of 'child'?",
+                    options: ["Childs", "Childes", "Children", "Childrens"],
+                    correct: 2,
+                    explanation: "'Children' is the correct irregular plural form of 'child.' It doesn't follow the standard 's' or 'es' rule."
+                },
+                {
+                    question: "What type of figurative language is used: 'The classroom was a zoo'?",
+                    options: ["Simile", "Metaphor", "Personification", "Hyperbole"],
+                    correct: 1,
+                    explanation: "This is a metaphor because it directly compares the classroom to a zoo without using 'like' or 'as.' A simile would say 'The classroom was like a zoo.'"
+                },
+                {
+                    question: "Which sentence is in the active voice?",
+                    options: [
+                        "The cake was eaten by the children.",
+                        "The book was written by the author.",
+                        "The teacher graded the tests.",
+                        "The ball was thrown by John."
+                    ],
+                    correct: 2,
+                    explanation: "In active voice, the subject performs the action. 'The teacher graded the tests' has the subject (teacher) performing the action (grading)."
+                },
+                {
+                    question: "What is the correct way to write this sentence? 'I need to buy eggs milk and bread'",
+                    options: [
+                        "I need to buy eggs milk and bread.",
+                        "I need to buy eggs, milk and bread.",
+                        "I need to buy eggs, milk, and bread.",
+                        "I need to buy, eggs milk and bread."
+                    ],
+                    correct: 2,
+                    explanation: "When listing three or more items, use commas to separate them. The comma before 'and' (Oxford comma) is preferred in formal writing."
+                }
+            ]
         };
 
         // Role selection
@@ -2294,6 +2803,227 @@
             });
             
             console.log('Logout completed');
+        }
+
+        // Watch video function
+        async function watchVideo(videoId, videoTitle, videoUrl) {
+            // Check if already watched
+            if (watchedVideos.includes(videoId)) {
+                alert('You have already watched this video and earned stars for it!');
+                return;
+            }
+            
+            // Create modal for video
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">${videoTitle}</h5>
+                            <button type="button" class="btn-close" onclick="closeVideoModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="ratio ratio-16x9 mb-3">
+                                <iframe src="${videoUrl}" allowfullscreen></iframe>
+                            </div>
+                            <div class="alert alert-info">
+                                <i class="fas fa-star"></i> Watch the video and click "Mark as Completed" to earn 5 stars!
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-success" onclick="completeVideo('${videoId}', '${videoTitle}')">
+                                <i class="fas fa-check"></i> Mark as Completed
+                            </button>
+                            <button class="btn btn-secondary" onclick="closeVideoModal()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            window.closeVideoModal = function() {
+                document.body.removeChild(modal);
+            };
+        }
+        
+        // Complete video and award stars
+        async function completeVideo(videoId, videoTitle) {
+            if (!watchedVideos.includes(videoId)) {
+                watchedVideos.push(videoId);
+                userStars += 5;
+                
+                // Mark video as completed in UI
+                const videoCard = document.getElementById(videoId);
+                if (videoCard) {
+                    videoCard.classList.add('completed');
+                    videoCard.querySelector('.module-actions').innerHTML = '<button class="btn btn-success"><i class="fas fa-check"></i> Completed!</button>';
+                }
+                
+                // Update stars display
+                updateStarsDisplay();
+                updateGameAvailability();
+                
+                // Save progress to database
+                try {
+                    currentUser.stars = userStars;
+                    await saveToDatabase();
+                    saveUserData();
+                } catch (error) {
+                    console.error('Failed to save video progress:', error);
+                }
+                
+                alert(`Great job! You earned 5 stars for watching "${videoTitle}"!`);
+                closeVideoModal();
+            }
+        }
+        
+        // Start practice test
+        function startPracticeTest(subject) {
+            const questions = practiceQuestions[subject];
+            let currentQuestion = 0;
+            let correctAnswers = 0;
+            let totalStarsEarned = 0;
+            
+            // Create modal for practice test
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            
+            function showQuestion() {
+                const q = questions[currentQuestion];
+                const hasPassage = q.passage !== undefined;
+                
+                modal.innerHTML = `
+                    <div class="modal-dialog modal-xl">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title">${subject.charAt(0).toUpperCase() + subject.slice(1)} Practice - Question ${currentQuestion + 1} of ${questions.length}</h5>
+                                <button type="button" class="btn-close" onclick="closePracticeModal()"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="mb-3">
+                                    <div class="alert alert-light">
+                                        <strong>Progress:</strong> ${correctAnswers} correct out of ${currentQuestion} answered
+                                        <span class="float-end"><i class="fas fa-star text-warning"></i> ${totalStarsEarned} stars earned</span>
+                                    </div>
+                                </div>
+                                ${hasPassage ? `
+                                    <div class="mb-4">
+                                        <h6>Passage:</h6>
+                                        <div class="alert alert-light">
+                                            <p style="text-align: justify;">${q.passage}</p>
+                                        </div>
+                                    </div>
+                                ` : ''}
+                                <div id="questionContainer">
+                                    <p class="question-text">${q.question}</p>
+                                    <div class="options-container">
+                                        ${q.options.map((option, index) => 
+                                            `<button class="btn btn-outline-primary option-btn w-100 text-start mb-2" onclick="selectPracticeAnswer(${index}, ${q.correct})">${option}</button>`
+                                        ).join('')}
+                                    </div>
+                                    <div id="explanation" class="mt-3" style="display: none;">
+                                        <div class="alert alert-info">
+                                            <strong>Explanation:</strong> <span id="explanationText"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-primary" id="nextPracticeBtn" onclick="nextPracticeQuestion()" style="display: none;">Next Question</button>
+                                <button class="btn btn-success" id="finishPracticeBtn" onclick="finishPracticeTest()" style="display: none;">Finish Test</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
+            
+            document.body.appendChild(modal);
+            showQuestion();
+            
+            // Global functions for practice test
+            window.selectPracticeAnswer = function(selectedIndex, correctIndex) {
+                const q = questions[currentQuestion];
+                const isCorrect = selectedIndex === correctIndex;
+                
+                if (isCorrect) {
+                    correctAnswers++;
+                    totalStarsEarned += 3;
+                    userStars += 3;
+                    updateStarsDisplay();
+                    updateGameAvailability();
+                }
+                
+                // Show explanation
+                document.getElementById('explanationText').textContent = q.explanation;
+                document.getElementById('explanation').style.display = 'block';
+                
+                // Disable all options and highlight correct/incorrect
+                document.querySelectorAll('.option-btn').forEach((btn, idx) => {
+                    btn.disabled = true;
+                    if (idx === correctIndex) {
+                        btn.classList.remove('btn-outline-primary');
+                        btn.classList.add('btn-success');
+                    } else if (idx === selectedIndex && !isCorrect) {
+                        btn.classList.remove('btn-outline-primary');
+                        btn.classList.add('btn-danger');
+                    }
+                });
+                
+                // Show next/finish button
+                if (currentQuestion < questions.length - 1) {
+                    document.getElementById('nextPracticeBtn').style.display = 'inline-block';
+                } else {
+                    document.getElementById('finishPracticeBtn').style.display = 'inline-block';
+                }
+                
+                // Update progress display
+                const progressAlert = modal.querySelector('.alert-light');
+                if (progressAlert) {
+                    progressAlert.innerHTML = `
+                        <strong>Progress:</strong> ${correctAnswers} correct out of ${currentQuestion + 1} answered
+                        <span class="float-end"><i class="fas fa-star text-warning"></i> ${totalStarsEarned} stars earned</span>
+                    `;
+                }
+            };
+            
+            window.nextPracticeQuestion = async function() {
+                // Save stars before moving to next question
+                try {
+                    currentUser.stars = userStars;
+                    await saveToDatabase();
+                    saveUserData();
+                } catch (error) {
+                    console.error('Failed to save practice progress:', error);
+                }
+                
+                currentQuestion++;
+                if (currentQuestion < questions.length) {
+                    showQuestion();
+                }
+            };
+            
+            window.finishPracticeTest = async function() {
+                // Save final stars
+                try {
+                    currentUser.stars = userStars;
+                    await saveToDatabase();
+                    saveUserData();
+                } catch (error) {
+                    console.error('Failed to save practice progress:', error);
+                }
+                
+                const score = Math.round((correctAnswers / questions.length) * 100);
+                alert(`Practice test completed!\n\nScore: ${score}% (${correctAnswers}/${questions.length} correct)\nStars earned: ${totalStarsEarned} ⭐`);
+                closePracticeModal();
+            };
+            
+            window.closePracticeModal = function() {
+                document.body.removeChild(modal);
+            };
         }
 
         // Listen for messages from game windows
