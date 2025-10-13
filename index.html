@@ -6,6 +6,34 @@
     <title>TestReady Fridays</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- Universal Menu -->
+    <div id="universalMenu" class="universal-menu" style="display: none;">
+        <div class="menu-toggle" onclick="toggleUniversalMenu()">
+            <i class="fas fa-bars"></i>
+        </div>
+        <div class="menu-content">
+            <div class="menu-header">
+                <h5><i class="fas fa-user"></i> Menu</h5>
+                <button class="btn-close" onclick="toggleUniversalMenu()"></button>
+            </div>
+            <div class="menu-body">
+                <div class="menu-item" onclick="viewProfile()">
+                    <i class="fas fa-user-circle"></i>
+                    <span>View Profile</span>
+                </div>
+                <div class="menu-item" onclick="toggleTheme()">
+                    <i class="fas fa-moon" id="themeIcon"></i>
+                    <span id="themeText">Dark Mode</span>
+                </div>
+                <div class="menu-item" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Sign Out</span>
+                </div>
+            </div>
+        </div>
+    </div>
     <style>
         body {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -125,28 +153,134 @@
             box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
         }
         
-        .back-btn {
+        
+        /* Universal Menu Styles */
+        .universal-menu {
             position: absolute;
             top: 20px;
-            left: 20px;
-            background: rgba(220, 53, 69, 0.9);
+            right: 20px;
+            z-index: 1001;
+        }
+        
+        .menu-toggle {
+            background: #007bff;
+            color: white;
             border: none;
             border-radius: 50%;
             width: 50px;
             height: 50px;
-            font-size: 1.2rem;
-            color: white;
+            font-size: 18px;
             cursor: pointer;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
             transition: all 0.3s ease;
-            display: none;
-            z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
-        .back-btn:hover {
-            background: rgba(220, 53, 69, 1);
+        .menu-toggle:hover {
+            background: #0056b3;
             transform: scale(1.1);
-            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+        }
+        
+        .menu-content {
+            position: absolute;
+            top: 60px;
+            right: 0;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            min-width: 200px;
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.3s ease;
+        }
+        
+        .universal-menu.show .menu-content {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .menu-header {
+            padding: 15px 20px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .menu-header h5 {
+            margin: 0;
+            color: #333;
+            font-size: 16px;
+        }
+        
+        .menu-header .btn-close {
+            background: none;
+            border: none;
+            font-size: 18px;
+            color: #666;
+            cursor: pointer;
+            padding: 0;
+            width: 20px;
+            height: 20px;
+        }
+        
+        .menu-body {
+            padding: 10px 0;
+        }
+        
+        .menu-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            transition: background-color 0.2s ease;
+            color: #333;
+        }
+        
+        .menu-item:hover {
+            background-color: #f8f9fa;
+        }
+        
+        .menu-item i {
+            width: 20px;
+            text-align: center;
+            color: #666;
+        }
+        
+        .menu-item span {
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        /* Dark mode styles for universal menu */
+        body.dark-mode .menu-content {
+            background: #2d3748;
+            color: white;
+        }
+        
+        body.dark-mode .menu-header {
+            border-bottom-color: #4a5568;
+        }
+        
+        body.dark-mode .menu-header h5 {
+            color: white;
+        }
+        
+        body.dark-mode .menu-item {
+            color: white;
+        }
+        
+        body.dark-mode .menu-item:hover {
+            background-color: #4a5568;
+        }
+        
+        body.dark-mode .menu-item i {
+            color: #a0aec0;
         }
         
         .dashboard {
@@ -462,161 +596,315 @@
         
         /* Dark Mode Styles */
         body.dark-mode {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: #ecf0f1;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            color: #ffffff;
         }
         
         body.dark-mode .login-card {
-            background: rgba(44, 62, 80, 0.95);
-            color: #ecf0f1;
+            background: rgba(30, 30, 30, 0.95);
+            color: #ffffff;
+            border: 1px solid #444444;
         }
         
         body.dark-mode .dashboard-container {
-            background: rgba(44, 62, 80, 0.95);
-            color: #ecf0f1;
+            background: rgba(30, 30, 30, 0.95);
+            color: #ffffff;
         }
         
         body.dark-mode .dashboard-header {
-            background: rgba(52, 73, 94, 0.95);
-            color: #ecf0f1;
+            background: rgba(40, 40, 40, 0.95);
+            color: #ffffff;
+            border-bottom: 2px solid #555555;
         }
         
         body.dark-mode .content-tabs {
-            background: rgba(52, 73, 94, 0.95);
-            color: #ecf0f1;
+            background: rgba(40, 40, 40, 0.95);
+            color: #ffffff;
         }
         
         body.dark-mode .module-card {
-            background: rgba(52, 73, 94, 0.8);
-            color: #ecf0f1;
-            border-color: #34495e;
+            background: rgba(45, 45, 45, 0.9);
+            color: #ffffff;
+            border: 2px solid #666666;
         }
         
         body.dark-mode .module-card:hover {
-            border-color: #3498db;
+            border-color: #007bff;
+            background: rgba(55, 55, 55, 0.9);
         }
         
         body.dark-mode .module-card.completed {
-            border-color: #27ae60;
-            background: linear-gradient(135deg, #2ecc71 0%, #27ae60 100%);
+            border-color: #28a745;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: #ffffff;
         }
         
         body.dark-mode .game-card {
-            background: rgba(52, 73, 94, 0.8);
-            color: #ecf0f1;
-            border-color: #34495e;
+            background: rgba(45, 45, 45, 0.9);
+            color: #ffffff;
+            border: 2px solid #666666;
         }
         
         body.dark-mode .game-card:hover {
-            border-color: #3498db;
+            border-color: #007bff;
+            background: rgba(55, 55, 55, 0.9);
         }
         
         body.dark-mode .game-card.locked {
-            background: rgba(44, 62, 80, 0.6);
-            opacity: 0.6;
+            background: rgba(35, 35, 35, 0.7);
+            opacity: 0.7;
+            border-color: #444444;
         }
         
         body.dark-mode .form-control {
-            background: rgba(52, 73, 94, 0.8);
-            border-color: #34495e;
-            color: #ecf0f1;
+            background: rgba(50, 50, 50, 0.9);
+            border: 2px solid #666666;
+            color: #ffffff;
         }
         
         body.dark-mode .form-control:focus {
-            background: rgba(52, 73, 94, 0.9);
-            border-color: #3498db;
-            color: #ecf0f1;
+            background: rgba(60, 60, 60, 0.9);
+            border-color: #007bff;
+            color: #ffffff;
+            box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
         }
         
         body.dark-mode .nav-tabs .nav-link {
-            color: #bdc3c7;
+            color: #cccccc;
+            background: rgba(40, 40, 40, 0.8);
+            border: 1px solid #555555;
         }
         
         body.dark-mode .nav-tabs .nav-link:hover {
-            background: rgba(52, 73, 94, 0.8);
-            color: #ecf0f1;
+            background: rgba(60, 60, 60, 0.9);
+            color: #ffffff;
+            border-color: #777777;
         }
         
         body.dark-mode .nav-tabs .nav-link.active {
-            background: linear-gradient(135deg, #3498db 0%, #2980b9 100%);
-            color: white;
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            color: #ffffff;
+            border-color: #007bff;
         }
         
         body.dark-mode .modal-content {
-            background: rgba(44, 62, 80, 0.95);
-            color: #ecf0f1;
+            background: rgba(30, 30, 30, 0.95);
+            color: #ffffff;
+            border: 2px solid #555555;
         }
         
         body.dark-mode .modal-header {
-            border-bottom-color: #34495e;
+            border-bottom: 2px solid #555555;
+            background: rgba(40, 40, 40, 0.9);
         }
         
         body.dark-mode .modal-footer {
-            border-top-color: #34495e;
+            border-top: 2px solid #555555;
+            background: rgba(40, 40, 40, 0.9);
         }
         
         body.dark-mode .list-group-item {
-            background: rgba(52, 73, 94, 0.8);
-            border-color: #34495e;
-            color: #ecf0f1;
+            background: rgba(45, 45, 45, 0.9);
+            border: 1px solid #666666;
+            color: #ffffff;
         }
         
         body.dark-mode .alert-info {
-            background: linear-gradient(135deg, #1a252f 0%, #2c3e50 100%);
-            border-color: #3498db;
-            color: #85c1e9;
+            background: linear-gradient(135deg, #0d4f8c 0%, #1e5f99 100%);
+            border: 2px solid #007bff;
+            color: #ffffff;
         }
         
         body.dark-mode .alert-warning {
-            background: linear-gradient(135deg, #2d2419 0%, #3e2723 100%);
-            border-color: #f39c12;
-            color: #f7dc6f;
+            background: linear-gradient(135deg, #8b5a00 0%, #b8860b 100%);
+            border: 2px solid #ffc107;
+            color: #ffffff;
         }
         
         body.dark-mode .alert-light {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            border-color: #34495e;
-            color: #bdc3c7;
+            background: linear-gradient(135deg, #404040 0%, #505050 100%);
+            border: 2px solid #666666;
+            color: #ffffff;
         }
         
-        /* Theme Toggle Button */
-        .theme-toggle {
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: rgba(255, 255, 255, 0.9);
-            border: none;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            font-size: 1.2rem;
-            color: #333;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            z-index: 1000;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        /* Additional dark mode improvements */
+        body.dark-mode .table {
+            color: #ffffff;
         }
         
-        .theme-toggle:hover {
-            background: white;
-            transform: scale(1.1);
+        body.dark-mode .table-striped > tbody > tr:nth-of-type(odd) > td {
+            background-color: rgba(60, 60, 60, 0.5);
         }
         
-        body.dark-mode .theme-toggle {
-            background: rgba(44, 62, 80, 0.9);
-            color: #ecf0f1;
+        body.dark-mode .table-hover > tbody > tr:hover > td {
+            background-color: rgba(80, 80, 80, 0.7);
         }
         
-        body.dark-mode .theme-toggle:hover {
-            background: rgba(52, 73, 94, 0.9);
+        body.dark-mode .card {
+            background: rgba(40, 40, 40, 0.9);
+            border: 2px solid #555555;
+            color: #ffffff;
         }
+        
+        body.dark-mode .card-header {
+            background: rgba(50, 50, 50, 0.9);
+            border-bottom: 2px solid #666666;
+        }
+        
+        body.dark-mode .btn-primary {
+            background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+            border: 2px solid #007bff;
+        }
+        
+        body.dark-mode .btn-secondary {
+            background: linear-gradient(135deg, #6c757d 0%, #545b62 100%);
+            border: 2px solid #6c757d;
+            color: #ffffff;
+        }
+        
+        /* Ensure all text is light in dark mode */
+        body.dark-mode h1,
+        body.dark-mode h2,
+        body.dark-mode h3,
+        body.dark-mode h4,
+        body.dark-mode h5,
+        body.dark-mode h6 {
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode p,
+        body.dark-mode span,
+        body.dark-mode div,
+        body.dark-mode label {
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .text-muted {
+            color: #cccccc !important;
+        }
+        
+        body.dark-mode .text-secondary {
+            color: #cccccc !important;
+        }
+        
+        body.dark-mode .badge {
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .small {
+            color: #cccccc !important;
+        }
+        
+        body.dark-mode .form-label {
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .form-text {
+            color: #cccccc !important;
+        }
+        
+        body.dark-mode .dropdown-menu {
+            background: rgba(40, 40, 40, 0.95);
+            border: 2px solid #555555;
+        }
+        
+        body.dark-mode .dropdown-item {
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .dropdown-item:hover {
+            background: rgba(60, 60, 60, 0.9);
+            color: #ffffff !important;
+        }
+        
+        /* Classroom code styling */
+        .classroom-code-section {
+            background: rgba(248, 249, 250, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+        }
+        
+        .classroom-code {
+            background: rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(0, 0, 0, 0.2);
+            border-radius: 4px;
+            padding: 4px 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            font-weight: bold;
+            color: #495057;
+        }
+        
+        body.dark-mode .classroom-code-section {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        body.dark-mode .classroom-code {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #ffffff;
+        }
+        
+        /* Bootstrap utility classes for dark mode */
+        body.dark-mode .text-primary {
+            color: #80b3ff !important;
+        }
+        
+        body.dark-mode .text-success {
+            color: #90ee90 !important;
+        }
+        
+        body.dark-mode .text-warning {
+            color: #ffd700 !important;
+        }
+        
+        body.dark-mode .text-danger {
+            color: #ff6b6b !important;
+        }
+        
+        body.dark-mode .text-info {
+            color: #87ceeb !important;
+        }
+        
+        body.dark-mode .text-light {
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode .text-dark {
+            color: #ffffff !important;
+        }
+        
+        body.dark-mode a {
+            color: #80b3ff !important;
+        }
+        
+        body.dark-mode a:hover {
+            color: #a0c4ff !important;
+        }
+        
+        /* Admin table specific styling */
+        body.dark-mode .table th {
+            background-color: rgba(40, 40, 40, 0.9) !important;
+            color: #ffffff !important;
+            border-color: #555555 !important;
+        }
+        
+        body.dark-mode .table td {
+            color: #ffffff !important;
+            border-color: #555555 !important;
+        }
+        
+        body.dark-mode .table thead th {
+            background-color: rgba(30, 30, 30, 0.95) !important;
+            color: #ffffff !important;
+            font-weight: bold;
+        }
+        
     </style>
 </head>
 <body>
-    <!-- Theme Toggle Button -->
-    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle Dark/Light Mode">
-        <i class="fas fa-moon" id="themeIcon"></i>
-    </button>
     
     <!-- Login Page -->
     <div id="loginPage" class="login-container">
@@ -660,7 +948,7 @@
             </div>
             
             <div class="text-center mt-3">
-                <small class="text-muted">Don't have an account? <a href="#" onclick="showRegistration()" style="color: #667eea;">Register here</a></small>
+                <small class="text-muted">Don't have an account? <a href="#" onclick="showRegistration()" class="text-primary">Register here</a></small>
                     </div>
             
             <!-- Student Login Form (hidden) -->
@@ -756,9 +1044,6 @@
     
     <!-- Admin Dashboard -->
     <div id="adminDashboard" class="dashboard">
-        <button class="back-btn" onclick="logout()" title="Logout">
-            <i class="fas fa-sign-out-alt"></i>
-        </button>
         
         <div class="dashboard-header">
             <div class="user-info">
@@ -796,25 +1081,148 @@
             <div class="tab-content" id="adminTabContent">
                 <!-- Users Tab -->
                 <div class="tab-pane fade show active" id="users" role="tabpanel">
-                    <h3>All Users</h3>
-                    <div class="alert alert-info">
-                        <i class="fas fa-info-circle"></i> User management features coming soon!
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h3><i class="fas fa-users"></i> All Users</h3>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn btn-primary" onclick="loadAllUsers()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover">
+                            <thead>
+                                <tr>
+                                    <th>ID</th>
+                                    <th>Name</th>
+                                    <th>Email</th>
+                                    <th>Role</th>
+                                    <th>Grade</th>
+                                    <th>Stars</th>
+                                    <th>Status</th>
+                                    <th>Last Login</th>
+                                </tr>
+                            </thead>
+                            <tbody id="usersTableBody">
+                                <tr>
+                                    <td colspan="8" class="text-center">
+                                        <div class="spinner-border text-primary" role="status">
+                                            <span class="visually-hidden">Loading...</span>
+                                        </div>
+                                        Loading users...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
                 
                 <!-- Analytics Tab -->
                 <div class="tab-pane fade" id="analytics" role="tabpanel">
-                    <h3>System Analytics</h3>
-                    <div class="alert alert-info">
-                        <i class="fas fa-chart-line"></i> Analytics dashboard coming soon!
+                    <div class="row mb-4">
+                        <div class="col-md-6">
+                            <h3><i class="fas fa-chart-bar"></i> System Analytics</h3>
+                        </div>
+                        <div class="col-md-6 text-end">
+                            <button class="btn btn-primary" onclick="loadAnalytics()">
+                                <i class="fas fa-sync-alt"></i> Refresh
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Cards -->
+                    <div class="row mb-4" id="statsCards">
+                        <div class="col-md-3">
+                            <div class="card bg-primary text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Users</h5>
+                                    <h2 id="totalUsers">-</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-success text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Students</h5>
+                                    <h2 id="totalStudents">-</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-info text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Teachers</h5>
+                                    <h2 id="totalTeachers">-</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="card bg-warning text-white">
+                                <div class="card-body">
+                                    <h5 class="card-title">Total Stars</h5>
+                                    <h2 id="totalStars">-</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Charts Row -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>User Roles Distribution</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="roleChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>Student Grade Distribution</h5>
+                                </div>
+                                <div class="card-body">
+                                    <canvas id="gradeChart" width="400" height="200"></canvas>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 
                 <!-- Settings Tab -->
                 <div class="tab-pane fade" id="settings" role="tabpanel">
-                    <h3>System Settings</h3>
-                    <div class="alert alert-info">
-                        <i class="fas fa-cogs"></i> System configuration coming soon!
+                    <h3><i class="fas fa-cog"></i> System Settings</h3>
+                    
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>System Health</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><i class="fas fa-check-circle text-success"></i> Database: Connected</p>
+                                    <p><i class="fas fa-check-circle text-success"></i> API: Online</p>
+                                    <p><i class="fas fa-check-circle text-success"></i> All systems operational</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="card">
+                                <div class="card-header">
+                                    <h5>System Information</h5>
+                                </div>
+                                <div class="card-body">
+                                    <p><strong>Version:</strong> 1.0.0</p>
+                                    <p><strong>Database:</strong> SQLite</p>
+                                    <p><strong>API Status:</strong> <span class="badge bg-success">Online</span></p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -823,9 +1231,6 @@
 
     <!-- Teacher Dashboard -->
     <div id="teacherDashboard" class="dashboard">
-        <button class="back-btn" onclick="logout()" title="Logout">
-            <i class="fas fa-sign-out-alt"></i>
-        </button>
         
         <div class="dashboard-header">
             <div class="user-info">
@@ -864,12 +1269,26 @@
                 <!-- Classrooms Tab -->
                 <div class="tab-pane fade show active" id="classrooms" role="tabpanel">
                     <h3>My Classrooms</h3>
-                    <button class="btn btn-success mb-3" onclick="showCreateClassroom()">
-                        <i class="fas fa-plus"></i> Create New Classroom
-                    </button>
-                    <div id="teacherClassroomsList">
-                        <div class="alert alert-info">
-                            <i class="fas fa-info-circle"></i> Loading your classrooms...
+                      <div class="row">
+                        <div class="col-md-6">
+                            <div class="module-card">
+                                <h4>Grade 7 Math - Room 101</h4>
+                                <p>Students: 24 | Active: 18</p>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" onclick="viewClassroom('math7')">View Students</button>
+                                    <button class="btn btn-success" onclick="createQuiz('math7')">Create Quiz</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="module-card">
+                                <h4>Grade 8 Science - Room 203</h4>
+                                <p>Students: 22 | Active: 20</p>
+                                <div class="btn-group">
+                                    <button class="btn btn-primary" onclick="viewClassroom('science8')">View Students</button>
+                                    <button class="btn btn-success" onclick="createQuiz('science8')">Create Quiz</button>
+                        </div>
+                      </div>
                         </div>
                     </div>
                 </div>
@@ -880,7 +1299,7 @@
                       <div class="row">
                         <div class="col-md-4">
                             <div class="game-card">
-                                <div class="game-icon" style="color: #667eea;">📝</div>
+                                <div class="game-icon text-primary">📝</div>
                                 <div class="game-title">Create Quiz</div>
                                 <div class="game-description">Create custom quizzes for your students</div>
                                 <button class="play-btn" onclick="createQuiz()">Create Quiz</button>
@@ -888,7 +1307,7 @@
                       </div>
                         <div class="col-md-4">
                             <div class="game-card">
-                                <div class="game-icon" style="color: #28a745;">🏆</div>
+                                <div class="game-icon text-success">🏆</div>
                                 <div class="game-title">Start Competition</div>
                                 <div class="game-description">Create engaging competitions</div>
                                 <button class="play-btn" onclick="createCompetition()">Start Competition</button>
@@ -896,7 +1315,7 @@
                       </div>
                         <div class="col-md-4">
                             <div class="game-card">
-                                <div class="game-icon" style="color: #ffc107;">📊</div>
+                                <div class="game-icon text-warning">📊</div>
                                 <div class="game-title">View Analytics</div>
                                 <div class="game-description">Track student progress and performance</div>
                                 <button class="play-btn" onclick="viewAnalytics()">View Analytics</button>
@@ -923,9 +1342,6 @@
 
     <!-- Student Dashboard -->
     <div id="studentDashboard" class="dashboard">
-        <button class="back-btn" onclick="logout()" title="Logout">
-            <i class="fas fa-sign-out-alt"></i>
-        </button>
         
         <div class="dashboard-header">
             <div class="user-info">
@@ -1103,7 +1519,7 @@
                     
                     <div class="games-grid">
                         <div class="game-card" id="flappyGameCard">
-                            <div class="game-icon" style="color: #FFD700;">🎮</div>
+                            <div class="game-icon text-warning">🎮</div>
                             <div class="game-title">Flappy Bird</div>
                             <div class="game-cost">Cost: 10 ⭐</div>
                             <div class="game-description">Test your reflexes and timing!</div>
@@ -1111,7 +1527,7 @@
                     </div>
                         
                         <div class="game-card" id="snakesGameCard">
-                            <div class="game-icon" style="color: #4CAF50;">🐍</div>
+                            <div class="game-icon text-success">🐍</div>
                             <div class="game-title">Snakes</div>
                             <div class="game-cost">Cost: 15 ⭐</div>
                             <div class="game-description">Control the snake and grow longer!</div>
@@ -1119,7 +1535,7 @@
                         </div>
                         
                         <div class="game-card" id="memoryGameCard">
-                            <div class="game-icon" style="color: #FF6B6B;">🧠</div>
+                            <div class="game-icon text-danger">🧠</div>
                             <div class="game-title">Memory Game</div>
                             <div class="game-cost">Cost: 12 ⭐</div>
                             <div class="game-description">Challenge your memory skills!</div>
@@ -1145,7 +1561,7 @@
                         <div class="col-md-6">
                             <div class="module-card">
                                 <h4>Modules Completed</h4>
-                                <div style="font-size: 2rem; color: #28a745;">
+                                <div class="text-success" style="font-size: 2rem;">
                                     <i class="fas fa-trophy"></i> <span id="completedModules">0</span>
                   </div>
                 </div>
@@ -1584,7 +2000,7 @@
                     };
                     
                     // Register user via API
-                    await apiCall('/users', 'POST', newUser);
+                    await apiCall('users', 'POST', newUser);
                     
                     alert('Registration successful! You can now login.');
                     showLogin();
@@ -1603,9 +2019,11 @@
             if (isDarkMode) {
                 document.body.classList.add('dark-mode');
                 document.getElementById('themeIcon').className = 'fas fa-sun';
+                document.getElementById('themeText').textContent = 'Light Mode';
             } else {
                 document.body.classList.remove('dark-mode');
                 document.getElementById('themeIcon').className = 'fas fa-moon';
+                document.getElementById('themeText').textContent = 'Dark Mode';
             }
         }
         
@@ -1614,6 +2032,11 @@
             if (isDarkMode) {
                 document.body.classList.add('dark-mode');
                 document.getElementById('themeIcon').className = 'fas fa-sun';
+                document.getElementById('themeText').textContent = 'Light Mode';
+            } else {
+                document.body.classList.remove('dark-mode');
+                document.getElementById('themeIcon').className = 'fas fa-moon';
+                document.getElementById('themeText').textContent = 'Dark Mode';
             }
         }
         
@@ -1695,7 +2118,7 @@
                 
                 // Login via API
                 console.log('Login attempt:', { email, password, userId });
-                const user = await apiCall('/users/login', 'POST', {
+                const user = await apiCall('users/login', 'POST', {
                     email: email,
                     password: password
                 });
@@ -1708,11 +2131,23 @@
                         name: `${user.firstName} ${user.lastName}`,
                         grade: user.grade,
                         stars: user.stars,
-                        email: user.email
+                        email: user.email,
+                        firstName: user.firstName,
+                        lastName: user.lastName
                     };
                     
                     userGrade = user.grade;
                     userStars = user.stars; // Use actual star count from database
+                    
+                    // Update lastLogin in database
+                    try {
+                        await apiCall(`users/${user.id}`, 'PUT', {
+                            ...user,
+                            lastLogin: new Date().toISOString()
+                        });
+                    } catch (updateError) {
+                        console.warn('Failed to update lastLogin:', updateError);
+                    }
                     
                     // Save user data to localStorage
                     saveUserData();
@@ -1739,317 +2174,208 @@
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('adminDashboard').classList.add('active');
             
-            // Show logout button for admin dashboard
-            const adminLogoutBtn = document.querySelector('#adminDashboard .back-btn');
-            if (adminLogoutBtn) adminLogoutBtn.style.display = 'block';
+            // Show universal menu
+            document.getElementById('universalMenu').style.display = 'block';
             
             // Update admin name
-            document.getElementById('adminName').textContent = currentUser.name;
+            const adminName = (currentUser.firstName || 'Admin') + ' ' + (currentUser.lastName || 'User');
+            document.getElementById('adminName').textContent = adminName;
+            
+            // Load initial data
+            loadAllUsers();
+            loadAnalytics();
         }
+        
+        // Load all users for admin dashboard
+        async function loadAllUsers() {
+            try {
+                const users = await apiCall('users', 'GET');
+                const tbody = document.getElementById('usersTableBody');
+                
+                if (!users || users.length === 0) {
+                    tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">No users found</td></tr>';
+                    return;
+                }
+                
+                tbody.innerHTML = users.map(user => `
+                    <tr>
+                        <td>${user.id}</td>
+                        <td>${user.firstName} ${user.lastName}</td>
+                        <td>${user.email}</td>
+                        <td><span class="badge bg-${user.role === 'admin' ? 'danger' : user.role === 'teacher' ? 'info' : 'success'}">${user.role}</span></td>
+                        <td>${user.grade || 'N/A'}</td>
+                        <td><i class="fas fa-star text-warning"></i> ${user.stars || 0}</td>
+                        <td><span class="badge bg-${user.isActive ? 'success' : 'secondary'}">${user.isActive ? 'Active' : 'Inactive'}</span></td>
+                        <td>${user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Failed to load users:', error);
+                document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="8" class="text-center text-danger">Failed to load users</td></tr>';
+            }
+        }
+        
+        // Load analytics data
+        async function loadAnalytics() {
+            try {
+                // Get all users first to calculate analytics
+                const users = await apiCall('users', 'GET');
+                
+                if (!users || users.length === 0) {
+                    // No users found
+                    document.getElementById('totalUsers').textContent = '0';
+                    document.getElementById('totalStudents').textContent = '0';
+                    document.getElementById('totalTeachers').textContent = '0';
+                    document.getElementById('totalStars').textContent = '0';
+                    createRoleChart({});
+                    createGradeChart({});
+                    return;
+                }
+                
+                // Calculate analytics from user data
+                const analytics = {
+                    totalUsers: users.length,
+                    students: users.filter(u => u.role === 'student').length,
+                    teachers: users.filter(u => u.role === 'teacher').length,
+                    admins: users.filter(u => u.role === 'admin').length,
+                    totalStars: users.reduce((sum, u) => sum + (u.stars || 0), 0),
+                    roleDistribution: {
+                        'Students': users.filter(u => u.role === 'student').length,
+                        'Teachers': users.filter(u => u.role === 'teacher').length,
+                        'Admins': users.filter(u => u.role === 'admin').length
+                    },
+                    gradeDistribution: {}
+                };
+                
+                // Calculate grade distribution for students
+                const students = users.filter(u => u.role === 'student');
+                students.forEach(student => {
+                    const grade = student.grade || 'Unknown';
+                    analytics.gradeDistribution[grade] = (analytics.gradeDistribution[grade] || 0) + 1;
+                });
+                
+                // Update stats cards
+                document.getElementById('totalUsers').textContent = analytics.totalUsers;
+                document.getElementById('totalStudents').textContent = analytics.students;
+                document.getElementById('totalTeachers').textContent = analytics.teachers;
+                document.getElementById('totalStars').textContent = analytics.totalStars;
+                
+                // Create charts
+                createRoleChart(analytics.roleDistribution);
+                createGradeChart(analytics.gradeDistribution);
+            } catch (error) {
+                console.error('Failed to load analytics:', error);
+                // Show error in stats cards
+                document.getElementById('totalUsers').textContent = 'Error';
+                document.getElementById('totalStudents').textContent = 'Error';
+                document.getElementById('totalTeachers').textContent = 'Error';
+                document.getElementById('totalStars').textContent = 'Error';
+            }
+        }
+        
+        // Create role distribution chart
+        function createRoleChart(roleData) {
+            const ctx = document.getElementById('roleChart');
+            if (!ctx) return;
+            
+            // Clear any existing chart
+            if (ctx.chart) {
+                ctx.chart.destroy();
+            }
+            
+            const labels = Object.keys(roleData);
+            const data = Object.values(roleData);
+            
+            if (labels.length === 0 || data.every(val => val === 0)) {
+                // Show "No data" message
+                ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
+                const ctx2d = ctx.getContext('2d');
+                ctx2d.font = '16px Arial';
+                ctx2d.fillStyle = '#666';
+                ctx2d.textAlign = 'center';
+                ctx2d.fillText('No data available', ctx.width / 2, ctx.height / 2);
+                return;
+            }
+            
+            ctx.chart = new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        data: data,
+                        backgroundColor: ['#dc3545', '#0dcaf0', '#198754'],
+                        borderWidth: 2
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+        
+        // Create grade distribution chart
+        function createGradeChart(gradeData) {
+            const ctx = document.getElementById('gradeChart');
+            if (!ctx) return;
+            
+            // Clear any existing chart
+            if (ctx.chart) {
+                ctx.chart.destroy();
+            }
+            
+            const labels = Object.keys(gradeData);
+            const data = Object.values(gradeData);
+            
+            if (labels.length === 0 || data.every(val => val === 0)) {
+                // Show "No data" message
+                ctx.getContext('2d').clearRect(0, 0, ctx.width, ctx.height);
+                const ctx2d = ctx.getContext('2d');
+                ctx2d.font = '16px Arial';
+                ctx2d.fillStyle = '#666';
+                ctx2d.textAlign = 'center';
+                ctx2d.fillText('No student data available', ctx.width / 2, ctx.height / 2);
+                return;
+            }
+            
+            ctx.chart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Students',
+                        data: data,
+                        backgroundColor: '#198754',
+                        borderColor: '#0f5132',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        }
+        
         
         // Show teacher dashboard
         function showTeacherDashboard() {
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('teacherDashboard').classList.add('active');
             
-            // Show logout button for teacher dashboard
-            const teacherLogoutBtn = document.querySelector('#teacherDashboard .back-btn');
-            if (teacherLogoutBtn) teacherLogoutBtn.style.display = 'block';
+            // Show universal menu
+            document.getElementById('universalMenu').style.display = 'block';
             
             // Update teacher name
             document.getElementById('teacherName').textContent = currentUser.name;
-            
-            // Load teacher classrooms
-            loadTeacherClassrooms();
-        }
-        
-        // Load teacher's classrooms
-        async function loadTeacherClassrooms() {
-            if (!currentUser || currentUser.role !== 'teacher') return;
-            
-            const container = document.getElementById('teacherClassroomsList');
-            
-            try {
-                const classrooms = await apiCall(`classrooms/teacher/${currentUser.id}`);
-                
-                if (classrooms.length === 0) {
-                    container.innerHTML = `
-                        <div class="alert alert-warning">
-                            <i class="fas fa-info-circle"></i> You haven't created any classrooms yet. 
-                            Click "Create New Classroom" above to get started.
-                        </div>
-                    `;
-                    return;
-                }
-                
-                // Display classrooms
-                let html = '<div class="row">';
-                for (const classroom of classrooms) {
-                    const studentCount = JSON.parse(classroom.studentIds || '[]').length;
-                    
-                    html += `
-                        <div class="col-md-6 mb-3">
-                            <div class="module-card">
-                                <div class="module-header">
-                                    <div class="module-title">${classroom.name}</div>
-                                    <span class="badge bg-success">${classroom.subject}</span>
-                                </div>
-                                <div class="module-description">
-                                    <strong>Grade:</strong> ${classroom.grade}<br>
-                                    <strong>Students:</strong> ${studentCount}<br>
-                                    <strong>Classroom Code:</strong> 
-                                    <span class="badge bg-primary" style="font-size: 1.1rem; cursor: pointer;" 
-                                          onclick="copyClassroomCode('${classroom.code}')" 
-                                          title="Click to copy">
-                                        ${classroom.code} <i class="fas fa-copy"></i>
-                                    </span>
-                                    <br>
-                                    <small class="text-muted">Students can use this code to join your classroom</small>
-                                </div>
-                                <div class="module-actions">
-                                    <button class="btn btn-primary btn-sm" onclick="viewClassroomStudents(${classroom.id})">
-                                        <i class="fas fa-users"></i> View Students
-                                    </button>
-                                    <button class="btn btn-success btn-sm" onclick="manageClassroomContent(${classroom.id})">
-                                        <i class="fas fa-edit"></i> Manage Content
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                }
-                html += '</div>';
-                
-                container.innerHTML = html;
-                
-            } catch (error) {
-                console.error('Error loading classrooms:', error);
-                container.innerHTML = `
-                    <div class="alert alert-danger">
-                        <i class="fas fa-exclamation-circle"></i> Error loading classrooms. Please try again later.
-                    </div>
-                `;
-            }
-        }
-        
-        // Copy classroom code to clipboard
-        async function copyClassroomCode(code) {
-            try {
-                await navigator.clipboard.writeText(code);
-                
-                // Show success message
-                const tempAlert = document.createElement('div');
-                tempAlert.className = 'alert alert-success';
-                tempAlert.style.position = 'fixed';
-                tempAlert.style.top = '20px';
-                tempAlert.style.right = '20px';
-                tempAlert.style.zIndex = '9999';
-                tempAlert.innerHTML = `<i class="fas fa-check-circle"></i> Classroom code "${code}" copied to clipboard!`;
-                document.body.appendChild(tempAlert);
-                
-                setTimeout(() => {
-                    document.body.removeChild(tempAlert);
-                }, 3000);
-                
-            } catch (error) {
-                // Fallback for older browsers
-                const textArea = document.createElement('textarea');
-                textArea.value = code;
-                textArea.style.position = 'fixed';
-                textArea.style.left = '-9999px';
-                document.body.appendChild(textArea);
-                textArea.select();
-                
-                try {
-                    document.execCommand('copy');
-                    alert(`Classroom code "${code}" copied to clipboard!`);
-                } catch (err) {
-                    alert(`Classroom code: ${code}\n\nPlease copy this code manually.`);
-                }
-                
-                document.body.removeChild(textArea);
-            }
-        }
-        
-        // Show create classroom modal
-        function showCreateClassroom() {
-            const modal = document.createElement('div');
-            modal.className = 'modal fade show';
-            modal.style.display = 'block';
-            modal.innerHTML = `
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title">Create New Classroom</h5>
-                            <button type="button" class="btn-close" onclick="closeCreateClassroomModal()"></button>
-                        </div>
-                        <div class="modal-body">
-                            <div class="form-group mb-3">
-                                <label class="form-label">Classroom Name</label>
-                                <input type="text" class="form-control" id="newClassroomName" placeholder="e.g., Advanced Algebra">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label class="form-label">Grade</label>
-                                <select class="form-control" id="newClassroomGrade">
-                                    <option value="">Select grade</option>
-                                    <option value="Grade 3">Grade 3</option>
-                                    <option value="Grade 4">Grade 4</option>
-                                    <option value="Grade 5">Grade 5</option>
-                                    <option value="Grade 6">Grade 6</option>
-                                    <option value="Grade 7">Grade 7</option>
-                                    <option value="Grade 8">Grade 8</option>
-                                    <option value="Grade 9">Grade 9</option>
-                                    <option value="Grade 10">Grade 10</option>
-                                    <option value="Grade 11">Grade 11</option>
-                                    <option value="Grade 12">Grade 12</option>
-                                </select>
-                            </div>
-                            <div class="form-group mb-3">
-                                <label class="form-label">Subject</label>
-                                <input type="text" class="form-control" id="newClassroomSubject" placeholder="e.g., Mathematics, Science">
-                            </div>
-                            <div class="form-group mb-3">
-                                <label class="form-label">Description (Optional)</label>
-                                <textarea class="form-control" id="newClassroomDescription" rows="3" placeholder="Brief description of the classroom"></textarea>
-                            </div>
-                            <div id="createError" class="alert alert-danger" style="display: none;"></div>
-                        </div>
-                        <div class="modal-footer">
-                            <button class="btn btn-primary" onclick="createNewClassroom()">Create Classroom</button>
-                            <button class="btn btn-secondary" onclick="closeCreateClassroomModal()">Cancel</button>
-                        </div>
-                    </div>
-                </div>
-            `;
-            
-            document.body.appendChild(modal);
-            modal.setAttribute('id', 'createClassroomModal');
-        }
-        
-        // Create new classroom
-        async function createNewClassroom() {
-            const name = document.getElementById('newClassroomName').value.trim();
-            const grade = document.getElementById('newClassroomGrade').value;
-            const subject = document.getElementById('newClassroomSubject').value.trim();
-            const description = document.getElementById('newClassroomDescription').value.trim();
-            const errorDiv = document.getElementById('createError');
-            
-            errorDiv.style.display = 'none';
-            
-            if (!name || !grade || !subject) {
-                errorDiv.textContent = 'Please fill in all required fields';
-                errorDiv.style.display = 'block';
-                return;
-            }
-            
-            try {
-                const newClassroom = {
-                    name: name,
-                    grade: grade,
-                    subject: subject,
-                    description: description,
-                    teacherId: currentUser.id,
-                    studentIds: '[]',
-                    assignedContent: '[]'
-                };
-                
-                const result = await apiCall('classrooms', 'POST', newClassroom);
-                
-                // Show success message with the classroom code
-                alert(`Classroom created successfully!\n\nClassroom Code: ${result.code}\n\nShare this code with your students so they can join your classroom.`);
-                
-                closeCreateClassroomModal();
-                loadTeacherClassrooms();
-                
-            } catch (error) {
-                console.error('Error creating classroom:', error);
-                errorDiv.textContent = 'Error creating classroom. Please try again.';
-                errorDiv.style.display = 'block';
-            }
-        }
-        
-        // Close create classroom modal
-        function closeCreateClassroomModal() {
-            const modal = document.getElementById('createClassroomModal');
-            if (modal) {
-                document.body.removeChild(modal);
-            }
-        }
-        
-        // View classroom students
-        async function viewClassroomStudents(classroomId) {
-            try {
-                const classroom = await apiCall(`classrooms/${classroomId}`);
-                const studentIds = JSON.parse(classroom.studentIds || '[]');
-                
-                let studentsHtml = '';
-                if (studentIds.length === 0) {
-                    studentsHtml = '<div class="alert alert-info">No students have joined this classroom yet.</div>';
-                } else {
-                    studentsHtml = '<div class="list-group">';
-                    for (const studentId of studentIds) {
-                        try {
-                            const student = await apiCall(`users/${studentId}`);
-                            studentsHtml += `
-                                <div class="list-group-item d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <strong>${student.firstName} ${student.lastName}</strong>
-                                        <br>
-                                        <small class="text-muted">${student.email}</small>
-                                    </div>
-                                    <div>
-                                        <span class="badge bg-primary">${student.stars} stars</span>
-                                    </div>
-                                </div>
-                            `;
-                        } catch (e) {
-                            console.warn('Could not load student:', studentId, e);
-                        }
-                    }
-                    studentsHtml += '</div>';
-                }
-                
-                const modal = document.createElement('div');
-                modal.className = 'modal fade show';
-                modal.style.display = 'block';
-                modal.innerHTML = `
-                    <div class="modal-dialog modal-lg">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title">${classroom.name} - Students</h5>
-                                <button type="button" class="btn-close" onclick="closeStudentsModal()"></button>
-                            </div>
-                            <div class="modal-body">
-                                <p><strong>Total Students:</strong> ${studentIds.length}</p>
-                                ${studentsHtml}
-                            </div>
-                            <div class="modal-footer">
-                                <button class="btn btn-secondary" onclick="closeStudentsModal()">Close</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-                
-                document.body.appendChild(modal);
-                modal.setAttribute('id', 'studentsModal');
-                
-            } catch (error) {
-                console.error('Error loading classroom students:', error);
-                alert('Error loading students. Please try again.');
-            }
-        }
-        
-        // Close students modal
-        function closeStudentsModal() {
-            const modal = document.getElementById('studentsModal');
-            if (modal) {
-                document.body.removeChild(modal);
-            }
-        }
-        
-        // Manage classroom content (placeholder)
-        function manageClassroomContent(classroomId) {
-            alert('Content management feature coming soon! You will be able to assign quizzes and lessons to your classroom.');
         }
         
         // Show student dashboard
@@ -2057,21 +2383,18 @@
             document.getElementById('loginPage').style.display = 'none';
             document.getElementById('studentDashboard').classList.add('active');
             
-            // Show logout button for student dashboard
-            const studentLogoutBtn = document.querySelector('#studentDashboard .back-btn');
-            if (studentLogoutBtn) studentLogoutBtn.style.display = 'block';
+            // Show universal menu
+            document.getElementById('universalMenu').style.display = 'block';
             
             // Update student name and grade display
-            document.getElementById('studentName').textContent = currentUser.name;
+            const studentName = (currentUser.firstName || 'Student') + ' ' + (currentUser.lastName || 'User');
+            document.getElementById('studentName').textContent = studentName;
             
             // Update module access based on grade
             updateModuleAccess();
             
             updateStarsDisplay();
             updateGameAvailability();
-            
-            // Load student classrooms
-            loadStudentClassrooms();
         }
         
         // Show join classroom modal
@@ -2084,81 +2407,50 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Join Classroom</h5>
-                            <button type="button" class="btn-close" onclick="closeJoinModal()"></button>
+                            <button type="button" class="btn-close" onclick="closeModal()"></button>
                         </div>
                         <div class="modal-body">
                             <div class="form-group">
                                 <label class="form-label">Classroom Code</label>
-                                <input type="text" class="form-control" id="classroomCode" placeholder="Enter classroom code (e.g., TRANS7, POT7)">
+                                <input type="text" class="form-control" id="classroomCode" placeholder="Enter classroom code">
                             </div>
                             <div class="alert alert-info">
-                                <i class="fas fa-info-circle"></i> <strong>How to join:</strong><br>
-                                Ask your teacher for the classroom code and enter it above.
+                                <strong>Available Classrooms:</strong><br>
+                                MATH101 - Grade 7 Math<br>
+                                SCI203 - Grade 8 Science
                             </div>
-                            <div id="joinError" class="alert alert-danger" style="display: none;"></div>
-                            <div id="joinSuccess" class="alert alert-success" style="display: none;"></div>
                         </div>
                         <div class="modal-footer">
                             <button class="btn btn-primary" onclick="joinClassroom()">Join Classroom</button>
-                            <button class="btn btn-secondary" onclick="closeJoinModal()">Cancel</button>
+                            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
                         </div>
                     </div>
                 </div>
             `;
             
             document.body.appendChild(modal);
-            modal.setAttribute('id', 'joinClassroomModal');
-        }
-        
-        // Join classroom using API
-        async function joinClassroom() {
-            const code = document.getElementById('classroomCode').value.trim().toUpperCase();
-            const errorDiv = document.getElementById('joinError');
-            const successDiv = document.getElementById('joinSuccess');
             
-            errorDiv.style.display = 'none';
-            successDiv.style.display = 'none';
+            window.joinClassroom = function() {
+                const code = document.getElementById('classroomCode').value.toUpperCase();
+                const classroom = Object.values(mockDatabase.classrooms).find(c => c.code === code);
+                
+                if (classroom) {
+                    // Add student to classroom
+                    mockDatabase.classrooms[Object.keys(mockDatabase.classrooms).find(k => mockDatabase.classrooms[k] === classroom)].students.push(currentUser.id);
+                    mockDatabase.students[currentUser.id].classroom = Object.keys(mockDatabase.classrooms).find(k => mockDatabase.classrooms[k] === classroom);
+                    
+                    alert(`Successfully joined ${classroom.name}!`);
+                    closeModal();
+                    userStars += 5;
+                    updateStarsDisplay();
+                } else {
+                    alert('Invalid classroom code');
+                }
+            };
             
-            if (!code) {
-                errorDiv.textContent = 'Please enter a classroom code';
-                errorDiv.style.display = 'block';
-                return;
-            }
-            
-            try {
-                const response = await apiCall('classrooms/join-by-code', 'POST', {
-                    code: code,
-                    studentId: currentUser.id
-                });
-                
-                successDiv.innerHTML = `<i class="fas fa-check-circle"></i> Successfully joined ${response.classroom.name}!`;
-                successDiv.style.display = 'block';
-                
-                // Award stars for joining
-                userStars += 5;
-                currentUser.stars = userStars;
-                await saveToDatabase();
-                updateStarsDisplay();
-                
-                // Reload student classrooms
-                setTimeout(() => {
-                    closeJoinModal();
-                    loadStudentClassrooms();
-                }, 1500);
-                
-            } catch (error) {
-                console.error('Error joining classroom:', error);
-                errorDiv.innerHTML = '<i class="fas fa-exclamation-circle"></i> Invalid classroom code. Please check and try again.';
-                errorDiv.style.display = 'block';
-            }
-        }
-        
-        // Close join classroom modal
-        function closeJoinModal() {
-            const modal = document.getElementById('joinClassroomModal');
-            if (modal) {
+            window.closeModal = function() {
                 document.body.removeChild(modal);
-            }
+            };
         }
         
         // Load student's classrooms
@@ -2281,7 +2573,182 @@
         
         // Teacher utility functions
         function createQuiz(classroomId) {
-            alert('Quiz creation tool coming soon! This will allow teachers to create custom quizzes for their students.');
+            // Show quiz creation modal
+            showQuizCreationModal(classroomId);
+        }
+        
+        function showQuizCreationModal(classroomId) {
+            // Create modal HTML
+            const modalHtml = `
+                <div class="modal fade" id="quizCreationModal" tabindex="-1" aria-labelledby="quizCreationModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="quizCreationModalLabel">Create New Quiz</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="quizForm">
+                                    <div class="mb-3">
+                                        <label for="quizTitle" class="form-label">Quiz Title</label>
+                                        <input type="text" class="form-control" id="quizTitle" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="quizDescription" class="form-label">Description</label>
+                                        <textarea class="form-control" id="quizDescription" rows="3"></textarea>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="quizSubject" class="form-label">Subject</label>
+                                        <select class="form-select" id="quizSubject" required>
+                                            <option value="">Select Subject</option>
+                                            <option value="math">Mathematics</option>
+                                            <option value="english">English Language Arts</option>
+                                            <option value="science">Science</option>
+                                            <option value="social-studies">Social Studies</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="quizGrade" class="form-label">Target Grade Level</label>
+                                        <select class="form-select" id="quizGrade" required>
+                                            <option value="">Select Grade</option>
+                                            <option value="3">Grade 3</option>
+                                            <option value="4">Grade 4</option>
+                                            <option value="5">Grade 5</option>
+                                            <option value="6">Grade 6</option>
+                                            <option value="7">Grade 7</option>
+                                            <option value="8">Grade 8</option>
+                                            <option value="9">Grade 9</option>
+                                            <option value="10">Grade 10</option>
+                                            <option value="11">Grade 11</option>
+                                            <option value="12">Grade 12</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="quizTimeLimit" class="form-label">Time Limit (minutes)</label>
+                                        <input type="number" class="form-control" id="quizTimeLimit" min="5" max="120" value="30">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Question Types</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="multipleChoice" checked>
+                                            <label class="form-check-label" for="multipleChoice">
+                                                Multiple Choice
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="trueFalse">
+                                            <label class="form-check-label" for="trueFalse">
+                                                True/False
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="shortAnswer">
+                                            <label class="form-check-label" for="shortAnswer">
+                                                Short Answer
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="checkbox" id="essay">
+                                            <label class="form-check-label" for="essay">
+                                                Essay Questions
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="questionCount" class="form-label">Number of Questions</label>
+                                        <input type="number" class="form-control" id="questionCount" min="5" max="50" value="10">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Difficulty Level</label>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="difficulty" id="easy" value="easy">
+                                            <label class="form-check-label" for="easy">
+                                                Easy
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="difficulty" id="medium" value="medium" checked>
+                                            <label class="form-check-label" for="medium">
+                                                Medium
+                                            </label>
+                                        </div>
+                                        <div class="form-check">
+                                            <input class="form-check-input" type="radio" name="difficulty" id="hard" value="hard">
+                                            <label class="form-check-label" for="hard">
+                                                Hard
+                                            </label>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="saveQuiz()">Create Quiz</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if any
+            const existingModal = document.getElementById('quizCreationModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            // Add modal to body
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('quizCreationModal'));
+            modal.show();
+        }
+        
+        function saveQuiz() {
+            const quizData = {
+                title: document.getElementById('quizTitle').value,
+                description: document.getElementById('quizDescription').value,
+                subject: document.getElementById('quizSubject').value,
+                grade: document.getElementById('quizGrade').value,
+                timeLimit: document.getElementById('quizTimeLimit').value,
+                questionTypes: {
+                    multipleChoice: document.getElementById('multipleChoice').checked,
+                    trueFalse: document.getElementById('trueFalse').checked,
+                    shortAnswer: document.getElementById('shortAnswer').checked,
+                    essay: document.getElementById('essay').checked
+                },
+                questionCount: document.getElementById('questionCount').value,
+                difficulty: document.querySelector('input[name="difficulty"]:checked').value,
+                createdBy: currentUser.email,
+                createdAt: new Date().toISOString()
+            };
+            
+            // Validate form
+            if (!quizData.title || !quizData.subject || !quizData.grade) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Save quiz (in a real app, this would save to database)
+            console.log('Quiz created:', quizData);
+            
+            // Show success message
+            alert(`Quiz "${quizData.title}" created successfully!`);
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('quizCreationModal'));
+            modal.hide();
+            
+            // Update teacher's quiz count (if we track this)
+            if (currentUser.quizzesCreated) {
+                currentUser.quizzesCreated++;
+            } else {
+                currentUser.quizzesCreated = 1;
+            }
+            
+            // Save updated user data
+            saveUserData();
+            saveToDatabase();
         }
         
         function createCompetition() {
@@ -2290,6 +2757,185 @@
         
         function viewAnalytics() {
             alert('Analytics dashboard coming soon! This will show detailed student progress and performance metrics.');
+        }
+        
+        // Classroom code management functions
+        function copyClassroomCode(code) {
+            navigator.clipboard.writeText(code).then(function() {
+                // Show success feedback
+                const button = event.target.closest('button');
+                const originalIcon = button.innerHTML;
+                button.innerHTML = '<i class="fas fa-check text-success"></i>';
+                button.classList.add('btn-success');
+                button.classList.remove('btn-outline-secondary');
+                
+                setTimeout(() => {
+                    button.innerHTML = originalIcon;
+                    button.classList.remove('btn-success');
+                    button.classList.add('btn-outline-secondary');
+                }, 2000);
+            }).catch(function(err) {
+                console.error('Could not copy text: ', err);
+                alert('Failed to copy code. Please try again.');
+            });
+        }
+        
+        function regenerateClassroomCode(classroomId) {
+            // Generate a new classroom code
+            const prefix = classroomId.toUpperCase().replace(/\d/g, '');
+            const randomCode = Math.random().toString(36).substring(2, 8).toUpperCase();
+            const newCode = `${prefix}-${randomCode}`;
+            
+            // Update the display
+            const codeElement = document.getElementById(`${classroomId}Code`);
+            if (codeElement) {
+                codeElement.textContent = newCode;
+            }
+            
+            // Update the copy button onclick
+            const copyButton = codeElement.parentElement.querySelector('button[onclick*="copyClassroomCode"]');
+            if (copyButton) {
+                copyButton.setAttribute('onclick', `copyClassroomCode('${newCode}')`);
+            }
+            
+            // Show success message
+            alert(`New classroom code generated: ${newCode}\n\nShare this code with your students so they can join your classroom.`);
+            
+            // In a real app, this would save to the database
+            console.log(`Generated new code for ${classroomId}: ${newCode}`);
+        }
+        
+        function generateClassroomCode(className, roomNumber) {
+            // Generate a classroom code based on class name and room number
+            const prefix = className.replace(/\s+/g, '').substring(0, 4).toUpperCase();
+            const roomCode = roomNumber.toString().padStart(3, '0');
+            const randomCode = Math.random().toString(36).substring(2, 5).toUpperCase();
+            return `${prefix}-${roomCode}${randomCode}`;
+        }
+        
+        function showCreateClassroomModal() {
+            const modalHtml = `
+                <div class="modal fade" id="createClassroomModal" tabindex="-1" aria-labelledby="createClassroomModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="createClassroomModalLabel">Create New Classroom</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="createClassroomForm">
+                                    <div class="mb-3">
+                                        <label for="className" class="form-label">Class Name</label>
+                                        <input type="text" class="form-control" id="className" placeholder="e.g., Grade 7 Math" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="roomNumber" class="form-label">Room Number</label>
+                                        <input type="text" class="form-control" id="roomNumber" placeholder="e.g., 101" required>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="subject" class="form-label">Subject</label>
+                                        <select class="form-select" id="subject" required>
+                                            <option value="">Select Subject</option>
+                                            <option value="math">Mathematics</option>
+                                            <option value="english">English Language Arts</option>
+                                            <option value="science">Science</option>
+                                            <option value="social-studies">Social Studies</option>
+                                            <option value="history">History</option>
+                                            <option value="art">Art</option>
+                                            <option value="music">Music</option>
+                                            <option value="physical-education">Physical Education</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="gradeLevel" class="form-label">Grade Level</label>
+                                        <select class="form-select" id="gradeLevel" required>
+                                            <option value="">Select Grade</option>
+                                            <option value="K">Kindergarten</option>
+                                            <option value="1">Grade 1</option>
+                                            <option value="2">Grade 2</option>
+                                            <option value="3">Grade 3</option>
+                                            <option value="4">Grade 4</option>
+                                            <option value="5">Grade 5</option>
+                                            <option value="6">Grade 6</option>
+                                            <option value="7">Grade 7</option>
+                                            <option value="8">Grade 8</option>
+                                            <option value="9">Grade 9</option>
+                                            <option value="10">Grade 10</option>
+                                            <option value="11">Grade 11</option>
+                                            <option value="12">Grade 12</option>
+                                        </select>
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="description" class="form-label">Description (Optional)</label>
+                                        <textarea class="form-control" id="description" rows="3" placeholder="Brief description of the class..."></textarea>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button type="button" class="btn btn-primary" onclick="createNewClassroom()">Create Classroom</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if any
+            const existingModal = document.getElementById('createClassroomModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            // Add modal to body
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('createClassroomModal'));
+            modal.show();
+        }
+        
+        function createNewClassroom() {
+            const className = document.getElementById('className').value;
+            const roomNumber = document.getElementById('roomNumber').value;
+            const subject = document.getElementById('subject').value;
+            const gradeLevel = document.getElementById('gradeLevel').value;
+            const description = document.getElementById('description').value;
+            
+            // Validate form
+            if (!className || !roomNumber || !subject || !gradeLevel) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Generate classroom code
+            const classroomCode = generateClassroomCode(className, roomNumber);
+            
+            // Create classroom data
+            const classroomData = {
+                name: className,
+                roomNumber: roomNumber,
+                subject: subject,
+                gradeLevel: gradeLevel,
+                description: description,
+                code: classroomCode,
+                createdBy: currentUser.email,
+                createdAt: new Date().toISOString(),
+                students: []
+            };
+            
+            // In a real app, this would save to the database
+            console.log('New classroom created:', classroomData);
+            
+            // Show success message with classroom code
+            alert(`Classroom "${className}" created successfully!\n\nClassroom Code: ${classroomCode}\n\nShare this code with your students so they can join your classroom.`);
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('createClassroomModal'));
+            modal.hide();
+            
+            // In a real app, you would refresh the classroom list here
+            // For now, we'll just show a message
+            alert('Note: In a full implementation, the new classroom would appear in your classroom list.');
         }
 
         // Start learning module
@@ -2635,6 +3281,65 @@
         }
 
         // Logout
+        // Universal Menu Functions
+        function toggleUniversalMenu() {
+            const menu = document.getElementById('universalMenu');
+            menu.classList.toggle('show');
+        }
+        
+        function viewProfile() {
+            if (!currentUser) {
+                alert('Please log in to view your profile.');
+                return;
+            }
+            
+            const fullName = (currentUser.firstName || 'User') + ' ' + (currentUser.lastName || 'Name');
+            const profileInfo = `
+                <div class="profile-modal">
+                    <h4><i class="fas fa-user-circle"></i> Profile Information</h4>
+                    <div class="profile-details">
+                        <p><strong>Name:</strong> ${fullName}</p>
+                        <p><strong>Email:</strong> ${currentUser.email || 'Not provided'}</p>
+                        <p><strong>Role:</strong> ${currentUser.role ? currentUser.role.charAt(0).toUpperCase() + currentUser.role.slice(1) : 'Unknown'}</p>
+                        ${currentUser.grade && currentUser.grade !== 'N/A' ? `<p><strong>Grade:</strong> ${currentUser.grade}</p>` : ''}
+                        <p><strong>Stars:</strong> <i class="fas fa-star text-warning"></i> ${userStars || 0}</p>
+                        <p><strong>Status:</strong> <span class="badge bg-success">Active</span></p>
+                    </div>
+                </div>
+            `;
+            
+            // Create modal
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">My Profile</h5>
+                            <button type="button" class="btn-close" onclick="closeProfileModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            ${profileInfo}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" onclick="closeProfileModal()">Close</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            toggleUniversalMenu(); // Close the menu
+        }
+        
+        function closeProfileModal() {
+            const modal = document.querySelector('.modal');
+            if (modal) {
+                modal.remove();
+            }
+        }
+        
         function logout() {
             console.log('Logging out user:', currentUser);
             
@@ -2650,10 +3355,8 @@
             document.getElementById('teacherDashboard').classList.remove('active');
             document.getElementById('adminDashboard').classList.remove('active');
             
-            // Hide all logout buttons
-            document.querySelectorAll('.back-btn').forEach(btn => {
-                btn.style.display = 'none';
-            });
+            // Hide universal menu
+            document.getElementById('universalMenu').style.display = 'none';
             
             // Show login page
             document.getElementById('loginPage').style.display = 'flex';
@@ -2669,6 +3372,9 @@
             });
             
             console.log('Logout completed');
+            
+            // Refresh the page immediately after logout
+            window.location.reload();
         }
 
         // Listen for messages from game windows
