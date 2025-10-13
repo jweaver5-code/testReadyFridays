@@ -10,6 +10,7 @@ namespace QualityEducation.Data
         }
 
         public DbSet<User> Users { get; set; }
+        public DbSet<Classroom> Classrooms { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -33,9 +34,23 @@ namespace QualityEducation.Data
                 entity.Property(e => e.IsActive).IsRequired();
             });
 
+            // Configure Classroom entity
+            modelBuilder.Entity<Classroom>(entity =>
+            {
+                entity.HasKey(e => e.Id);
+                entity.Property(e => e.Name).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Grade).IsRequired().HasMaxLength(50);
+                entity.Property(e => e.Subject).IsRequired().HasMaxLength(100);
+                entity.Property(e => e.Code).IsRequired().HasMaxLength(20);
+                entity.Property(e => e.StudentIds).HasColumnType("TEXT");
+                entity.Property(e => e.AssignedContent).HasColumnType("TEXT");
+                entity.Property(e => e.Description).HasMaxLength(500);
+                entity.Property(e => e.CreatedAt).IsRequired();
+                entity.Property(e => e.IsActive).IsRequired();
+            });
+
             // Seed data is now handled in Program.cs to avoid overriding existing data
         }
-
     }
 }
 

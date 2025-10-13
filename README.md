@@ -4,6 +4,20 @@ A Khan Academy-style educational web application built with vanilla HTML, CSS, J
 
 ## Features
 
+### 🏫 **Classroom Management** ⭐ NEW!
+- **For Teachers**:
+  - Create and manage multiple classrooms
+  - Generate unique classroom codes automatically
+  - **One-click code copying** to share with students
+  - View enrolled students and their progress
+  - Track student engagement and stars earned
+- **For Students**:
+  - Join classrooms using teacher-provided codes
+  - View all joined classrooms in "My Classrooms" tab
+  - See classroom details (teacher, subject, grade)
+  - Access classroom-specific content
+  - Earn 5 stars when joining a classroom
+
 ### 📚 **Learning Modules**
 - **Structured Content**: Each course contains multiple learning modules
 - **Rich Content**: Detailed explanations and examples for each topic
@@ -34,59 +48,100 @@ A Khan Academy-style educational web application built with vanilla HTML, CSS, J
 
 ### Prerequisites
 - A modern web browser (Chrome, Firefox, Safari, Edge)
-- No additional software or installations required
+- .NET 8.0 SDK (for backend API)
+- SQLite (database)
 
 ### Running the Application
 
-1. **Download/Clone** the project files to your computer
-2. **Open** `index.html` in your web browser
-3. **Start Learning!** Browse courses, take quizzes, and earn points
+#### Backend Setup
+1. **Update Database**: Run the classroom setup script
+   ```bash
+   sqlite3 data/qualityEducation_new.db < setup_classrooms.sql
+   ```
 
-### Alternative: Local Server (Recommended)
-For the best experience, serve the files through a local web server:
+2. **Build and Run**: Start the .NET backend
+   ```bash
+   dotnet build
+   dotnet run
+   ```
+   The API will start on `http://localhost:3000`
 
-```bash
-# Using Python 3
-python -m http.server 8000
+#### Frontend
+1. **Open** `index.html` in your web browser
+2. **Login** with demo credentials (see below)
+3. **Start Learning!** Browse courses, join classrooms, and earn points
 
-# Using Node.js (if you have it installed)
-npx http-server
+### Demo Credentials
 
-# Using PHP
-php -S localhost:8000
-```
+**Teachers**:
+- Email: `minerva.mcgonagall@hogwarts.edu`, Password: `transfiguration123`
+- Email: `severus.snape@hogwarts.edu`, Password: `potions123`
 
-Then open `http://localhost:8000` in your browser.
+**Students**:
+- Email: `harry.potter@hogwarts.edu`, Password: `quidditch123`
+- Email: `hermione.granger@hogwarts.edu`, Password: `books123`
+
+**Admin**:
+- Email: `admin@qualityeducation.com`, Password: `admin123`
+
+### Classroom Codes (for testing)
+- `TRANS7` - Transfiguration (Grade 7)
+- `POT7` - Potions (Grade 7)
+- `DADA7` - Defense Against Dark Arts (Grade 7)
+- `CHARM6` - Charms (Grade 6)
 
 ## How to Use
 
-### 1. **Browse Courses**
-- Click "Courses" in the navigation
-- Use filters to find courses by subject or grade level
-- Search for specific topics
-- Click on any course card to view details
+### For Teachers 👨‍🏫
 
-### 2. **Take a Course**
-- Select a course to see its modules
-- Click on a module to read the content
-- Click "Take Quiz" to test your knowledge
-- Answer questions to earn points
+#### 1. **Create a Classroom**
+- Login as a teacher
+- Go to "My Classrooms" tab
+- Click "Create New Classroom"
+- Fill in classroom details (name, grade, subject)
+- Get your unique classroom code!
 
-### 3. **Earn Points**
-- Get 1 point for each correct quiz answer
-- Complete modules to unlock more content
-- Track your progress in the dashboard
+#### 2. **Share Classroom Code**
+- **Click the classroom code badge** to copy it instantly
+- You'll see a success message when copied
+- Share the code with your students
+- Watch your classroom grow!
 
-### 4. **Play Memory Game**
-- Earn 10 points to unlock the memory game
-- Choose your difficulty level
-- Match pairs of cards to win
-- Track your moves and efficiency
+#### 3. **Manage Students**
+- Click "View Students" to see enrolled students
+- Monitor student progress and stars earned
+- Track engagement in your classroom
 
-### 5. **View Progress**
+### For Students 🎓
+
+#### 1. **Join a Classroom**
+- Login as a student
+- Go to "Learning Modules" tab
+- Click "Join Classroom"
+- Enter the code from your teacher
+- Earn 5 stars for joining!
+
+#### 2. **View Your Classrooms**
+- Go to "My Classrooms" tab
+- See all classrooms you've joined
+- View classroom details and teacher info
+- Click "View Content" to access materials
+
+#### 3. **Complete Learning Modules**
+- Browse available learning modules
+- Complete modules to earn stars
+- Take quizzes to test your knowledge
+- Track your progress
+
+#### 4. **Play Games**
+- Spend stars to unlock games
+- Choose from Flappy Bird, Snake, or Memory Game
+- Have fun while learning!
+
+#### 5. **View Progress**
 - Check your dashboard for statistics
-- See recent activity and achievements
-- Monitor progress across all subjects
+- See total stars earned
+- Monitor modules completed
 
 ## Course Content
 
@@ -127,16 +182,23 @@ Then open `http://localhost:8000` in your browser.
 ## Technical Details
 
 ### Built With
-- **HTML5**: Semantic markup and accessibility
-- **CSS3**: Custom styling with animations and responsive design
-- **JavaScript (ES6+)**: Modern JavaScript with classes and modules
-- **Bootstrap 5.3.3**: Responsive UI framework via CDN
-- **Bootstrap Icons**: Icon library for visual elements
+- **Frontend**:
+  - HTML5: Semantic markup and accessibility
+  - CSS3: Custom styling with animations and responsive design
+  - JavaScript (ES6+): Modern JavaScript with async/await
+  - Bootstrap 5.3.3: Responsive UI framework
+  - Font Awesome 6.0: Icon library
+
+- **Backend**:
+  - ASP.NET Core 8.0: REST API
+  - Entity Framework Core: ORM for database
+  - SQLite: Lightweight database
+  - C# 12: Modern language features
 
 ### Data Storage
-- **JSON Files**: Course content, questions, and subject data
-- **localStorage**: User progress and statistics
-- **No Database Required**: Fully client-side application
+- **SQLite Database**: Users, Classrooms, progress data
+- **localStorage**: Client-side caching and session data
+- **JSON**: Course content and quiz questions
 
 ### Browser Compatibility
 - Chrome 60+
@@ -147,17 +209,25 @@ Then open `http://localhost:8000` in your browser.
 ## File Structure
 
 ```
-qualityEducation/
-├── index.html              # Main HTML file
-├── styles/
-│   └── main.css           # Custom CSS styles
-├── scripts/
-│   └── main.js            # Main JavaScript application
+testReadyFridays/
+├── index.html                          # Main frontend application
+├── Models/
+│   ├── User.cs                        # User data model
+│   └── Classroom.cs                   # Classroom data model ⭐ NEW
+├── Controllers/
+│   ├── UsersController.cs             # User API endpoints
+│   └── ClassroomsController.cs        # Classroom API endpoints ⭐ NEW
 ├── data/
-│   ├── subjects.json      # Subject categories
-│   ├── courses.json       # Course content and modules
-│   └── questions.json     # Quiz questions and answers
-└── README.md              # This file
+│   ├── QualityEducationDbContext.cs   # Database context
+│   ├── qualityEducation_new.db       # SQLite database
+│   ├── courses.json                   # Course content
+│   ├── questions.json                 # Quiz questions
+│   └── subjects.json                  # Subject categories
+├── setup_classrooms.sql               # Database setup script ⭐ NEW
+├── QUICK_START_CLASSROOMS.md         # Testing guide ⭐ NEW
+├── CLASSROOM_FEATURES.md             # Technical docs ⭐ NEW
+├── IMPLEMENTATION_SUMMARY.md         # Implementation details ⭐ NEW
+└── README.md                          # This file
 ```
 
 ## Customization
@@ -199,17 +269,32 @@ qualityEducation/
 ### Browser Console
 Press F12 to open developer tools and check the Console tab for any error messages.
 
+## Recent Updates ⭐
+
+### Version 2.0 - Classroom Features (Latest)
+- ✅ Full classroom management system
+- ✅ Teachers can create and manage classrooms
+- ✅ **One-click classroom code copying**
+- ✅ Students can join classrooms
+- ✅ "My Classrooms" view for students
+- ✅ Student enrollment tracking
+- ✅ Star rewards for participation
+
+### Quick Start
+See `QUICK_START_CLASSROOMS.md` for detailed testing instructions.
+
 ## Future Enhancements
 
 Potential features for future versions:
+- Assign quizzes and lessons to classrooms
+- Classroom announcements and messaging
+- Advanced grading and feedback system
+- Classroom leaderboards
 - More subjects and courses
 - Additional game types
 - Badge and achievement system
-- Social features and leaderboards
 - Offline support with service workers
 - Mobile app version
-- Teacher/admin dashboard
-- Custom course creation tools
 
 ## Support
 

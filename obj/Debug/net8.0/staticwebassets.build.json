@@ -1,1 +1,11 @@
-{"Version":1,"Hash":"g5XrD6ij9S0X9UjLopaJh+9D+cem+f4XqGa0hzWZYKg=","Source":"QualityEducation","BasePath":"_content/QualityEducation","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}
+{
+  "Version": 1,
+  "Hash": "eTUM04JTDjwslXm52qogwfDksWI81VYDIbR1Hq5MLF8=",
+  "Source": "QualityEducation",
+  "BasePath": "_content/QualityEducation",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
