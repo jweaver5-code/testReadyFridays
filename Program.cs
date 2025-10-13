@@ -2,6 +2,104 @@ using Microsoft.EntityFrameworkCore;
 using QualityEducation.Data;
 using QualityEducation.Models;
 
+// Seed initial data method
+static async Task SeedInitialData(QualityEducationDbContext context)
+{
+    // Admin user
+    var adminUser = new User
+    {
+        Id = 1,
+        FirstName = "Admin",
+        LastName = "User",
+        Email = "admin@qualityeducation.com",
+        Password = "admin123",
+        Role = "admin",
+        Grade = "N/A",
+        Stars = 0,
+        CompletedModules = "[]",
+        CompletedQuizzes = "[]",
+        GamesPlayed = 0,
+        RecentActivity = "[]",
+        CreatedAt = DateTime.UtcNow,
+        LastLogin = DateTime.UtcNow,
+        IsActive = true
+    };
+
+    // Harry Potter Teachers
+    var teachers = new[]
+    {
+        new { FirstName = "Albus", LastName = "Dumbledore", Email = "albus.dumbledore@hogwarts.edu", Password = "phoenix123", Grade = "Multiple Grades" },
+        new { FirstName = "Minerva", LastName = "McGonagall", Email = "minerva.mcgonagall@hogwarts.edu", Password = "transfiguration123", Grade = "Multiple Grades" },
+        new { FirstName = "Severus", LastName = "Snape", Email = "severus.snape@hogwarts.edu", Password = "potions123", Grade = "Multiple Grades" },
+        new { FirstName = "Remus", LastName = "Lupin", Email = "remus.lupin@hogwarts.edu", Password = "defense123", Grade = "Multiple Grades" }
+    };
+
+    // Harry Potter Students
+    var students = new[]
+    {
+        new { FirstName = "Harry", LastName = "Potter", Email = "harry.potter@hogwarts.edu", Password = "quidditch123", Grade = "Grade 7", Stars = 100 },
+        new { FirstName = "Hermione", LastName = "Granger", Email = "hermione.granger@hogwarts.edu", Password = "books123", Grade = "Grade 7", Stars = 0 },
+        new { FirstName = "Ron", LastName = "Weasley", Email = "ron.weasley@hogwarts.edu", Password = "chess123", Grade = "Grade 7", Stars = 0 },
+        new { FirstName = "Neville", LastName = "Longbottom", Email = "neville.longbottom@hogwarts.edu", Password = "herbology123", Grade = "Grade 7", Stars = 0 },
+        new { FirstName = "Luna", LastName = "Lovegood", Email = "luna.lovegood@hogwarts.edu", Password = "nargles123", Grade = "Grade 6", Stars = 0 },
+        new { FirstName = "Ginny", LastName = "Weasley", Email = "ginny.weasley@hogwarts.edu", Password = "batbogey123", Grade = "Grade 6", Stars = 0 },
+        new { FirstName = "Draco", LastName = "Malfoy", Email = "draco.malfoy@hogwarts.edu", Password = "slytherin123", Grade = "Grade 7", Stars = 0 },
+        new { FirstName = "Cedric", LastName = "Diggory", Email = "cedric.diggory@hogwarts.edu", Password = "hufflepuff123", Grade = "Grade 7", Stars = 0 }
+    };
+
+    // Add admin user
+    context.Users.Add(adminUser);
+
+    // Add teachers
+    for (int i = 0; i < teachers.Length; i++)
+    {
+        context.Users.Add(new User
+        {
+            Id = i + 2,
+            FirstName = teachers[i].FirstName,
+            LastName = teachers[i].LastName,
+            Email = teachers[i].Email,
+            Password = teachers[i].Password,
+            Role = "teacher",
+            Grade = teachers[i].Grade,
+            Stars = 0,
+            CompletedModules = "[]",
+            CompletedQuizzes = "[]",
+            GamesPlayed = 0,
+            RecentActivity = "[]",
+            CreatedAt = DateTime.UtcNow,
+            LastLogin = DateTime.UtcNow,
+            IsActive = true
+        });
+    }
+
+    // Add students
+    for (int i = 0; i < students.Length; i++)
+    {
+        context.Users.Add(new User
+        {
+            Id = i + 10,
+            FirstName = students[i].FirstName,
+            LastName = students[i].LastName,
+            Email = students[i].Email,
+            Password = students[i].Password,
+            Role = "student",
+            Grade = students[i].Grade,
+            Stars = students[i].Stars,
+            CompletedModules = "[]",
+            CompletedQuizzes = "[]",
+            GamesPlayed = 0,
+            RecentActivity = "[]",
+            CreatedAt = DateTime.UtcNow,
+            LastLogin = DateTime.UtcNow,
+            IsActive = true
+        });
+    }
+
+    await context.SaveChangesAsync();
+    Console.WriteLine("Initial data seeded successfully.");
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -52,18 +150,31 @@ app.UseAuthorization();
 
 app.MapControllers();
 
-// Ensure database is created
+// Ensure database is created and seeded
 using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<QualityEducationDbContext>();
-    var created = context.Database.EnsureCreated();
-    if (created)
+    
+    // Check if database exists
+    var exists = context.Database.CanConnect();
+    if (!exists)
     {
-        Console.WriteLine("Database was created with seed data.");
+        Console.WriteLine("Database does not exist, creating with seed data...");
+        context.Database.EnsureCreated();
+        
+        // Seed initial data only when database is first created
+        await SeedInitialData(context);
     }
     else
     {
         Console.WriteLine("Database already exists, using existing data.");
+        
+        // Check Harry Potter's current star count
+        var harryPotter = await context.Users.FirstOrDefaultAsync(u => u.FirstName == "Harry" && u.LastName == "Potter");
+        if (harryPotter != null)
+        {
+            Console.WriteLine($"Harry Potter's current star count: {harryPotter.Stars}");
+        }
     }
 }
 
