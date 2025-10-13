@@ -1612,10 +1612,23 @@
             const savedStars = localStorage.getItem('userStars');
             const savedGrade = localStorage.getItem('userGrade');
             
+            console.log('Loading saved user data:', {
+                hasUser: !!savedUser,
+                savedStars: savedStars,
+                savedGrade: savedGrade
+            });
+            
             if (savedUser && savedStars && savedGrade) {
                 try {
                     currentUser = JSON.parse(savedUser);
                     userGrade = savedGrade;
+                    userStars = parseInt(savedStars) || 0; // Set userStars from localStorage
+                    
+                    console.log('Loaded from localStorage:', {
+                        user: `${currentUser.firstName} ${currentUser.lastName}`,
+                        stars: userStars,
+                        grade: userGrade
+                    });
                     
                     // Sync with database to get latest data
                     await syncWithDatabase();
@@ -1635,6 +1648,8 @@
                     console.error('Error loading saved user data:', error);
                     clearSavedUserData();
                 }
+            } else {
+                console.log('No saved user data found, showing login page');
             }
         }
         
@@ -1650,23 +1665,15 @@
                 console.log('Current local stars:', userStars);
                 console.log('Current user ID:', currentUser.id);
                 
-                // First, try to save any local changes to database
-                console.log('Saving local changes to database...');
-                try {
-                    await saveToDatabase();
-                    console.log('Successfully saved local changes to database');
-                } catch (saveError) {
-                    console.warn('Failed to save to database, continuing with fetch:', saveError.message);
-                    // Continue with fetch even if save failed
-                }
-                
-                // Then get latest user data from database
+                // First, get latest user data from database
                 console.log('Fetching latest data from database...');
                 const latestUser = await apiCall(`users/${currentUser.id}`);
                 
                 if (latestUser) {
                     console.log('Database user data:', {
                         id: latestUser.id,
+                        firstName: latestUser.firstName,
+                        lastName: latestUser.lastName,
                         stars: latestUser.stars,
                         completedModules: latestUser.completedModules,
                         gamesPlayed: latestUser.gamesPlayed
@@ -1685,6 +1692,7 @@
                     saveUserData();
                     
                     console.log('Sync completed:', {
+                        user: `${currentUser.firstName} ${currentUser.lastName}`,
                         oldStars: oldStars,
                         newStars: userStars,
                         completedModules: currentUser.completedModules,
@@ -2141,6 +2149,13 @@
                 console.log('Login response:', user);
                 
                 if (user) {
+                    console.log('Login successful for user:', {
+                        id: user.id,
+                        name: `${user.firstName} ${user.lastName}`,
+                        stars: user.stars,
+                        role: user.role
+                    });
+                    
                     currentUser = {
                         id: user.id,
                         role: user.role,
@@ -2154,6 +2169,8 @@
                     
                     userGrade = user.grade;
                     userStars = user.stars; // Use actual star count from database
+                    
+                    console.log('Set userStars to:', userStars);
                     
                     // Update lastLogin in database
                     try {
@@ -3291,6 +3308,7 @@
 
         // Update stars display
         function updateStarsDisplay() {
+            console.log('Updating stars display with value:', userStars);
             document.getElementById('studentStars').textContent = userStars;
             document.getElementById('totalStars').textContent = userStars;
         }
@@ -3449,8 +3467,8 @@
         document.addEventListener('DOMContentLoaded', async () => {
             initializeTheme();
             await loadSavedUserData(); // Load saved user data first
-            updateStarsDisplay();
-            updateGameAvailability();
+            // updateStarsDisplay() and updateGameAvailability() are now called within loadSavedUserData()
+            // after the user data is fully loaded and synced with the database
         });
     </script>
   </body>
