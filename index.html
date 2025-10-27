@@ -1051,11 +1051,6 @@
                     <h2><i class="fas fa-user-shield"></i> Admin Dashboard</h2>
                     <p>Welcome back, <span id="adminName">Admin</span>!</p>
                 </div>
-                <div>
-                    <button class="btn btn-sm btn-outline-light" onclick="testSync()" title="Test Sync">
-                        <i class="fas fa-sync-alt"></i> Test Sync
-                    </button>
-                </div>
             </div>
         </div>
         
@@ -1086,6 +1081,14 @@
                             <h3><i class="fas fa-users"></i> All Users</h3>
                         </div>
                         <div class="col-md-6 text-end">
+                            <div class="d-inline-block me-2">
+                                <select class="form-select" id="roleFilter" onchange="loadAllUsers()">
+                                    <option value="all">All Roles</option>
+                                    <option value="admin">Admin</option>
+                                    <option value="teacher">Teacher</option>
+                                    <option value="student">Student</option>
+                                </select>
+                            </div>
                             <button class="btn btn-primary" onclick="loadAllUsers()">
                                 <i class="fas fa-sync-alt"></i> Refresh
                             </button>
@@ -1099,7 +1102,9 @@
                                     <th>ID</th>
                                     <th>Name</th>
                                     <th>Email</th>
-                                    <th>Role</th>
+                                    <th onclick="sortByRole()" style="cursor: pointer;">
+                                        Role <i class="fas fa-sort" id="roleSortIcon"></i>
+                                    </th>
                                     <th>Grade</th>
                                     <th>Stars</th>
                                     <th>Status</th>
@@ -1238,11 +1243,6 @@
                     <h2><i class="fas fa-chalkboard-teacher"></i> Teacher Dashboard</h2>
                     <p>Welcome back, <span id="teacherName">Teacher</span>!</p>
                 </div>
-                <div>
-                    <button class="btn btn-sm btn-outline-light" onclick="testSync()" title="Test Sync">
-                        <i class="fas fa-sync-alt"></i> Test Sync
-                    </button>
-                </div>
             </div>
         </div>
         
@@ -1269,26 +1269,9 @@
                 <!-- Classrooms Tab -->
                 <div class="tab-pane fade show active" id="classrooms" role="tabpanel">
                     <h3>My Classrooms</h3>
-                      <div class="row">
-                        <div class="col-md-6">
-                            <div class="module-card">
-                                <h4>Grade 7 Math - Room 101</h4>
-                                <p>Students: 24 | Active: 18</p>
-                                <div class="btn-group">
-                                    <button class="btn btn-primary" onclick="viewClassroom('math7')">View Students</button>
-                                    <button class="btn btn-success" onclick="createQuiz('math7')">Create Quiz</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-6">
-                            <div class="module-card">
-                                <h4>Grade 8 Science - Room 203</h4>
-                                <p>Students: 22 | Active: 20</p>
-                                <div class="btn-group">
-                                    <button class="btn btn-primary" onclick="viewClassroom('science8')">View Students</button>
-                                    <button class="btn btn-success" onclick="createQuiz('science8')">Create Quiz</button>
-                        </div>
-                      </div>
+                    <div id="teacherClassroomsList">
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> Loading your classrooms...
                         </div>
                     </div>
                 </div>
@@ -1531,20 +1514,20 @@
                             <button class="play-btn" onclick="playGame('flappy')" id="flappyBtn">Play Game</button>
                     </div>
                         
-                        <div class="game-card" id="snakesGameCard">
-                            <div class="game-icon text-success">🐍</div>
-                            <div class="game-title">Snakes</div>
-                            <div class="game-cost">Cost: 15 ⭐</div>
-                            <div class="game-description">Control the snake and grow longer!</div>
-                            <button class="play-btn" onclick="playGame('snakes')" id="snakesBtn">Play Game</button>
-                        </div>
-                        
                         <div class="game-card" id="memoryGameCard">
                             <div class="game-icon text-danger">🧠</div>
                             <div class="game-title">Memory Game</div>
                             <div class="game-cost">Cost: 12 ⭐</div>
                             <div class="game-description">Challenge your memory skills!</div>
                             <button class="play-btn" onclick="playGame('memory')" id="memoryBtn">Play Game</button>
+                        </div>
+                        
+                        <div class="game-card" id="snakesGameCard">
+                            <div class="game-icon text-success">🐍</div>
+                            <div class="game-title">Snakes</div>
+                            <div class="game-cost">Cost: 15 ⭐</div>
+                            <div class="game-description">Control the snake and grow longer!</div>
+                            <button class="play-btn" onclick="playGame('snakes')" id="snakesBtn">Play Game</button>
                         </div>
                     </div>
                   </div>
@@ -1962,26 +1945,6 @@
                 syncStatus.style.display = 'none';
             }
         }
-        
-        // Test sync function for debugging
-        async function testSync() {
-            console.log('=== MANUAL SYNC TEST ===');
-            console.log('Current user:', currentUser);
-            console.log('Current stars:', userStars);
-            
-            try {
-                showSyncIndicator();
-                await syncWithDatabase();
-                updateStarsDisplay();
-                updateGameAvailability();
-                hideSyncIndicator();
-                console.log('Manual sync test completed successfully');
-            } catch (error) {
-                console.error('Manual sync test failed:', error);
-                hideSyncIndicator();
-            }
-        }
-        
         
         // API Configuration
         const API_BASE_URL = 'http://localhost:3000/api/';
@@ -2738,33 +2701,106 @@
             loadAnalytics();
         }
         
+        // Track sort state
+        let roleSortDirection = 'none'; // 'none', 'asc', 'desc'
+        let allUsersCache = []; // Cache all users to avoid re-fetching
+        
         // Load all users for admin dashboard
         async function loadAllUsers() {
             try {
                 const users = await apiCall('users', 'GET');
                 const tbody = document.getElementById('usersTableBody');
+                const roleFilter = document.getElementById('roleFilter');
                 
                 if (!users || users.length === 0) {
                     tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">No users found</td></tr>';
                     return;
                 }
                 
-                tbody.innerHTML = users.map(user => `
-                    <tr>
-                        <td>${user.id}</td>
-                        <td>${user.firstName} ${user.lastName}</td>
-                        <td>${user.email}</td>
-                        <td><span class="badge bg-${user.role === 'admin' ? 'danger' : user.role === 'teacher' ? 'info' : 'success'}">${user.role}</span></td>
-                        <td>${user.grade || 'N/A'}</td>
-                        <td><i class="fas fa-star text-warning"></i> ${user.stars || 0}</td>
-                        <td><span class="badge bg-${user.isActive ? 'success' : 'secondary'}">${user.isActive ? 'Active' : 'Inactive'}</span></td>
-                        <td>${user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}</td>
-                    </tr>
-                `).join('');
+                // Cache users for sorting
+                allUsersCache = users;
+                
+                // Filter users by selected role
+                let filteredUsers = users;
+                if (roleFilter && roleFilter.value !== 'all') {
+                    filteredUsers = users.filter(user => user.role === roleFilter.value);
+                }
+                
+                // Sort users by role for better organization
+                filteredUsers.sort((a, b) => {
+                    const roleOrder = { 'admin': 1, 'teacher': 2, 'student': 3 };
+                    return (roleOrder[a.role] || 99) - (roleOrder[b.role] || 99);
+                });
+                
+                displayUsers(filteredUsers);
             } catch (error) {
                 console.error('Failed to load users:', error);
                 document.getElementById('usersTableBody').innerHTML = '<tr><td colspan="8" class="text-center text-danger">Failed to load users</td></tr>';
             }
+        }
+        
+        // Display users in the table
+        function displayUsers(users) {
+            const tbody = document.getElementById('usersTableBody');
+            
+            if (users.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted">No users found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = users.map(user => `
+                <tr>
+                    <td>${user.id}</td>
+                    <td>${user.firstName} ${user.lastName}</td>
+                    <td>${user.email}</td>
+                    <td><span class="badge bg-${user.role === 'admin' ? 'danger' : user.role === 'teacher' ? 'info' : 'success'}">${user.role}</span></td>
+                    <td>${user.grade || 'N/A'}</td>
+                    <td><i class="fas fa-star text-warning"></i> ${user.stars || 0}</td>
+                    <td><span class="badge bg-${user.isActive ? 'success' : 'secondary'}">${user.isActive ? 'Active' : 'Inactive'}</span></td>
+                    <td>${user.lastLogin ? new Date(user.lastLogin).toLocaleDateString() : 'Never'}</td>
+                </tr>
+            `).join('');
+        }
+        
+        // Sort users by role
+        window.sortByRole = function() {
+            if (!allUsersCache || allUsersCache.length === 0) return;
+            
+            // Toggle sort direction
+            if (roleSortDirection === 'none' || roleSortDirection === 'desc') {
+                roleSortDirection = 'asc';
+            } else {
+                roleSortDirection = 'desc';
+            }
+            
+            // Update sort icon
+            const sortIcon = document.getElementById('roleSortIcon');
+            if (sortIcon) {
+                sortIcon.className = roleSortDirection === 'asc' ? 'fas fa-sort-up' : 'fas fa-sort-down';
+            }
+            
+            // Get current filter
+            const roleFilter = document.getElementById('roleFilter');
+            let filteredUsers = allUsersCache;
+            
+            if (roleFilter && roleFilter.value !== 'all') {
+                filteredUsers = allUsersCache.filter(user => user.role === roleFilter.value);
+            }
+            
+            // Sort users
+            filteredUsers.sort((a, b) => {
+                const roleOrder = { 'admin': 1, 'teacher': 2, 'student': 3 };
+                const orderA = roleOrder[a.role] || 99;
+                const orderB = roleOrder[b.role] || 99;
+                
+                if (roleSortDirection === 'asc') {
+                    return orderA - orderB;
+                } else {
+                    return orderB - orderA;
+                }
+            });
+            
+            displayUsers(filteredUsers);
         }
         
         // Load analytics data
@@ -2928,6 +2964,9 @@
             
             // Update teacher name
             document.getElementById('teacherName').textContent = currentUser.name;
+            
+            // Load teacher's classrooms
+            loadTeacherClassrooms();
         }
         
         // Show student dashboard
@@ -2947,34 +2986,46 @@
             
             updateStarsDisplay();
             updateGameAvailability();
+            
+            // Load student's classrooms
+            loadStudentClassrooms();
         }
         
         // Show join classroom modal
-        function showJoinClassroom() {
+        window.showJoinClassroom = async function() {
+            // Create modal backdrop
+            const backdrop = document.createElement('div');
+            backdrop.className = 'modal-backdrop fade show';
+            backdrop.id = 'joinClassroomBackdrop';
+            document.body.appendChild(backdrop);
+            
+            // Create modal with loading message first
             const modal = document.createElement('div');
             modal.className = 'modal fade show';
             modal.style.display = 'block';
+            modal.style.zIndex = '1060';
+            modal.id = 'joinClassroomModal';
+            
             modal.innerHTML = `
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-lg">
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title">Join Classroom</h5>
-                            <button type="button" class="btn-close" onclick="closeModal()"></button>
+                            <button type="button" class="btn-close" onclick="closeJoinModal()"></button>
                         </div>
                         <div class="modal-body">
-                            <div class="form-group">
+                            <div class="form-group mb-3">
                                 <label class="form-label">Classroom Code</label>
-                                <input type="text" class="form-control" id="classroomCode" placeholder="Enter classroom code">
+                                <input type="text" class="form-control" id="classroomCode" placeholder="Enter classroom code or click a classroom below">
                             </div>
-                            <div class="alert alert-info">
-                                <strong>Available Classrooms:</strong><br>
-                                MATH101 - Grade 7 Math<br>
-                                SCI203 - Grade 8 Science
+                            <div class="mb-3" id="classroomsListContainer">
+                                <strong class="mb-2 d-block">Available Classrooms:</strong>
+                                <p class="text-muted">Loading classrooms...</p>
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button class="btn btn-primary" onclick="joinClassroom()">Join Classroom</button>
-                            <button class="btn btn-secondary" onclick="closeModal()">Cancel</button>
+                            <button class="btn btn-primary" onclick="joinClassroomWithCode()">Join Classroom</button>
+                            <button class="btn btn-secondary" onclick="closeJoinModal()">Cancel</button>
                         </div>
                     </div>
                 </div>
@@ -2982,27 +3033,131 @@
             
             document.body.appendChild(modal);
             
-            window.joinClassroom = function() {
-                const code = document.getElementById('classroomCode').value.toUpperCase();
-                const classroom = Object.values(mockDatabase.classrooms).find(c => c.code === code);
-                
-                if (classroom) {
-                    // Add student to classroom
-                    mockDatabase.classrooms[Object.keys(mockDatabase.classrooms).find(k => mockDatabase.classrooms[k] === classroom)].students.push(currentUser.id);
-                    mockDatabase.students[currentUser.id].classroom = Object.keys(mockDatabase.classrooms).find(k => mockDatabase.classrooms[k] === classroom);
-                    
-                    alert(`Successfully joined ${classroom.name}!`);
-                    closeModal();
-                    userStars += 5;
-                    updateStarsDisplay();
-                } else {
-                    alert('Invalid classroom code');
+            // Close modal when clicking backdrop (but not when clicking inside modal)
+            backdrop.onclick = function(event) {
+                if (event.target === backdrop) {
+                    closeJoinModal();
                 }
             };
             
-            window.closeModal = function() {
-                document.body.removeChild(modal);
+            // Prevent backdrop clicks from closing when clicking inside modal
+            modal.onclick = function(event) {
+                event.stopPropagation();
             };
+            
+            // Now fetch and update the classrooms list
+            loadClassroomsList();
+            
+            async function loadClassroomsList() {
+                const container = document.getElementById('classroomsListContainer');
+                try {
+                    const allClassrooms = await apiCall('classrooms');
+                    console.log('Fetched classrooms:', allClassrooms);
+                    
+                    if (allClassrooms && allClassrooms.length > 0) {
+                        const activeClassrooms = allClassrooms.filter(c => c.isActive || c.IsActive);
+                        console.log('Active classrooms:', activeClassrooms);
+                        
+                        if (activeClassrooms.length === 0) {
+                            container.innerHTML = '<strong class="mb-2 d-block">Available Classrooms:</strong><p class="text-muted">No active classrooms available at the moment.</p>';
+                        } else {
+                            let html = '<strong class="mb-2 d-block">Available Classrooms:</strong><div class="list-group" style="max-height: 300px; overflow-y: auto;">';
+                            for (const classroom of activeClassrooms) {
+                                // Escape special characters to prevent XSS
+                                const safeCode = classroom.code.replace(/'/g, "\\'").replace(/"/g, '\\"');
+                                html += `
+                                    <div class="list-group-item list-group-item-action" onclick="selectClassroomCode('${safeCode}')" style="cursor: pointer;">
+                                        <div class="d-flex w-100 justify-content-between">
+                                            <h6 class="mb-1">${classroom.name}</h6>
+                                            <code class="text-primary">${classroom.code}</code>
+                                        </div>
+                                        <p class="mb-1"><small>${classroom.subject} - Grade ${classroom.grade}</small></p>
+                                    </div>
+                                `;
+                            }
+                            html += '</div>';
+                            container.innerHTML = html;
+                        }
+                    } else {
+                        container.innerHTML = '<strong class="mb-2 d-block">Available Classrooms:</strong><p class="text-muted">No classrooms available at the moment.</p>';
+                    }
+                } catch (error) {
+                    console.error('Error loading classrooms:', error);
+                    container.innerHTML = `<strong class="mb-2 d-block">Available Classrooms:</strong><p class="text-danger">Error loading classrooms: ${error.message}. Please try again.</p>`;
+                }
+            }
+        }
+        
+        // Select a classroom code from the list
+        window.selectClassroomCode = function(code) {
+            const input = document.getElementById('classroomCode');
+            if (input) {
+                input.value = code;
+                input.focus();
+            }
+        }
+        
+        // Join classroom with code
+        window.joinClassroomWithCode = async function() {
+            const codeInput = document.getElementById('classroomCode');
+            if (!codeInput) {
+                console.error('Classroom code input not found');
+                return;
+            }
+            
+            const code = codeInput.value?.trim().toUpperCase();
+            
+            if (!code) {
+                alert('Please enter a classroom code.');
+                return;
+            }
+            
+            if (!currentUser) {
+                alert('You must be logged in to join a classroom.');
+                return;
+            }
+            
+            try {
+                console.log('Joining classroom with code:', code, 'Student ID:', currentUser.id);
+                const response = await apiCall('classrooms/join-by-code', 'POST', {
+                    code: code,
+                    studentId: currentUser.id
+                });
+                
+                console.log('Join response:', response);
+                
+                alert(`Successfully joined classroom!`);
+                closeJoinModal();
+                
+                // Refresh the student's classroom list
+                if (currentUser.role === 'student') {
+                    await loadStudentClassrooms();
+                }
+                
+                // Award stars
+                userStars += 5;
+                updateStarsDisplay();
+                await syncWithDatabase();
+                
+            } catch (error) {
+                console.error('Error joining classroom:', error);
+                const errorMessage = error.message || 'Unknown error';
+                alert(`Failed to join classroom: ${errorMessage}. Please check the code and try again.`);
+            }
+        }
+        
+        // Close the join classroom modal
+        window.closeJoinModal = function() {
+            const modal = document.getElementById('joinClassroomModal');
+            const backdrop = document.getElementById('joinClassroomBackdrop');
+            
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+            
+            if (backdrop) {
+                document.body.removeChild(backdrop);
+            }
         }
         
         // Load student's classrooms
@@ -3120,6 +3275,67 @@
             const modal = document.getElementById('contentModal');
             if (modal) {
                 document.body.removeChild(modal);
+            }
+        }
+        
+        // Load teacher's classrooms
+        async function loadTeacherClassrooms() {
+            if (!currentUser || currentUser.role !== 'teacher') return;
+            
+            const container = document.getElementById('teacherClassroomsList');
+            
+            try {
+                const classrooms = await apiCall(`classrooms/teacher/${currentUser.id}`);
+                
+                if (classrooms.length === 0) {
+                    container.innerHTML = `
+                        <div class="alert alert-info">
+                            <i class="fas fa-info-circle"></i> You haven't created any classrooms yet. 
+                            Use the "Create Classroom" button to get started!
+                        </div>
+                    `;
+                    return;
+                }
+                
+                // Display classrooms
+                let html = '<div class="row">';
+                for (const classroom of classrooms) {
+                    const studentIds = JSON.parse(classroom.studentIds || '[]');
+                    const studentCount = studentIds.length;
+                    
+                    html += `
+                        <div class="col-md-6 mb-3">
+                            <div class="module-card">
+                                <div class="module-header">
+                                    <div class="module-title">${classroom.name}</div>
+                                    <span class="badge bg-primary">${classroom.subject}</span>
+                                </div>
+                                <div class="module-description">
+                                    <strong>Code:</strong> <code>${classroom.code}</code><br>
+                                    <strong>Grade:</strong> ${classroom.grade}<br>
+                                    <strong>Students:</strong> ${studentCount}<br>
+                                    <strong>Description:</strong> ${classroom.description || 'No description available'}
+                                </div>
+                                <div class="module-actions">
+                                    <button class="btn btn-primary" onclick="viewClassroomContent(${classroom.id})">
+                                        <i class="fas fa-eye"></i> View Students
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                }
+                html += '</div>';
+                
+                container.innerHTML = html;
+                
+            } catch (error) {
+                console.error('Error loading classrooms:', error);
+                container.innerHTML = `
+                    <div class="alert alert-danger">
+                        <i class="fas fa-exclamation-circle"></i> Error loading classrooms. Please try again later.
+                    </div>
+                `;
             }
         }
         

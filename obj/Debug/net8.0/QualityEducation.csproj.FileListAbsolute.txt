@@ -407,3 +407,4 @@ C:\Users\dodne\OneDrive\Documents\MIS 321\testReadyFridays\obj\Debug\net8.0\refi
 C:\Users\dodne\OneDrive\Documents\MIS 321\testReadyFridays\obj\Debug\net8.0\QualityEducation.pdb
 C:\Users\dodne\OneDrive\Documents\MIS 321\testReadyFridays\obj\Debug\net8.0\QualityEducation.genruntimeconfig.cache
 C:\Users\dodne\OneDrive\Documents\MIS 321\testReadyFridays\obj\Debug\net8.0\ref\QualityEducation.dll
+C:\Users\jessw\OneDrive\Documents\GitHub\testReadyFridays\obj\Debug\net8.0\QualityEducation.sourcelink.json

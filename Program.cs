@@ -100,6 +100,99 @@ static async Task SeedInitialData(QualityEducationDbContext context)
     Console.WriteLine("Initial data seeded successfully.");
 }
 
+static async Task SeedClassroomData(QualityEducationDbContext context)
+{
+    try
+    {
+        // Check if classrooms already exist
+        if (await context.Classrooms.AnyAsync())
+        {
+            Console.WriteLine("Classrooms already seeded.");
+            return;
+        }
+    }
+    catch
+    {
+        Console.WriteLine("Classrooms table doesn't exist yet, will skip seeding for now.");
+        Console.WriteLine("Please run: dotnet ef database update or restart the application.");
+        return;
+    }
+
+    // Get teacher IDs
+    var teachers = await context.Users.Where(u => u.Role == "teacher").ToListAsync();
+    var students = await context.Users.Where(u => u.Role == "student").ToListAsync();
+    
+    if (teachers.Count < 4 || students.Count < 5)
+    {
+        Console.WriteLine("Not enough teachers or students to seed classrooms.");
+        return;
+    }
+
+    var classrooms = new[]
+    {
+        new Classroom
+        {
+            Name = "Transfiguration - Grade 7",
+            Grade = "Grade 7",
+            Subject = "Transfiguration",
+            TeacherId = teachers[1].Id, // Minerva McGonagall
+            Code = "TRANS7",
+            StudentIds = System.Text.Json.JsonSerializer.Serialize(new List<int> { students[0].Id, students[1].Id, students[2].Id, students[3].Id, students[6].Id }),
+            AssignedContent = "[]",
+            Description = "Advanced Transfiguration for 7th year students",
+            CreatedAt = DateTime.UtcNow,
+            IsActive = true
+        },
+        new Classroom
+        {
+            Name = "Potions - Grade 7",
+            Grade = "Grade 7",
+            Subject = "Potions",
+            TeacherId = teachers[2].Id, // Severus Snape
+            Code = "POT7",
+            StudentIds = System.Text.Json.JsonSerializer.Serialize(new List<int> { students[0].Id, students[1].Id, students[2].Id, students[3].Id, students[6].Id }),
+            AssignedContent = "[]",
+            Description = "Advanced Potions and brewing techniques",
+            CreatedAt = DateTime.UtcNow,
+            IsActive = true
+        },
+        new Classroom
+        {
+            Name = "Defense Against Dark Arts - Grade 7",
+            Grade = "Grade 7",
+            Subject = "Defense Against Dark Arts",
+            TeacherId = teachers[3].Id, // Remus Lupin
+            Code = "DADA7",
+            StudentIds = System.Text.Json.JsonSerializer.Serialize(new List<int> { students[0].Id, students[1].Id, students[2].Id, students[3].Id, students[6].Id }),
+            AssignedContent = "[]",
+            Description = "Practical defense against dark creatures and spells",
+            CreatedAt = DateTime.UtcNow,
+            IsActive = true
+        },
+        new Classroom
+        {
+            Name = "Charms - Grade 6",
+            Grade = "Grade 6",
+            Subject = "Charms",
+            TeacherId = teachers[0].Id, // Albus Dumbledore
+            Code = "CHARM6",
+            StudentIds = System.Text.Json.JsonSerializer.Serialize(new List<int> { students[4].Id, students[5].Id }),
+            AssignedContent = "[]",
+            Description = "Essential charms and their applications",
+            CreatedAt = DateTime.UtcNow,
+            IsActive = true
+        }
+    };
+
+    foreach (var classroom in classrooms)
+    {
+        context.Classrooms.Add(classroom);
+    }
+
+    await context.SaveChangesAsync();
+    Console.WriteLine("Classroom data seeded successfully.");
+}
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -156,6 +249,19 @@ using (var scope = app.Services.CreateScope())
 {
     var context = scope.ServiceProvider.GetRequiredService<QualityEducationDbContext>();
     
+    // Check if Classrooms table exists
+    bool classroomsTableExists = false;
+    try
+    {
+        var classroomCount = await context.Classrooms.CountAsync();
+        classroomsTableExists = true;
+        Console.WriteLine($"Classrooms table exists with {classroomCount} entries.");
+    }
+    catch
+    {
+        Console.WriteLine("Classrooms table does not exist, will be created.");
+    }
+    
     // Check if database exists
     var exists = context.Database.CanConnect();
     if (!exists)
@@ -165,10 +271,49 @@ using (var scope = app.Services.CreateScope())
         
         // Seed initial data only when database is first created
         await SeedInitialData(context);
+        await SeedClassroomData(context);
+    }
+    else if (!classroomsTableExists)
+    {
+        Console.WriteLine("Database exists but Classrooms table is missing, applying migrations...");
+        try
+        {
+            await context.Database.MigrateAsync();
+            Console.WriteLine("Migrations applied successfully.");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error applying migrations: {ex.Message}");
+            Console.WriteLine("Trying alternative method...");
+            context.Database.EnsureCreated();
+        }
+        
+        // Only seed data if Users table is empty
+        var userCount = await context.Users.CountAsync();
+        if (userCount == 0)
+        {
+            await SeedInitialData(context);
+        }
+        else
+        {
+            Console.WriteLine("Users table has data, skipping seed.");
+        }
+        
+        // Now that tables are created, seed classroom data
+        Console.WriteLine("Seeding classroom data...");
+        await SeedClassroomData(context);
     }
     else
     {
         Console.WriteLine("Database already exists, using existing data.");
+        
+        // Check if classrooms need to be seeded
+        var classroomCount = await context.Classrooms.CountAsync();
+        if (classroomCount == 0)
+        {
+            Console.WriteLine("No classrooms found, seeding initial classroom data...");
+            await SeedClassroomData(context);
+        }
         
         // Check Harry Potter's current star count
         var harryPotter = await context.Users.FirstOrDefaultAsync(u => u.FirstName == "Harry" && u.LastName == "Potter");
@@ -176,7 +321,6 @@ using (var scope = app.Services.CreateScope())
         {
             Console.WriteLine($"Harry Potter's current star count: {harryPotter.Stars}");
             Console.WriteLine($"Harry Potter's ID: {harryPotter.Id}");
-            Console.WriteLine($"Harry Potter's full data: {System.Text.Json.JsonSerializer.Serialize(harryPotter)}");
         }
         else
         {

@@ -21,7 +21,17 @@ namespace QualityEducation.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Classroom>>> GetClassrooms()
         {
-            return await _context.Classrooms.ToListAsync();
+            try
+            {
+                return await _context.Classrooms.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                // Log the error and return empty list
+                Console.WriteLine($"Error getting classrooms: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                return Ok(new List<Classroom>());
+            }
         }
 
         // GET: api/classrooms/{id}
@@ -68,26 +78,35 @@ namespace QualityEducation.Controllers
         [HttpGet("student/{studentId}")]
         public async Task<ActionResult<IEnumerable<Classroom>>> GetStudentClassrooms(int studentId)
         {
-            var allClassrooms = await _context.Classrooms
-                .Where(c => c.IsActive)
-                .ToListAsync();
+            try
+            {
+                var allClassrooms = await _context.Classrooms
+                    .Where(c => c.IsActive)
+                    .ToListAsync();
 
-            var studentClassrooms = allClassrooms
-                .Where(c => 
-                {
-                    try
+                var studentClassrooms = allClassrooms
+                    .Where(c => 
                     {
-                        var studentIds = JsonSerializer.Deserialize<List<int>>(c.StudentIds);
-                        return studentIds != null && studentIds.Contains(studentId);
-                    }
-                    catch
-                    {
-                        return false;
-                    }
-                })
-                .ToList();
+                        try
+                        {
+                            var studentIds = JsonSerializer.Deserialize<List<int>>(c.StudentIds);
+                            return studentIds != null && studentIds.Contains(studentId);
+                        }
+                        catch
+                        {
+                            return false;
+                        }
+                    })
+                    .ToList();
 
-            return studentClassrooms;
+                return Ok(studentClassrooms);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error getting student classrooms: {ex.Message}");
+                Console.WriteLine($"Stack trace: {ex.StackTrace}");
+                return Ok(new List<Classroom>());
+            }
         }
 
         // POST: api/classrooms

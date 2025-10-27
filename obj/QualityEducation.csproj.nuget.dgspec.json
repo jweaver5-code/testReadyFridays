@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dodne\\OneDrive\\Documents\\MIS 321\\testReadyFridays\\QualityEducation.csproj": {}
+    "C:\\Users\\jessw\\OneDrive\\Documents\\GitHub\\testReadyFridays\\QualityEducation.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dodne\\OneDrive\\Documents\\MIS 321\\testReadyFridays\\QualityEducation.csproj": {
+    "C:\\Users\\jessw\\OneDrive\\Documents\\GitHub\\testReadyFridays\\QualityEducation.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dodne\\OneDrive\\Documents\\MIS 321\\testReadyFridays\\QualityEducation.csproj",
+        "projectUniqueName": "C:\\Users\\jessw\\OneDrive\\Documents\\GitHub\\testReadyFridays\\QualityEducation.csproj",
         "projectName": "QualityEducation",
-        "projectPath": "C:\\Users\\dodne\\OneDrive\\Documents\\MIS 321\\testReadyFridays\\QualityEducation.csproj",
-        "packagesPath": "C:\\Users\\dodne\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dodne\\OneDrive\\Documents\\MIS 321\\testReadyFridays\\obj\\",
+        "projectPath": "C:\\Users\\jessw\\OneDrive\\Documents\\GitHub\\testReadyFridays\\QualityEducation.csproj",
+        "packagesPath": "C:\\Users\\jessw\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\jessw\\OneDrive\\Documents\\GitHub\\testReadyFridays\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\dodne\\AppData\\Roaming\\NuGet\\NuGet.Config"
+          "C:\\Users\\jessw\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -37,7 +37,8 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        }
+        },
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -67,6 +68,24 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Host.win-x64",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.NETCore.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            },
+            {
+              "name": "Microsoft.WindowsDesktop.App.Ref",
+              "version": "[8.0.20, 8.0.20]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -75,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.405/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.305/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
