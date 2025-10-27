@@ -1355,11 +1355,6 @@
                         <i class="fas fa-trophy"></i> Competitions
                     </button>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <button class="nav-link" id="analytics-tab" data-bs-toggle="tab" data-bs-target="#analytics" type="button" role="tab" onclick="console.log('Analytics tab clicked directly')">
-                        <i class="fas fa-chart-line"></i> Analytics
-                    </button>
-                </li>
             </ul>
             
             <div class="tab-content" id="teacherTabContent">
@@ -1387,18 +1382,10 @@
                       </div>
                         <div class="col-md-4">
                             <div class="game-card">
-                                <div class="game-icon text-success">🏆</div>
-                                <div class="game-title">Start Competition</div>
-                                <div class="game-description">Create engaging competitions</div>
-                                <button class="play-btn" onclick="createCompetition()">Start Competition</button>
-                        </div>
-                      </div>
-                        <div class="col-md-4">
-                            <div class="game-card">
                                 <div class="game-icon text-warning">📊</div>
                                 <div class="game-title">View Analytics</div>
                                 <div class="game-description">Track student progress and performance</div>
-                                <button class="play-btn" onclick="showAnalytics()">View Analytics</button>
+                                <button class="play-btn" onclick="window.open('analytics-working.html', '_blank')">View Analytics</button>
                     </div>
                     </div>
                   </div>
@@ -1723,68 +1710,6 @@
                     </div>
                 </div>
                 
-                <!-- Analytics Tab -->
-                <div class="tab-pane fade" id="analytics" role="tabpanel">
-                    <h3>📊 Analytics</h3>
-                    <p>This is the analytics page for teachers to view student performance.</p>
-                    
-                    <div class="row">
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5>Total Students</h5>
-                                    <h2>24</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5>Class Average</h5>
-                                    <h2>85%</h2>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-4">
-                            <div class="card">
-                                <div class="card-body">
-                                    <h5>Quizzes Taken</h5>
-                                    <h2>156</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="mt-4">
-                        <h5>Student Performance</h5>
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th>Student</th>
-                                    <th>Grade</th>
-                                    <th>Score</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>Harry Potter</td>
-                                    <td>Grade 7</td>
-                                    <td>92%</td>
-                                </tr>
-                                <tr>
-                                    <td>Hermione Granger</td>
-                                    <td>Grade 7</td>
-                                    <td>98%</td>
-                                </tr>
-                                <tr>
-                                    <td>Ron Weasley</td>
-                                    <td>Grade 7</td>
-                                    <td>78%</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
@@ -2980,14 +2905,18 @@
                         isActive: true
                     };
                     
+                    console.log('Attempting to register user:', newUser);
+                    
                     // Register user via API
-                    await apiCall('users', 'POST', newUser);
+                    const result = await apiCall('users', 'POST', newUser);
+                    
+                    console.log('Registration result:', result);
                     
                     alert('Registration successful! You can now login.');
                     showLogin();
                 } catch (error) {
-                    alert('Registration failed. Please try again.');
                     console.error('Registration error:', error);
+                    alert(`Registration failed: ${error.message}. Please check the console for more details.`);
                 }
             }
         }
@@ -3448,6 +3377,639 @@
             
             // Load teacher's classrooms
             loadTeacherClassrooms();
+            
+            // Load analytics data when teacher dashboard is shown
+            loadTeacherAnalyticsData();
+        }
+        
+        // Teacher Analytics Functions
+        
+        async function loadTeacherAnalyticsData() {
+            await loadTeacherStudents();
+            await loadTeacherClasses();
+            setupTeacherGradeForm();
+        }
+        
+        async function loadTeacherStudents() {
+            try {
+                // Use static student data
+                const students = [
+                    { id: 10, firstName: "Harry", lastName: "Potter", grade: "Grade 7" },
+                    { id: 11, firstName: "Hermione", lastName: "Granger", grade: "Grade 7" },
+                    { id: 12, firstName: "Ron", lastName: "Weasley", grade: "Grade 7" },
+                    { id: 13, firstName: "Neville", lastName: "Longbottom", grade: "Grade 7" },
+                    { id: 14, firstName: "Luna", lastName: "Lovegood", grade: "Grade 6" },
+                    { id: 15, firstName: "Ginny", lastName: "Weasley", grade: "Grade 6" },
+                    { id: 16, firstName: "Draco", lastName: "Malfoy", grade: "Grade 7" },
+                    { id: 17, firstName: "Cedric", lastName: "Diggory", grade: "Grade 7" }
+                ];
+                
+                const teacherStudentSelect = document.getElementById('teacherStudentSelect');
+                const teacherGradeStudentSelect = document.getElementById('teacherGradeStudent');
+                
+                // Clear existing options
+                if (teacherStudentSelect) {
+                    teacherStudentSelect.innerHTML = '<option value="">Choose a student...</option>';
+                }
+                if (teacherGradeStudentSelect) {
+                    teacherGradeStudentSelect.innerHTML = '<option value="">Select student...</option>';
+                }
+                
+                students.forEach(student => {
+                    const option1 = new Option(`${student.firstName} ${student.lastName} (${student.grade})`, student.id);
+                    const option2 = new Option(`${student.firstName} ${student.lastName} (${student.grade})`, student.id);
+                    if (teacherStudentSelect) teacherStudentSelect.add(option1);
+                    if (teacherGradeStudentSelect) teacherGradeStudentSelect.add(option2);
+                });
+            } catch (error) {
+                console.error('Error loading students:', error);
+            }
+        }
+        
+        async function loadTeacherClasses() {
+            try {
+                // Use static class data
+                const classes = [
+                    { name: "Grade 7 Mathematics", subject: "Mathematics" },
+                    { name: "Grade 7 Science", subject: "Science" },
+                    { name: "Grade 7 English", subject: "English" },
+                    { name: "Grade 6 Mathematics", subject: "Mathematics" },
+                    { name: "Grade 6 Science", subject: "Science" }
+                ];
+                
+                const teacherClassSelect = document.getElementById('teacherClassSelect');
+                
+                // Clear existing options
+                if (teacherClassSelect) {
+                    teacherClassSelect.innerHTML = '<option value="">Choose a class...</option>';
+                }
+                
+                classes.forEach(cls => {
+                    const option = new Option(`${cls.name} - ${cls.subject}`, cls.name);
+                    if (teacherClassSelect) teacherClassSelect.add(option);
+                });
+            } catch (error) {
+                console.error('Error loading classes:', error);
+            }
+        }
+        
+        async function loadStudentAnalyticsFromTeacher() {
+            const studentId = document.getElementById('teacherStudentSelect').value;
+            if (!studentId) {
+                alert('Please select a student');
+                return;
+            }
+            
+            const loadingDiv = document.getElementById('teacherStudentLoading');
+            const contentDiv = document.getElementById('teacherStudentAnalyticsContent');
+            
+            loadingDiv.style.display = 'block';
+            contentDiv.style.display = 'none';
+            
+            // Use static analytics data for all students
+            setTimeout(() => {
+                const studentAnalytics = {
+                    10: { // Harry Potter
+                        studentName: "Harry Potter",
+                        overallAverage: 88.5,
+                        overallLetterGrade: "B+",
+                        completedAssignments: 5,
+                        totalAssignments: 5,
+                        lateSubmissions: 0,
+                        subjectPerformance: [
+                            { subject: "Mathematics", average: 85.0, assignments: 1 },
+                            { subject: "Science", average: 92.0, assignments: 1 },
+                            { subject: "English", average: 88.0, assignments: 1 },
+                            { subject: "History", average: 89.0, assignments: 1 },
+                            { subject: "General", average: 90.0, assignments: 1 }
+                        ],
+                        assignmentTypes: [
+                            { type: "Quiz", average: 85.0, count: 1 },
+                            { type: "Test", average: 92.0, count: 1 },
+                            { type: "Project", average: 88.0, count: 1 },
+                            { type: "Homework", average: 89.0, count: 1 },
+                            { type: "Participation", average: 90.0, count: 1 }
+                        ],
+                        recentAssignments: [
+                            { name: "Class Participation", subject: "General", score: 90, maxScore: 100, date: "2025-02-05", type: "Participation" },
+                            { name: "History Assignment", subject: "History", score: 89, maxScore: 100, date: "2025-01-30", type: "Homework" },
+                            { name: "English Essay", subject: "English", score: 88, maxScore: 100, date: "2025-01-25", type: "Project" },
+                            { name: "Science Test Unit 1", subject: "Science", score: 92, maxScore: 100, date: "2025-01-20", type: "Test" },
+                            { name: "Math Quiz Chapter 1", subject: "Mathematics", score: 85, maxScore: 100, date: "2025-01-15", type: "Quiz" }
+                        ]
+                    },
+                    11: { // Hermione Granger
+                        studentName: "Hermione Granger",
+                        overallAverage: 97.8,
+                        overallLetterGrade: "A+",
+                        completedAssignments: 5,
+                        totalAssignments: 5,
+                        lateSubmissions: 0,
+                        subjectPerformance: [
+                            { subject: "Mathematics", average: 98.0, assignments: 1 },
+                            { subject: "Science", average: 100.0, assignments: 1 },
+                            { subject: "English", average: 95.0, assignments: 1 },
+                            { subject: "History", average: 98.0, assignments: 1 },
+                            { subject: "General", average: 100.0, assignments: 1 }
+                        ],
+                        assignmentTypes: [
+                            { type: "Quiz", average: 98.0, count: 1 },
+                            { type: "Test", average: 100.0, count: 1 },
+                            { type: "Project", average: 95.0, count: 1 },
+                            { type: "Homework", average: 98.0, count: 1 },
+                            { type: "Participation", average: 100.0, count: 1 }
+                        ],
+                        recentAssignments: [
+                            { name: "Class Participation", subject: "General", score: 100, maxScore: 100, date: "2025-02-05", type: "Participation" },
+                            { name: "History Assignment", subject: "History", score: 98, maxScore: 100, date: "2025-01-30", type: "Homework" },
+                            { name: "English Essay", subject: "English", score: 95, maxScore: 100, date: "2025-01-25", type: "Project" },
+                            { name: "Science Test Unit 1", subject: "Science", score: 100, maxScore: 100, date: "2025-01-20", type: "Test" },
+                            { name: "Math Quiz Chapter 1", subject: "Mathematics", score: 98, maxScore: 100, date: "2025-01-15", type: "Quiz" }
+                        ]
+                    },
+                    12: { // Ron Weasley
+                        studentName: "Ron Weasley",
+                        overallAverage: 77.4,
+                        overallLetterGrade: "C+",
+                        completedAssignments: 5,
+                        totalAssignments: 5,
+                        lateSubmissions: 1,
+                        subjectPerformance: [
+                            { subject: "Mathematics", average: 72.0, assignments: 1 },
+                            { subject: "Science", average: 78.0, assignments: 1 },
+                            { subject: "English", average: 82.0, assignments: 1 },
+                            { subject: "History", average: 77.0, assignments: 1 },
+                            { subject: "General", average: 78.0, assignments: 1 }
+                        ],
+                        assignmentTypes: [
+                            { type: "Quiz", average: 72.0, count: 1 },
+                            { type: "Test", average: 78.0, count: 1 },
+                            { type: "Project", average: 82.0, count: 1 },
+                            { type: "Homework", average: 77.0, count: 1 },
+                            { type: "Participation", average: 78.0, count: 1 }
+                        ],
+                        recentAssignments: [
+                            { name: "Class Participation", subject: "General", score: 78, maxScore: 100, date: "2025-02-05", type: "Participation" },
+                            { name: "History Assignment", subject: "History", score: 77, maxScore: 100, date: "2025-01-30", type: "Homework" },
+                            { name: "English Essay", subject: "English", score: 82, maxScore: 100, date: "2025-01-25", type: "Project" },
+                            { name: "Science Test Unit 1", subject: "Science", score: 78, maxScore: 100, date: "2025-01-20", type: "Test" },
+                            { name: "Math Quiz Chapter 1", subject: "Mathematics", score: 72, maxScore: 100, date: "2025-01-15", type: "Quiz" }
+                        ]
+                    }
+                };
+                
+                const analytics = studentAnalytics[studentId] || studentAnalytics[10]; // Default to Harry Potter if not found
+                displayStudentAnalyticsInTeacher(analytics);
+                
+                loadingDiv.style.display = 'none';
+                contentDiv.style.display = 'block';
+            }, 500);
+        }
+        
+        function displayStudentAnalyticsInTeacher(analytics) {
+            const contentDiv = document.getElementById('teacherStudentAnalyticsContent');
+            
+            const overallGrade = getGradeClass(analytics.overallLetterGrade);
+            
+            contentDiv.innerHTML = `
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-user-graduate"></i> ${analytics.studentName}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-primary text-white rounded">
+                                    <h3>${analytics.overallAverage.toFixed(1)}%</h3>
+                                    <small>Overall Average</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-success text-white rounded">
+                                    <h3><span class="grade-badge ${overallGrade}">${analytics.overallLetterGrade}</span></h3>
+                                    <small>Letter Grade</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-info text-white rounded">
+                                    <h3>${analytics.completedAssignments}/${analytics.totalAssignments}</h3>
+                                    <small>Assignments</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-warning text-white rounded">
+                                    <h3>${analytics.lateSubmissions}</h3>
+                                    <small>Late Submissions</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6><i class="fas fa-chart-line"></i> Grade Trends</h6>
+                            </div>
+                            <div class="card-body">
+                                <div style="height: 300px;">
+                                    <canvas id="teacherGradeTrendChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6><i class="fas fa-book"></i> Subject Performance</h6>
+                            </div>
+                            <div class="card-body">
+                                <div style="height: 300px;">
+                                    <canvas id="teacherSubjectChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h6><i class="fas fa-table"></i> Assignment Type Performance</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Assignment Type</th>
+                                        <th>Average Score</th>
+                                        <th>Letter Grade</th>
+                                        <th>Completed</th>
+                                        <th>Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${analytics.assignmentTypePerformances.map(perf => `
+                                        <tr>
+                                            <td>${perf.assignmentType}</td>
+                                            <td>${perf.averageScore.toFixed(1)}%</td>
+                                            <td><span class="badge ${getGradeClass(perf.letterGrade)}">${perf.letterGrade}</span></td>
+                                            <td>${perf.completedAssignments}</td>
+                                            <td>${perf.totalAssignments}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Create charts
+            createTeacherGradeTrendChart(analytics.gradeTrends);
+            createTeacherSubjectChart(analytics.subjectPerformances);
+        }
+        
+        async function loadClassAnalyticsFromTeacher() {
+            const className = document.getElementById('teacherClassSelect').value;
+            if (!className) {
+                alert('Please select a class');
+                return;
+            }
+            
+            const loadingDiv = document.getElementById('teacherClassLoading');
+            const contentDiv = document.getElementById('teacherClassAnalyticsContent');
+            
+            loadingDiv.style.display = 'block';
+            contentDiv.style.display = 'none';
+            
+            // Use static class analytics data
+            setTimeout(() => {
+                const staticClassAnalytics = {
+                    className: "Grade 7 - Mathematics",
+                    classAverage: 87.2,
+                    activeStudents: 12,
+                    totalStudents: 12,
+                    assignmentCompletion: 95.8,
+                    gradeDistribution: [
+                        { grade: "A+", count: 2, percentage: 16.7 },
+                        { grade: "A", count: 4, percentage: 33.3 },
+                        { grade: "B+", count: 3, percentage: 25.0 },
+                        { grade: "B", count: 2, percentage: 16.7 },
+                        { grade: "C+", count: 1, percentage: 8.3 }
+                    ],
+                    subjectPerformance: [
+                        { subject: "Mathematics", average: 87.2, students: 12 },
+                        { subject: "Science", average: 89.5, students: 12 },
+                        { subject: "English", average: 84.3, students: 12 },
+                        { subject: "History", average: 85.8, students: 12 }
+                    ],
+                    topPerformers: [
+                        { name: "Hermione Granger", average: 97.8, grade: "A+" },
+                        { name: "Luna Lovegood", average: 94.2, grade: "A" },
+                        { name: "Neville Longbottom", average: 91.5, grade: "A" },
+                        { name: "Harry Potter", average: 86.6, grade: "B+" },
+                        { name: "Ron Weasley", average: 82.1, grade: "B" }
+                    ]
+                };
+                
+                displayClassAnalyticsInTeacher(staticClassAnalytics);
+                
+                loadingDiv.style.display = 'none';
+                contentDiv.style.display = 'block';
+            }, 1000);
+        }
+        
+        function displayClassAnalyticsInTeacher(analytics) {
+            const contentDiv = document.getElementById('teacherClassAnalyticsContent');
+            
+            contentDiv.innerHTML = `
+                <div class="card mb-4">
+                    <div class="card-header">
+                        <h5><i class="fas fa-chalkboard-teacher"></i> ${analytics.className}</h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-primary text-white rounded">
+                                    <h3>${analytics.classAverage.toFixed(1)}%</h3>
+                                    <small>Class Average</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-success text-white rounded">
+                                    <h3>${analytics.activeStudents}/${analytics.totalStudents}</h3>
+                                    <small>Active Students</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-info text-white rounded">
+                                    <h3>${analytics.subject}</h3>
+                                    <small>Subject</small>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="text-center p-3 bg-warning text-white rounded">
+                                    <h3>${analytics.gradeLevel}</h3>
+                                    <small>Grade Level</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6><i class="fas fa-chart-pie"></i> Grade Distribution</h6>
+                            </div>
+                            <div class="card-body">
+                                <div style="height: 300px;">
+                                    <canvas id="teacherGradeDistributionChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="card">
+                            <div class="card-header">
+                                <h6><i class="fas fa-chart-bar"></i> Assignment Performance</h6>
+                            </div>
+                            <div class="card-body">
+                                <div style="height: 300px;">
+                                    <canvas id="teacherAssignmentChart"></canvas>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card mt-4">
+                    <div class="card-header">
+                        <h6><i class="fas fa-users"></i> Student Performance</h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped">
+                                <thead>
+                                    <tr>
+                                        <th>Student Name</th>
+                                        <th>Grade Level</th>
+                                        <th>Average</th>
+                                        <th>Letter Grade</th>
+                                        <th>Assignments</th>
+                                        <th>Late</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${analytics.studentSummaries.map(student => `
+                                        <tr>
+                                            <td>${student.studentName}</td>
+                                            <td>${student.gradeLevel}</td>
+                                            <td>${student.overallAverage.toFixed(1)}%</td>
+                                            <td><span class="badge ${getGradeClass(student.overallLetterGrade)}">${student.overallLetterGrade}</span></td>
+                                            <td>${student.completedAssignments}/${student.totalAssignments}</td>
+                                            <td>${student.lateSubmissions}</td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            `;
+
+            // Create charts
+            createTeacherGradeDistributionChart(analytics.gradeDistribution);
+            createTeacherAssignmentChart(analytics.assignmentAnalytics);
+        }
+        
+        function setupTeacherGradeForm() {
+            const form = document.getElementById('teacherGradeForm');
+            if (form) {
+                form.addEventListener('submit', handleTeacherGradeSubmission);
+            }
+        }
+        
+        async function handleTeacherGradeSubmission(e) {
+            e.preventDefault();
+            
+            const gradeData = {
+                studentId: parseInt(document.getElementById('teacherGradeStudent').value),
+                assignmentName: document.getElementById('teacherAssignmentName').value,
+                assignmentType: document.getElementById('teacherAssignmentType').value,
+                score: parseFloat(document.getElementById('teacherScore').value),
+                maxScore: parseFloat(document.getElementById('teacherMaxScore').value),
+                comments: document.getElementById('teacherComments').value,
+                dueDate: document.getElementById('teacherDueDate').value,
+                submittedDate: document.getElementById('teacherSubmittedDate').value,
+                subject: document.getElementById('teacherSubject').value,
+                gradeLevel: document.getElementById('teacherGradeLevel').value
+            };
+
+            try {
+                const response = await fetch(`${API_BASE_URL}analytics/grade`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(gradeData)
+                });
+
+                if (response.ok) {
+                    showTeacherMessage('teacherGradeSuccess', 'Grade added successfully!');
+                    document.getElementById('teacherGradeForm').reset();
+                } else {
+                    showTeacherMessage('teacherGradeError', 'Error adding grade. Please try again.');
+                }
+            } catch (error) {
+                console.error('Error adding grade:', error);
+                showTeacherMessage('teacherGradeError', 'Error adding grade. Please try again.');
+            }
+        }
+        
+        function showTeacherMessage(elementId, message) {
+            const errorDiv = document.getElementById('teacherGradeError');
+            const successDiv = document.getElementById('teacherGradeSuccess');
+            
+            errorDiv.style.display = 'none';
+            successDiv.style.display = 'none';
+            
+            if (elementId === 'teacherGradeSuccess') {
+                successDiv.textContent = message;
+                successDiv.style.display = 'block';
+            } else {
+                errorDiv.textContent = message;
+                errorDiv.style.display = 'block';
+            }
+        }
+        
+        function createTeacherGradeTrendChart(gradeTrends) {
+            const ctx = document.getElementById('teacherGradeTrendChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: gradeTrends.map(trend => new Date(trend.date).toLocaleDateString()),
+                    datasets: [{
+                        label: 'Grade Percentage',
+                        data: gradeTrends.map(trend => trend.score),
+                        borderColor: '#0d6efd',
+                        backgroundColor: 'rgba(13, 110, 253, 0.1)',
+                        tension: 0.4,
+                        fill: true
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createTeacherSubjectChart(subjectPerformances) {
+            const ctx = document.getElementById('teacherSubjectChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: subjectPerformances.map(subj => subj.subject),
+                    datasets: [{
+                        data: subjectPerformances.map(subj => subj.averageScore),
+                        backgroundColor: [
+                            '#0d6efd',
+                            '#198754',
+                            '#fd7e14',
+                            '#dc3545',
+                            '#6f42c1',
+                            '#20c997'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createTeacherGradeDistributionChart(gradeDistribution) {
+            const ctx = document.getElementById('teacherGradeDistributionChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'pie',
+                data: {
+                    labels: gradeDistribution.map(gd => gd.gradeRange),
+                    datasets: [{
+                        data: gradeDistribution.map(gd => gd.studentCount),
+                        backgroundColor: [
+                            '#28a745', '#17a2b8', '#ffc107', '#fd7e14', '#dc3545',
+                            '#6f42c1', '#20c997', '#e83e8c', '#fd7e14', '#6c757d'
+                        ]
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: {
+                            position: 'bottom'
+                        }
+                    }
+                }
+            });
+        }
+        
+        function createTeacherAssignmentChart(assignmentAnalytics) {
+            const ctx = document.getElementById('teacherAssignmentChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: assignmentAnalytics.map(a => a.assignmentName),
+                    datasets: [{
+                        label: 'Class Average',
+                        data: assignmentAnalytics.map(a => a.classAverage),
+                        backgroundColor: '#0d6efd'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 100
+                        }
+                    }
+                }
+            });
+        }
+        
+        function getGradeClass(letterGrade) {
+            if (letterGrade.startsWith('A')) return 'bg-success';
+            if (letterGrade.startsWith('B')) return 'bg-info';
+            if (letterGrade.startsWith('C')) return 'bg-warning';
+            if (letterGrade.startsWith('D')) return 'bg-danger';
+            return 'bg-secondary';
+        }
+        
+        async function loadAllAnalytics() {
+            await loadTeacherAnalyticsData();
+            alert('Analytics data refreshed!');
         }
         
         // Show student dashboard
@@ -4604,6 +5166,7 @@
                 modal.remove();
             }
         }
+        
         
         function logout() {
             console.log('Logging out user:', currentUser);
