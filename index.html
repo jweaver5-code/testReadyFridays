@@ -902,6 +902,98 @@
             font-weight: bold;
         }
         
+        /* Avatar styling for student display */
+        .avatar-circle {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 14px;
+        }
+        
+        .student-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 12px;
+        }
+        
+        /* Competition Leaderboard Styles */
+        .leaderboard {
+            max-height: 400px;
+            overflow-y: auto;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 0;
+            border-bottom: 1px solid #eee;
+            transition: background-color 0.2s ease;
+        }
+        
+        .leaderboard-item:hover {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding-left: 8px;
+            padding-right: 8px;
+        }
+        
+        .leaderboard-item:last-child {
+            border-bottom: none;
+        }
+        
+        .leaderboard-item .rank {
+            width: 40px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-right: 15px;
+        }
+        
+        .leaderboard-item .student-info {
+            flex: 1;
+            margin-right: 15px;
+        }
+        
+        .leaderboard-item .student-info strong {
+            display: block;
+            font-size: 16px;
+            color: #333;
+        }
+        
+        .leaderboard-item .student-info small {
+            color: #666;
+            font-size: 12px;
+        }
+        
+        .leaderboard-item .score {
+            font-weight: bold;
+            font-size: 16px;
+            color: #007bff;
+            text-align: right;
+        }
+        
+        .competition-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        
+        .competition-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+        
     </style>
 </head>
 <body>
@@ -1263,6 +1355,11 @@
                         <i class="fas fa-trophy"></i> Competitions
                     </button>
                 </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="analytics-tab" data-bs-toggle="tab" data-bs-target="#analytics" type="button" role="tab" onclick="console.log('Analytics tab clicked directly')">
+                        <i class="fas fa-chart-line"></i> Analytics
+                    </button>
+                </li>
             </ul>
             
             <div class="tab-content" id="teacherTabContent">
@@ -1301,7 +1398,7 @@
                                 <div class="game-icon text-warning">📊</div>
                                 <div class="game-title">View Analytics</div>
                                 <div class="game-description">Track student progress and performance</div>
-                                <button class="play-btn" onclick="viewAnalytics()">View Analytics</button>
+                                <button class="play-btn" onclick="showAnalytics()">View Analytics</button>
                     </div>
                     </div>
                   </div>
@@ -1309,14 +1406,383 @@
                 
                 <!-- Competitions Tab -->
                 <div class="tab-pane fade" id="competitions" role="tabpanel">
-                    <h3>Active Competitions</h3>
-                    <div class="module-card">
-                        <h4>Math Speed Challenge</h4>
-                        <p>Ends in 2 days | 15 participants</p>
-                        <div class="btn-group">
-                            <button class="btn btn-primary">View Leaderboard</button>
-                            <button class="btn btn-warning">Edit Competition</button>
-              </div>
+                    <div class="container-fluid">
+                        <h2 class="mb-4">🏆 Student Competitions & Leaderboards</h2>
+                        
+                        <!-- Competition Tabs -->
+                        <ul class="nav nav-pills mb-4" id="competitionTabs" role="tablist">
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link active" id="games-tab" data-bs-toggle="pill" data-bs-target="#games" type="button" role="tab">
+                                    <i class="fas fa-gamepad"></i> Game Leaderboards
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="challenges-tab" data-bs-toggle="pill" data-bs-target="#challenges" type="button" role="tab">
+                                    <i class="fas fa-brain"></i> Speed Challenges
+                                </button>
+                            </li>
+                            <li class="nav-item" role="presentation">
+                                <button class="nav-link" id="overall-tab" data-bs-toggle="pill" data-bs-target="#overall" type="button" role="tab">
+                                    <i class="fas fa-crown"></i> Overall Rankings
+                                </button>
+                            </li>
+                        </ul>
+                        
+                        <!-- Tab Content -->
+                        <div class="tab-content" id="competitionTabContent">
+                            <!-- Game Leaderboards -->
+                            <div class="tab-pane fade show active" id="games" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-primary text-white">
+                                                <h5 class="mb-0"><i class="fas fa-puzzle-piece"></i> Math Puzzle Game</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="leaderboard">
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥇</div>
+                                                        <div class="student-info">
+                                                            <strong>Hermione Granger</strong>
+                                                            <small class="text-muted">Grade 7</small>
+                                                        </div>
+                                                        <div class="score">2,847 pts</div>
+                                                    </div>
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥈</div>
+                                                        <div class="student-info">
+                                                            <strong>Harry Potter</strong>
+                                                            <small class="text-muted">Grade 7</small>
+                                                        </div>
+                                                        <div class="score">2,156 pts</div>
+                                                    </div>
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥉</div>
+                                                        <div class="student-info">
+                                                            <strong>Luna Lovegood</strong>
+                                                            <small class="text-muted">Grade 6</small>
+                                                        </div>
+                                                        <div class="score">1,892 pts</div>
+                                                    </div>
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">4</div>
+                                                        <div class="student-info">
+                                                            <strong>Neville Longbottom</strong>
+                                                            <small class="text-muted">Grade 7</small>
+                                                        </div>
+                                                        <div class="score">1,634 pts</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-success text-white">
+                                                <h5 class="mb-0"><i class="fas fa-atom"></i> Science Quiz Game</h5>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="leaderboard">
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥇</div>
+                                                        <div class="student-info">
+                                                            <strong>Hermione Granger</strong>
+                                                            <small class="text-muted">Grade 7</small>
+                                                        </div>
+                                                        <div class="score">3,421 pts</div>
+                                                    </div>
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥈</div>
+                                                        <div class="student-info">
+                                                            <strong>Cedric Diggory</strong>
+                                                            <small class="text-muted">Grade 7</small>
+                                                        </div>
+                                                        <div class="score">2,987 pts</div>
+                                                    </div>
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥉</div>
+                                                        <div class="student-info">
+                                                            <strong>Luna Lovegood</strong>
+                                                            <small class="text-muted">Grade 6</small>
+                                                        </div>
+                                                        <div class="score">2,543 pts</div>
+                                                    </div>
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">4</div>
+                                                        <div class="student-info">
+                                                            <strong>Harry Potter</strong>
+                                                            <small class="text-muted">Grade 7</small>
+                                                        </div>
+                                                        <div class="score">2,234 pts</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Speed Challenges -->
+                            <div class="tab-pane fade" id="challenges" role="tabpanel">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-warning text-white">
+                                                <h5 class="mb-0"><i class="fas fa-stopwatch"></i> Math Speed Challenge</h5>
+                                                <small>Fastest problem solving</small>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="leaderboard">
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥇</div>
+                                                        <div class="student-info">
+                                                            <strong>Hermione Granger</strong>
+                                                            <small class="text-muted">Grade 7</small>
+                                                        </div>
+                                                        <div class="score">45 sec</div>
+                                                    </div>
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥈</div>
+                                                        <div class="student-info">
+                                                            <strong>Harry Potter</strong>
+                                                            <small class="text-muted">Grade 7</small>
+                                                        </div>
+                                                        <div class="score">52 sec</div>
+                                                    </div>
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥉</div>
+                                                        <div class="student-info">
+                                                            <strong>Luna Lovegood</strong>
+                                                            <small class="text-muted">Grade 6</small>
+                                                        </div>
+                                                        <div class="score">58 sec</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="card">
+                                            <div class="card-header bg-info text-white">
+                                                <h5 class="mb-0"><i class="fas fa-book"></i> Reading Speed Challenge</h5>
+                                                <small>Words per minute</small>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="leaderboard">
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥇</div>
+                                                        <div class="student-info">
+                                                            <strong>Hermione Granger</strong>
+                                                            <small class="text-muted">Grade 7</small>
+                                                        </div>
+                                                        <div class="score">280 WPM</div>
+                                                    </div>
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥈</div>
+                                                        <div class="student-info">
+                                                            <strong>Luna Lovegood</strong>
+                                                            <small class="text-muted">Grade 6</small>
+                                                        </div>
+                                                        <div class="score">265 WPM</div>
+                                                    </div>
+                                                    <div class="leaderboard-item">
+                                                        <div class="rank">🥉</div>
+                                                        <div class="student-info">
+                                                            <strong>Harry Potter</strong>
+                                                            <small class="text-muted">Grade 7</small>
+                                                        </div>
+                                                        <div class="score">245 WPM</div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Overall Rankings -->
+                            <div class="tab-pane fade" id="overall" role="tabpanel">
+                                <div class="card">
+                                    <div class="card-header bg-gradient text-white" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                                        <h4 class="mb-0"><i class="fas fa-crown"></i> Overall Student Rankings</h4>
+                                        <small>Combined performance across all activities</small>
+                                    </div>
+                                    <div class="card-body">
+                                        <div class="table-responsive">
+                                            <table class="table table-hover">
+                                                <thead class="table-dark">
+                                                    <tr>
+                                                        <th>Rank</th>
+                                                        <th>Student</th>
+                                                        <th>Grade</th>
+                                                        <th>Total Points</th>
+                                                        <th>Games Played</th>
+                                                        <th>Avg Score</th>
+                                                        <th>Streak</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr class="table-warning">
+                                                        <td><strong>🥇 1st</strong></td>
+                                                        <td><strong>Hermione Granger</strong></td>
+                                                        <td>Grade 7</td>
+                                                        <td><span class="badge bg-success">15,847</span></td>
+                                                        <td>45</td>
+                                                        <td>98%</td>
+                                                        <td><span class="text-success">🔥 12 days</span></td>
+                                                    </tr>
+                                                    <tr class="table-light">
+                                                        <td><strong>🥈 2nd</strong></td>
+                                                        <td><strong>Harry Potter</strong></td>
+                                                        <td>Grade 7</td>
+                                                        <td><span class="badge bg-primary">12,234</span></td>
+                                                        <td>38</td>
+                                                        <td>92%</td>
+                                                        <td><span class="text-success">🔥 8 days</span></td>
+                                                    </tr>
+                                                    <tr class="table-light">
+                                                        <td><strong>🥉 3rd</strong></td>
+                                                        <td><strong>Luna Lovegood</strong></td>
+                                                        <td>Grade 6</td>
+                                                        <td><span class="badge bg-info">11,567</span></td>
+                                                        <td>42</td>
+                                                        <td>89%</td>
+                                                        <td><span class="text-success">🔥 5 days</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>4th</strong></td>
+                                                        <td><strong>Cedric Diggory</strong></td>
+                                                        <td>Grade 7</td>
+                                                        <td><span class="badge bg-secondary">9,876</span></td>
+                                                        <td>35</td>
+                                                        <td>87%</td>
+                                                        <td><span class="text-warning">🔥 3 days</span></td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td><strong>5th</strong></td>
+                                                        <td><strong>Neville Longbottom</strong></td>
+                                                        <td>Grade 7</td>
+                                                        <td><span class="badge bg-secondary">8,234</span></td>
+                                                        <td>28</td>
+                                                        <td>82%</td>
+                                                        <td><span class="text-muted">🔥 1 day</span></td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Active Competitions -->
+                        <div class="row mt-4">
+                            <div class="col-12">
+                                <div class="card">
+                                    <div class="card-header d-flex justify-content-between align-items-center">
+                                        <h5 class="mb-0"><i class="fas fa-list"></i> Active Competitions</h5>
+                                        <div>
+                                            <button class="btn btn-sm btn-outline-primary" onclick="updateCompetitionsDisplay()">
+                                                <i class="fas fa-sync-alt"></i> Refresh
+                                            </button>
+                                            <button class="btn btn-sm btn-outline-success ms-2" onclick="createTestCompetition()">
+                                                <i class="fas fa-plus"></i> Test Competition
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="card-body">
+                                        <div id="teacherCompetitionsList">
+                                            <!-- Competitions will be loaded here -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Competition Management -->
+                        <div class="row mt-4">
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5><i class="fas fa-plus-circle"></i> Create New Competition</h5>
+                                        <p>Set up a new game or educational challenge for your students.</p>
+                                        <button class="btn btn-primary" onclick="openCompetitionModal()">Create Competition</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h5><i class="fas fa-chart-line"></i> Competition Analytics</h5>
+                                        <p>View detailed statistics and participation rates for all competitions.</p>
+                                        <button class="btn btn-success">View Analytics</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Analytics Tab -->
+                <div class="tab-pane fade" id="analytics" role="tabpanel">
+                    <h3>📊 Analytics</h3>
+                    <p>This is the analytics page for teachers to view student performance.</p>
+                    
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5>Total Students</h5>
+                                    <h2>24</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5>Class Average</h5>
+                                    <h2>85%</h2>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="card">
+                                <div class="card-body">
+                                    <h5>Quizzes Taken</h5>
+                                    <h2>156</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-4">
+                        <h5>Student Performance</h5>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Student</th>
+                                    <th>Grade</th>
+                                    <th>Score</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>Harry Potter</td>
+                                    <td>Grade 7</td>
+                                    <td>92%</td>
+                                </tr>
+                                <tr>
+                                    <td>Hermione Granger</td>
+                                    <td>Grade 7</td>
+                                    <td>98%</td>
+                                </tr>
+                                <tr>
+                                    <td>Ron Weasley</td>
+                                    <td>Grade 7</td>
+                                    <td>78%</td>
+                                </tr>
+                            </tbody>
+                        </table>
                     </div>
                 </div>
             </div>
@@ -1361,6 +1827,11 @@
                 <li class="nav-item" role="presentation">
                     <button class="nav-link" id="testprep-tab" data-bs-toggle="tab" data-bs-target="#testprep" type="button" role="tab">
                         <i class="fas fa-graduation-cap"></i> Test Prep
+                    </button>
+                </li>
+                <li class="nav-item" role="presentation">
+                    <button class="nav-link" id="competitions-student-tab" data-bs-toggle="tab" data-bs-target="#competitions-student" type="button" role="tab">
+                        <i class="fas fa-trophy"></i> Competitions
                     </button>
                 </li>
                 <li class="nav-item" role="presentation">
@@ -1687,6 +2158,16 @@
                     </div>
                 </div>
                   
+                <!-- Competitions Tab -->
+                <div class="tab-pane fade" id="competitions-student" role="tabpanel">
+                    <h3>🏆 Available Competitions</h3>
+                    <p>Join competitions to compete with your classmates and earn recognition!</p>
+                    
+                    <div id="studentCompetitionsList">
+                        <!-- Competitions will be loaded here -->
+                    </div>
+                </div>
+                
                 <!-- Progress Tab -->
                 <div class="tab-pane fade" id="progress" role="tabpanel">
                     <h3>Your Progress</h3>
@@ -4413,13 +4894,1276 @@
             }
         });
 
+        // View classroom function for teachers
+        function viewClassroom(classroomId) {
+            // For now, we'll show a mock classroom with sample students
+            // In a real implementation, this would fetch from the API
+            const sampleStudents = [
+                { id: 10, name: "Harry Potter", grade: "Grade 7", stars: 100, lastActive: "2 hours ago" },
+                { id: 11, name: "Hermione Granger", grade: "Grade 7", stars: 95, lastActive: "1 hour ago" },
+                { id: 12, name: "Ron Weasley", grade: "Grade 7", stars: 85, lastActive: "3 hours ago" },
+                { id: 13, name: "Neville Longbottom", grade: "Grade 7", stars: 75, lastActive: "5 hours ago" },
+                { id: 14, name: "Luna Lovegood", grade: "Grade 6", stars: 90, lastActive: "1 hour ago" },
+                { id: 15, name: "Ginny Weasley", grade: "Grade 6", stars: 88, lastActive: "2 hours ago" },
+                { id: 16, name: "Draco Malfoy", grade: "Grade 7", stars: 80, lastActive: "4 hours ago" },
+                { id: 17, name: "Cedric Diggory", grade: "Grade 7", stars: 92, lastActive: "30 minutes ago" }
+            ];
+
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Classroom Students - ${classroomId === 'math7' ? 'Grade 7 Math' : 'Grade 8 Science'}</h5>
+                            <button type="button" class="btn-close" onclick="closeClassroomModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row mb-3">
+                                <div class="col-md-6">
+                                    <div class="alert alert-info">
+                                        <strong>Total Students:</strong> ${sampleStudents.length}
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="alert alert-success">
+                                        <strong>Active Today:</strong> ${sampleStudents.filter(s => s.lastActive.includes('hour') || s.lastActive.includes('minutes')).length}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="table-responsive">
+                                <table class="table table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Student Name</th>
+                                            <th>Grade</th>
+                                            <th>Stars Earned</th>
+                                            <th>Last Active</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${sampleStudents.map(student => `
+                                            <tr>
+                                                <td>
+                                                    <div class="d-flex align-items-center">
+                                                        <div class="avatar-circle me-2">
+                                                            ${student.name.split(' ').map(n => n[0]).join('')}
+                                                        </div>
+                                                        <strong>${student.name}</strong>
+                                                    </div>
+                                                </td>
+                                                <td>${student.grade}</td>
+                                                <td>
+                                                    <span class="badge bg-warning">
+                                                        <i class="fas fa-star"></i> ${student.stars}
+                                                    </span>
+                                                </td>
+                                                <td>
+                                                    <small class="text-muted">${student.lastActive}</small>
+                                                </td>
+                                                <td>
+                                                    <button class="btn btn-sm btn-outline-primary" onclick="viewStudentProgress(${student.id})">
+                                                        <i class="fas fa-chart-line"></i> Progress
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        `).join('')}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="closeClassroomModal()">Close</button>
+                            <button class="btn btn-primary" onclick="exportStudentData()">
+                                <i class="fas fa-download"></i> Export Data
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+        }
+
+        // Close classroom modal
+        function closeClassroomModal() {
+            const modal = document.querySelector('.modal.show');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+
+        // View individual student progress
+        function viewStudentProgress(studentId) {
+            alert(`Viewing progress for student ID: ${studentId}\n\nThis would show detailed progress, completed modules, quiz scores, and activity history.`);
+        }
+
+        // Export student data
+        function exportStudentData() {
+            alert('Exporting student data...\n\nThis would generate a CSV or Excel file with all student progress data.');
+        }
+
+        // Create quiz function for teachers
+        function createQuiz(classroomId) {
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Create Quiz - ${classroomId === 'math7' ? 'Grade 7 Math' : 'Grade 8 Science'}</h5>
+                            <button type="button" class="btn-close" onclick="closeQuizModal()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form id="quizCreationForm">
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label class="form-label">Quiz Title</label>
+                                        <input type="text" class="form-control" id="quizTitle" placeholder="Enter quiz title" required>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <label class="form-label">Subject</label>
+                                        <select class="form-control" id="quizSubject" required>
+                                            <option value="">Select Subject</option>
+                                            <option value="math">Mathematics</option>
+                                            <option value="science">Science</option>
+                                            <option value="english">English</option>
+                                            <option value="social">Social Studies</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <label class="form-label">Time Limit (minutes)</label>
+                                        <input type="number" class="form-control" id="timeLimit" min="5" max="120" value="30">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Total Points</label>
+                                        <input type="number" class="form-control" id="totalPoints" min="10" max="100" value="50">
+                                    </div>
+                                    <div class="col-md-4">
+                                        <label class="form-label">Difficulty</label>
+                                        <select class="form-control" id="difficulty">
+                                            <option value="easy">Easy</option>
+                                            <option value="medium" selected>Medium</option>
+                                            <option value="hard">Hard</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Quiz Description</label>
+                                    <textarea class="form-control" id="quizDescription" rows="3" placeholder="Describe what this quiz covers..."></textarea>
+                                </div>
+                                
+                                <div class="mb-4">
+                                    <div class="d-flex justify-content-between align-items-center mb-3">
+                                        <h6>Quiz Questions</h6>
+                                        <button type="button" class="btn btn-success btn-sm" onclick="addQuestion()">
+                                            <i class="fas fa-plus"></i> Add Question
+                                        </button>
+                                    </div>
+                                    <div id="questionsContainer">
+                                        <!-- Questions will be added here dynamically -->
+                                    </div>
+                                </div>
+                                
+                                <div class="alert alert-info">
+                                    <strong>Instructions:</strong>
+                                    <ul class="mb-0">
+                                        <li>Add at least 3 questions to create a quiz</li>
+                                        <li>Each question must have 4 answer options</li>
+                                        <li>Mark the correct answer for each question</li>
+                                        <li>Questions will be automatically numbered</li>
+                                    </ul>
+                                </div>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="closeQuizModal()">Cancel</button>
+                            <button class="btn btn-primary" onclick="previewQuiz()">
+                                <i class="fas fa-eye"></i> Preview Quiz
+                            </button>
+                            <button class="btn btn-success" onclick="saveQuiz()">
+                                <i class="fas fa-save"></i> Create Quiz
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Add initial question
+            addQuestion();
+        }
+
+        // Add a new question to the quiz
+        function addQuestion() {
+            const container = document.getElementById('questionsContainer');
+            const questionNumber = container.children.length + 1;
+            
+            const questionDiv = document.createElement('div');
+            questionDiv.className = 'question-item mb-4 p-3 border rounded';
+            questionDiv.innerHTML = `
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <h6>Question ${questionNumber}</h6>
+                    <button type="button" class="btn btn-danger btn-sm" onclick="removeQuestion(this)">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Question Text</label>
+                    <textarea class="form-control question-text" rows="2" placeholder="Enter your question here..." required></textarea>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text">A</span>
+                                <input type="text" class="form-control option-a" placeholder="Option A" required>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text">B</span>
+                                <input type="text" class="form-control option-b" placeholder="Option B" required>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text">C</span>
+                                <input type="text" class="form-control option-c" placeholder="Option C" required>
+                            </div>
+                        </div>
+                        <div class="mb-2">
+                            <div class="input-group">
+                                <span class="input-group-text">D</span>
+                                <input type="text" class="form-control option-d" placeholder="Option D" required>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-3">
+                    <label class="form-label">Correct Answer</label>
+                    <select class="form-control correct-answer" required>
+                        <option value="">Select correct answer</option>
+                        <option value="A">A</option>
+                        <option value="B">B</option>
+                        <option value="C">C</option>
+                        <option value="D">D</option>
+                    </select>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-6">
+                        <label class="form-label">Points</label>
+                        <input type="number" class="form-control question-points" min="1" max="20" value="5">
+                    </div>
+                    <div class="col-md-6">
+                        <label class="form-label">Explanation (optional)</label>
+                        <input type="text" class="form-control question-explanation" placeholder="Why is this the correct answer?">
+                    </div>
+                </div>
+            `;
+            
+            container.appendChild(questionDiv);
+        }
+
+        // Remove a question from the quiz
+        function removeQuestion(button) {
+            if (document.getElementById('questionsContainer').children.length > 1) {
+                button.closest('.question-item').remove();
+                // Renumber questions
+                renumberQuestions();
+            } else {
+                alert('You must have at least one question in your quiz.');
+            }
+        }
+
+        // Renumber questions after deletion
+        function renumberQuestions() {
+            const questions = document.querySelectorAll('.question-item');
+            questions.forEach((question, index) => {
+                question.querySelector('h6').textContent = `Question ${index + 1}`;
+            });
+        }
+
+        // Close quiz creation modal
+        function closeQuizModal() {
+            const modal = document.querySelector('.modal.show');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+
+        // Preview quiz before saving
+        function previewQuiz() {
+            const questions = document.querySelectorAll('.question-item');
+            if (questions.length < 3) {
+                alert('Please add at least 3 questions to create a quiz.');
+                return;
+            }
+
+            let preview = `Quiz Preview:\n\n`;
+            preview += `Title: ${document.getElementById('quizTitle').value}\n`;
+            preview += `Subject: ${document.getElementById('quizSubject').value}\n`;
+            preview += `Time Limit: ${document.getElementById('timeLimit').value} minutes\n`;
+            preview += `Total Points: ${document.getElementById('totalPoints').value}\n\n`;
+            
+            questions.forEach((question, index) => {
+                preview += `Question ${index + 1}: ${question.querySelector('.question-text').value}\n`;
+                preview += `A) ${question.querySelector('.option-a').value}\n`;
+                preview += `B) ${question.querySelector('.option-b').value}\n`;
+                preview += `C) ${question.querySelector('.option-c').value}\n`;
+                preview += `D) ${question.querySelector('.option-d').value}\n`;
+                preview += `Correct Answer: ${question.querySelector('.correct-answer').value}\n\n`;
+            });
+            
+            alert(preview);
+        }
+
+        // Save quiz
+        function saveQuiz() {
+            const questions = document.querySelectorAll('.question-item');
+            if (questions.length < 3) {
+                alert('Please add at least 3 questions to create a quiz.');
+                return;
+            }
+
+            // Validate all questions
+            let isValid = true;
+            questions.forEach((question, index) => {
+                const text = question.querySelector('.question-text').value;
+                const optionA = question.querySelector('.option-a').value;
+                const optionB = question.querySelector('.option-b').value;
+                const optionC = question.querySelector('.option-c').value;
+                const optionD = question.querySelector('.option-d').value;
+                const correct = question.querySelector('.correct-answer').value;
+                
+                if (!text || !optionA || !optionB || !optionC || !optionD || !correct) {
+                    isValid = false;
+                }
+            });
+
+            if (!isValid) {
+                alert('Please fill in all required fields for each question.');
+                return;
+            }
+
+            // Collect quiz data
+            const quizData = {
+                title: document.getElementById('quizTitle').value,
+                subject: document.getElementById('quizSubject').value,
+                timeLimit: parseInt(document.getElementById('timeLimit').value),
+                totalPoints: parseInt(document.getElementById('totalPoints').value),
+                difficulty: document.getElementById('difficulty').value,
+                description: document.getElementById('quizDescription').value,
+                questions: []
+            };
+
+            questions.forEach((question, index) => {
+                quizData.questions.push({
+                    number: index + 1,
+                    text: question.querySelector('.question-text').value,
+                    options: {
+                        A: question.querySelector('.option-a').value,
+                        B: question.querySelector('.option-b').value,
+                        C: question.querySelector('.option-c').value,
+                        D: question.querySelector('.option-d').value
+                    },
+                    correct: question.querySelector('.correct-answer').value,
+                    points: parseInt(question.querySelector('.question-points').value),
+                    explanation: question.querySelector('.question-explanation').value
+                });
+            });
+
+            // Save quiz (in a real implementation, this would send to API)
+            console.log('Quiz created:', quizData);
+            alert(`Quiz "${quizData.title}" created successfully!\n\nQuestions: ${quizData.questions.length}\nTotal Points: ${quizData.totalPoints}\nTime Limit: ${quizData.timeLimit} minutes`);
+            
+            closeQuizModal();
+        }
+
+        // Analytics functionality
+        let performanceChart = null;
+        let currentChartView = 'overview';
+        
+        // Sample student data for analytics
+        const sampleStudentData = [
+            { id: 10, name: "Harry Potter", grade: "Grade 7", averageScore: 92, quizzesTaken: 8, lastActivity: "2 hours ago", trend: "improving", scores: [85, 88, 90, 92, 89, 94, 91, 95] },
+            { id: 11, name: "Hermione Granger", grade: "Grade 7", averageScore: 98, quizzesTaken: 10, lastActivity: "1 hour ago", trend: "excellent", scores: [95, 97, 98, 99, 96, 100, 98, 99, 97, 100] },
+            { id: 12, name: "Ron Weasley", grade: "Grade 7", averageScore: 78, quizzesTaken: 6, lastActivity: "3 hours ago", trend: "declining", scores: [82, 80, 75, 78, 76, 77] },
+            { id: 13, name: "Neville Longbottom", grade: "Grade 7", averageScore: 85, quizzesTaken: 7, lastActivity: "5 hours ago", trend: "stable", scores: [83, 84, 85, 86, 84, 87, 86] },
+            { id: 14, name: "Luna Lovegood", grade: "Grade 6", averageScore: 90, quizzesTaken: 9, lastActivity: "1 hour ago", trend: "improving", scores: [87, 88, 89, 91, 88, 92, 90, 91, 93] },
+            { id: 15, name: "Ginny Weasley", grade: "Grade 6", averageScore: 88, quizzesTaken: 8, lastActivity: "2 hours ago", trend: "improving", scores: [85, 86, 87, 89, 87, 90, 88, 91] },
+            { id: 16, name: "Draco Malfoy", grade: "Grade 7", averageScore: 82, quizzesTaken: 5, lastActivity: "4 hours ago", trend: "declining", scores: [85, 83, 81, 80, 82] },
+            { id: 17, name: "Cedric Diggory", grade: "Grade 7", averageScore: 94, quizzesTaken: 9, lastActivity: "30 minutes ago", trend: "excellent", scores: [92, 93, 94, 95, 93, 96, 94, 95, 97] }
+        ];
+
+        // Simple analytics initialization
+        function initializeAnalytics() {
+            console.log('Analytics tab loaded successfully!');
+        }
+
+        // Simple analytics functions
+        function populateAnalyticsTable() {
+            console.log('Analytics table ready');
+        }
+
+        function initializePerformanceChart() {
+            console.log('Charts ready');
+        }
+
+        function updateAnalyticsSummary() {
+            console.log('Summary updated');
+        }
+
+        // Switch chart view
+        function switchChartView(view) {
+            currentChartView = view;
+            
+            // Update button states
+            document.querySelectorAll('#analytics .btn-group button').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            event.target.classList.add('active');
+            
+            initializePerformanceChart();
+        }
+
+        // View individual student analytics
+        function viewStudentAnalytics(studentId) {
+            const student = sampleStudentData.find(s => s.id === studentId);
+            if (!student) return;
+            
+            const modal = document.createElement('div');
+            modal.className = 'modal fade show';
+            modal.style.display = 'block';
+            modal.innerHTML = `
+                <div class="modal-dialog modal-xl">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title">Student Analytics - ${student.name}</h5>
+                            <button type="button" class="btn-close" onclick="closeStudentAnalytics()"></button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row mb-4">
+                                <div class="col-md-3">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <h5 class="text-primary">${student.averageScore}%</h5>
+                                            <p class="card-text">Average Score</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <h5 class="text-success">${student.quizzesTaken}</h5>
+                                            <p class="card-text">Quizzes Taken</p>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card text-center">
+                                    <div class="card-body">
+                                        <h5 class="text-warning">${Math.max(...student.scores)}%</h5>
+                                        <p class="card-text">Best Score</p>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="card text-center">
+                                        <div class="card-body">
+                                            <h5 class="text-info">${Math.min(...student.scores)}%</h5>
+                                            <p class="card-text">Lowest Score</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6>Performance Trend</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <canvas id="studentTrendChart" width="400" height="200"></canvas>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="row mt-3">
+                                <div class="col-12">
+                                    <div class="card">
+                                        <div class="card-header">
+                                            <h6>Recent Quiz Scores</h6>
+                                        </div>
+                                        <div class="card-body">
+                                            <div class="table-responsive">
+                                                <table class="table table-sm">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>Quiz #</th>
+                                                            <th>Score</th>
+                                                            <th>Date</th>
+                                                            <th>Status</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        ${student.scores.map((score, index) => `
+                                                            <tr>
+                                                                <td>Quiz ${index + 1}</td>
+                                                                <td>
+                                                                    <span class="badge ${getScoreBadgeClass(score)}">
+                                                                        ${score}%
+                                                                    </span>
+                                                                </td>
+                                                                <td>${getRandomDate()}</td>
+                                                                <td>
+                                                                    <span class="badge ${score >= 80 ? 'bg-success' : 'bg-warning'}">
+                                                                        ${score >= 80 ? 'Passed' : 'Needs Improvement'}
+                                                                    </span>
+                                                                </td>
+                                                            </tr>
+                                                        `).join('')}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" onclick="closeStudentAnalytics()">Close</button>
+                            <button class="btn btn-primary" onclick="exportStudentReport(${student.id})">
+                                <i class="fas fa-download"></i> Export Report
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Initialize student trend chart
+            setTimeout(() => {
+                const ctx = document.getElementById('studentTrendChart');
+                if (ctx) {
+                    new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: student.scores.map((_, index) => `Quiz ${index + 1}`),
+                            datasets: [{
+                                label: 'Score (%)',
+                                data: student.scores,
+                                borderColor: '#007bff',
+                                backgroundColor: 'rgba(0, 123, 255, 0.1)',
+                                tension: 0.4,
+                                fill: true
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    max: 100
+                                }
+                            },
+                            plugins: {
+                                title: {
+                                    display: true,
+                                    text: `${student.name}'s Performance Trend`
+                                }
+                            }
+                        }
+                    });
+                }
+            }, 100);
+        }
+
+        // Close student analytics modal
+        function closeStudentAnalytics() {
+            const modal = document.querySelector('.modal.show');
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+
+        // Export analytics data
+        function exportAnalytics() {
+            alert('Exporting analytics data...\n\nThis would generate a comprehensive report with all student performance data, charts, and insights.');
+        }
+
+        // Refresh analytics data
+        function refreshAnalytics() {
+            alert('Refreshing analytics data...\n\nThis would fetch the latest data from the database and update all charts and tables.');
+        }
+
+        // Export individual student report
+        function exportStudentReport(studentId) {
+            const student = sampleStudentData.find(s => s.id === studentId);
+            alert(`Exporting detailed report for ${student.name}...\n\nThis would generate a PDF report with performance trends, quiz history, and recommendations.`);
+        }
+
+        // Update analytics summary cards
+        function updateAnalyticsSummary() {
+            console.log('Updating analytics summary...');
+            // This will be implemented later
+        }
+
+        // Generate random date for quiz history
+        function getRandomDate() {
+            const dates = ['2024-10-15', '2024-10-12', '2024-10-08', '2024-10-05', '2024-10-01', '2024-09-28', '2024-09-25', '2024-09-22'];
+            return dates[Math.floor(Math.random() * dates.length)];
+        }
+
+        // Initialize analytics when tab is clicked
+        document.addEventListener('click', function(e) {
+            if (e.target && (e.target.id === 'analytics-tab' || e.target.closest('#analytics-tab'))) {
+                console.log('Analytics tab clicked');
+                setTimeout(() => {
+                    initializeAnalytics();
+                }, 300);
+            }
+        });
+        
+        // Also listen for tab show events
+        document.addEventListener('shown.bs.tab', function(e) {
+            if (e.target && e.target.id === 'analytics-tab') {
+                console.log('Analytics tab shown via Bootstrap event');
+                setTimeout(() => {
+                    initializeAnalytics();
+                }, 100);
+            }
+        });
+        
+        // Add a manual trigger for analytics
+        function triggerAnalytics() {
+            console.log('Manually triggering analytics...');
+            initializeAnalytics();
+        }
+        
+        // Check if analytics tab is active and initialize
+        function checkAndInitializeAnalytics() {
+            const analyticsTab = document.getElementById('analytics-tab');
+            const analyticsContent = document.getElementById('analytics');
+            
+            if (analyticsTab && analyticsContent) {
+                if (analyticsTab.classList.contains('active') || analyticsContent.classList.contains('active')) {
+                    console.log('Analytics tab is active, initializing...');
+                    initializeAnalytics();
+                }
+            }
+        }
+        
+        // Add a manual initialization function that can be called
+        function showAnalytics() {
+            console.log('Manual analytics initialization');
+            
+            // Switch to analytics tab
+            const analyticsTab = document.getElementById('analytics-tab');
+            if (analyticsTab) {
+                analyticsTab.click();
+            }
+            
+            // Initialize analytics after a short delay
+            setTimeout(() => {
+                initializeAnalytics();
+            }, 200);
+        }
+        
+        // Test function to debug analytics
+        function testAnalytics() {
+            console.log('Testing analytics...');
+            console.log('Analytics tab exists:', !!document.getElementById('analytics-tab'));
+            console.log('Analytics content exists:', !!document.getElementById('analytics'));
+            console.log('Analytics table body exists:', !!document.getElementById('analyticsTableBody'));
+            console.log('Performance chart exists:', !!document.getElementById('performanceChart'));
+            
+            // Check if analytics content is visible
+            const analyticsContent = document.getElementById('analytics');
+            if (analyticsContent) {
+                console.log('Analytics content classes:', analyticsContent.className);
+                console.log('Analytics content style display:', analyticsContent.style.display);
+                console.log('Analytics content computed display:', window.getComputedStyle(analyticsContent).display);
+                console.log('Analytics content offsetHeight:', analyticsContent.offsetHeight);
+                console.log('Analytics content offsetWidth:', analyticsContent.offsetWidth);
+            }
+            
+            // Test if we can populate the table
+            const tbody = document.getElementById('analyticsTableBody');
+            if (tbody) {
+                tbody.innerHTML = '<tr><td colspan="7" class="text-center">Test: Analytics is working!</td></tr>';
+                console.log('Analytics table populated successfully');
+            } else {
+                console.error('Analytics table body not found');
+            }
+        }
+        
+        // Force initialize analytics
+        function forceInitializeAnalytics() {
+            console.log('Force initializing analytics...');
+            try {
+                populateAnalyticsTable();
+                updateAnalyticsSummary();
+                console.log('Force initialization completed');
+            } catch (error) {
+                console.error('Force initialization failed:', error);
+            }
+        }
+        
+
+        // Competition Storage and Management
+        let competitions = JSON.parse(localStorage.getItem('competitions')) || [];
+        
+        function saveCompetitions() {
+            localStorage.setItem('competitions', JSON.stringify(competitions));
+        }
+        
+        function loadCompetitions() {
+            competitions = JSON.parse(localStorage.getItem('competitions')) || [];
+            return competitions;
+        }
+        
+        // Competition Creation Functions
+        function openCompetitionModal() {
+            // Set default dates (start now, end in 7 days)
+            const now = new Date();
+            const endDate = new Date(now.getTime() + (7 * 24 * 60 * 60 * 1000)); // 7 days from now
+            
+            document.getElementById('startDate').value = now.toISOString().slice(0, 16);
+            document.getElementById('endDate').value = endDate.toISOString().slice(0, 16);
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('competitionCreationModal'));
+            modal.show();
+        }
+        
+        function createCompetition() {
+            // Get form data
+            const competitionData = {
+                title: document.getElementById('competitionTitle').value,
+                type: document.getElementById('competitionType').value,
+                description: document.getElementById('competitionDescription').value,
+                startDate: document.getElementById('startDate').value,
+                endDate: document.getElementById('endDate').value,
+                maxParticipants: parseInt(document.getElementById('maxParticipants').value),
+                gradeLevel: document.getElementById('gradeLevel').value,
+                scoringType: document.querySelector('input[name="scoringType"]:checked').value,
+                allowRetries: document.getElementById('allowRetries').checked,
+                showLeaderboard: document.getElementById('showLeaderboard').checked,
+                prizeDescription: document.getElementById('prizeDescription').value,
+                createdBy: currentUser.name,
+                createdAt: new Date().toISOString(),
+                status: 'active',
+                participants: 0
+            };
+            
+            // Validate required fields
+            if (!competitionData.title || !competitionData.type || !competitionData.startDate || !competitionData.endDate) {
+                alert('Please fill in all required fields.');
+                return;
+            }
+            
+            // Validate dates
+            const startDate = new Date(competitionData.startDate);
+            const endDate = new Date(competitionData.endDate);
+            
+            if (startDate >= endDate) {
+                alert('End date must be after start date.');
+                return;
+            }
+            
+            if (startDate < new Date()) {
+                alert('Start date cannot be in the past.');
+                return;
+            }
+            
+            // Add unique ID and save competition
+            competitionData.id = Date.now().toString();
+            competitions.push(competitionData);
+            saveCompetitions();
+            
+            console.log('Competition created:', competitionData);
+            
+            // Show success message
+            const competitionTypeNames = {
+                'game': 'Educational Game',
+                'speed': 'Speed Challenge', 
+                'quiz': 'Quiz Competition',
+                'reading': 'Reading Challenge',
+                'math': 'Math Challenge',
+                'science': 'Science Challenge'
+            };
+            
+            alert(`🏆 Competition "${competitionData.title}" created successfully!\n\nType: ${competitionTypeNames[competitionData.type]}\nStart: ${new Date(competitionData.startDate).toLocaleDateString()}\nEnd: ${new Date(competitionData.endDate).toLocaleDateString()}\nMax Participants: ${competitionData.maxParticipants}`);
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('competitionCreationModal'));
+            modal.hide();
+            
+            // Reset form
+            document.getElementById('competitionForm').reset();
+            
+            // Update competitions display
+            setTimeout(() => {
+                updateCompetitionsDisplay();
+            }, 500);
+        }
+        
+        function updateCompetitionsDisplay() {
+            loadCompetitions();
+            console.log('Updating competitions display, found:', competitions.length, 'competitions');
+            
+            // Update teacher dashboard competitions
+            const teacherCompetitionsContainer = document.getElementById('teacherCompetitionsList');
+            console.log('Teacher container found:', !!teacherCompetitionsContainer);
+            if (teacherCompetitionsContainer) {
+                displayTeacherCompetitions(teacherCompetitionsContainer);
+            }
+            
+            // Update student dashboard competitions
+            const studentCompetitionsContainer = document.getElementById('studentCompetitionsList');
+            console.log('Student container found:', !!studentCompetitionsContainer);
+            if (studentCompetitionsContainer) {
+                displayStudentCompetitions(studentCompetitionsContainer);
+            }
+        }
+        
+        function displayTeacherCompetitions(container) {
+            console.log('Displaying teacher competitions, total competitions:', competitions.length);
+            
+            const activeCompetitions = competitions.filter(comp => {
+                const now = new Date();
+                const startDate = new Date(comp.startDate);
+                const endDate = new Date(comp.endDate);
+                return startDate <= now && endDate >= now;
+            });
+            
+            console.log('Active competitions found:', activeCompetitions.length);
+            
+            if (activeCompetitions.length === 0) {
+                container.innerHTML = '<p class="text-muted">No active competitions. Create one to get started!</p>';
+                return;
+            }
+            
+            container.innerHTML = activeCompetitions.map(comp => `
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="card-title">${comp.title}</h5>
+                                <p class="card-text text-muted">${comp.description}</p>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <small class="text-muted">
+                                            <i class="fas fa-calendar"></i> 
+                                            ${new Date(comp.startDate).toLocaleDateString()} - ${new Date(comp.endDate).toLocaleDateString()}
+                                        </small>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <small class="text-muted">
+                                            <i class="fas fa-users"></i> 
+                                            ${comp.participants}/${comp.maxParticipants} participants
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="btn-group-vertical">
+                                <button class="btn btn-sm btn-outline-primary" onclick="viewCompetitionDetails('${comp.id}')">
+                                    <i class="fas fa-eye"></i> View
+                                </button>
+                                <button class="btn btn-sm btn-outline-success" onclick="viewCompetitionLeaderboard('${comp.id}')">
+                                    <i class="fas fa-trophy"></i> Leaderboard
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function displayStudentCompetitions(container) {
+            const now = new Date();
+            const availableCompetitions = competitions.filter(comp => {
+                const startDate = new Date(comp.startDate);
+                const endDate = new Date(comp.endDate);
+                return startDate <= now && endDate >= now && comp.participants < comp.maxParticipants;
+            });
+            
+            if (availableCompetitions.length === 0) {
+                container.innerHTML = '<p class="text-muted">No competitions available right now. Check back later!</p>';
+                return;
+            }
+            
+            container.innerHTML = availableCompetitions.map(comp => `
+                <div class="card mb-3 competition-card">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between align-items-start">
+                            <div>
+                                <h5 class="card-title">${comp.title}</h5>
+                                <p class="card-text">${comp.description}</p>
+                                <div class="row">
+                                    <div class="col-md-4">
+                                        <small class="text-muted">
+                                            <i class="fas fa-clock"></i> 
+                                            Ends: ${new Date(comp.endDate).toLocaleDateString()}
+                                        </small>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted">
+                                            <i class="fas fa-users"></i> 
+                                            ${comp.participants}/${comp.maxParticipants} participants
+                                        </small>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <small class="text-muted">
+                                            <i class="fas fa-star"></i> 
+                                            ${comp.prizeDescription || 'Recognition'}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div>
+                                <button class="btn btn-primary" onclick="playCompetition('${comp.id}')">
+                                    <i class="fas fa-play"></i> Play Now
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+        
+        function viewCompetitionDetails(competitionId) {
+            const comp = competitions.find(c => c.id === competitionId);
+            if (!comp) return;
+            
+            alert(`Competition Details:\n\nTitle: ${comp.title}\nType: ${comp.type}\nDescription: ${comp.description}\nParticipants: ${comp.participants}/${comp.maxParticipants}\nScoring: ${comp.scoringType}\nPrize: ${comp.prizeDescription || 'Recognition'}`);
+        }
+        
+        function viewCompetitionLeaderboard(competitionId) {
+            const comp = competitions.find(c => c.id === competitionId);
+            if (!comp) return;
+            
+            alert(`Leaderboard for "${comp.title}"\n\nThis would show the current rankings for this competition.`);
+        }
+        
+        function playCompetition(competitionId) {
+            const comp = competitions.find(c => c.id === competitionId);
+            if (!comp) return;
+            
+            // Increment participant count
+            comp.participants++;
+            saveCompetitions();
+            
+            // Show competition interface based on type
+            showCompetitionInterface(comp);
+        }
+        
+        function showCompetitionInterface(competition) {
+            // Create competition modal
+            const modalHtml = `
+                <div class="modal fade" id="competitionPlayModal" tabindex="-1" aria-labelledby="competitionPlayModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="competitionPlayModalLabel">🏆 ${competition.title}</h5>
+                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="text-center mb-4">
+                                    <h4>${competition.description}</h4>
+                                    <p class="text-muted">Type: ${competition.type} | Scoring: ${competition.scoringType}</p>
+                                </div>
+                                
+                                <div id="competitionContent">
+                                    ${getCompetitionContent(competition)}
+                                </div>
+                                
+                                <div class="mt-4 text-center">
+                                    <button class="btn btn-success btn-lg" onclick="submitCompetitionEntry('${competition.id}')">
+                                        <i class="fas fa-flag-checkered"></i> Submit Entry
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            // Remove existing modal if any
+            const existingModal = document.getElementById('competitionPlayModal');
+            if (existingModal) {
+                existingModal.remove();
+            }
+            
+            // Add modal to body
+            document.body.insertAdjacentHTML('beforeend', modalHtml);
+            
+            // Show modal
+            const modal = new bootstrap.Modal(document.getElementById('competitionPlayModal'));
+            modal.show();
+        }
+        
+        function getCompetitionContent(competition) {
+            switch(competition.type) {
+                case 'math':
+                    return `
+                        <div class="row">
+                            <div class="col-md-6">
+                                <h5>Math Problems</h5>
+                                <div class="problem">
+                                    <p>1. What is 15 × 8?</p>
+                                    <input type="number" class="form-control" id="answer1" placeholder="Your answer">
+                                </div>
+                                <div class="problem">
+                                    <p>2. Solve: 3x + 7 = 22</p>
+                                    <input type="number" class="form-control" id="answer2" placeholder="Your answer">
+                                </div>
+                                <div class="problem">
+                                    <p>3. What is 144 ÷ 12?</p>
+                                    <input type="number" class="form-control" id="answer3" placeholder="Your answer">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <h5>Timer</h5>
+                                <div class="timer-display">
+                                    <h2 id="timer">00:00</h2>
+                                </div>
+                                <p class="text-muted">Complete all problems as quickly as possible!</p>
+                            </div>
+                        </div>
+                    `;
+                case 'quiz':
+                    return `
+                        <div class="quiz-container">
+                            <h5>Knowledge Quiz</h5>
+                            <div class="question">
+                                <p>1. What is the capital of France?</p>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="q1" id="q1a" value="a">
+                                    <label class="form-check-label" for="q1a">Paris</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="q1" id="q1b" value="b">
+                                    <label class="form-check-label" for="q1b">London</label>
+                                </div>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="q1" id="q1c" value="c">
+                                    <label class="form-check-label" for="q1c">Berlin</label>
+                                </div>
+                            </div>
+                        </div>
+                    `;
+                default:
+                    return `
+                        <div class="text-center">
+                            <h5>Competition Content</h5>
+                            <p>This is a ${competition.type} competition.</p>
+                            <p>Complete the challenge to earn points!</p>
+                        </div>
+                    `;
+            }
+        }
+        
+        function submitCompetitionEntry(competitionId) {
+            const comp = competitions.find(c => c.id === competitionId);
+            if (!comp) return;
+            
+            // Calculate score based on competition type
+            let score = Math.floor(Math.random() * 100) + 1; // Simulated score
+            
+            alert(`🏆 Competition Entry Submitted!\n\nYour Score: ${score} points\n\nGood job! Your score has been recorded.`);
+            
+            // Close modal
+            const modal = bootstrap.Modal.getInstance(document.getElementById('competitionPlayModal'));
+            modal.hide();
+            
+            // Update display
+            updateCompetitionsDisplay();
+        }
+        
+        function createTestCompetition() {
+            const testCompetition = {
+                id: Date.now().toString(),
+                title: "Test Math Challenge",
+                type: "math",
+                description: "A test competition to verify the system works",
+                startDate: new Date().toISOString(),
+                endDate: new Date(Date.now() + (7 * 24 * 60 * 60 * 1000)).toISOString(),
+                maxParticipants: 50,
+                gradeLevel: "all",
+                scoringType: "points",
+                allowRetries: true,
+                showLeaderboard: true,
+                prizeDescription: "Test recognition",
+                createdBy: currentUser ? currentUser.name : "Test Teacher",
+                createdAt: new Date().toISOString(),
+                status: "active",
+                participants: 0
+            };
+            
+            competitions.push(testCompetition);
+            saveCompetitions();
+            
+            console.log('Test competition created:', testCompetition);
+            alert('Test competition created! Check the competitions list.');
+            
+            updateCompetitionsDisplay();
+        }
+
         // Initialize
         document.addEventListener('DOMContentLoaded', async () => {
             initializeTheme();
             await loadSavedUserData(); // Load saved user data first
             // updateStarsDisplay() and updateGameAvailability() are now called within loadSavedUserData()
             // after the user data is fully loaded and synced with the database
+            
+            // Load competitions
+            updateCompetitionsDisplay();
         });
     </script>
+
+    <!-- Competition Creation Modal -->
+    <div class="modal fade" id="competitionCreationModal" tabindex="-1" aria-labelledby="competitionCreationModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="competitionCreationModalLabel">🏆 Create New Competition</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="competitionForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="competitionTitle" class="form-label">Competition Title</label>
+                                    <input type="text" class="form-control" id="competitionTitle" placeholder="e.g., Math Speed Challenge" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="competitionType" class="form-label">Competition Type</label>
+                                    <select class="form-select" id="competitionType" required>
+                                        <option value="">Select Type</option>
+                                        <option value="game">🎮 Educational Game</option>
+                                        <option value="speed">⚡ Speed Challenge</option>
+                                        <option value="quiz">📝 Quiz Competition</option>
+                                        <option value="reading">📚 Reading Challenge</option>
+                                        <option value="math">🔢 Math Challenge</option>
+                                        <option value="science">🧪 Science Challenge</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="competitionDescription" class="form-label">Description</label>
+                            <textarea class="form-control" id="competitionDescription" rows="3" placeholder="Describe the competition rules and objectives..."></textarea>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="startDate" class="form-label">Start Date</label>
+                                    <input type="datetime-local" class="form-control" id="startDate" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="endDate" class="form-label">End Date</label>
+                                    <input type="datetime-local" class="form-control" id="endDate" required>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="maxParticipants" class="form-label">Max Participants</label>
+                                    <input type="number" class="form-control" id="maxParticipants" min="1" max="100" value="50">
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="gradeLevel" class="form-label">Grade Level</label>
+                                    <select class="form-select" id="gradeLevel">
+                                        <option value="all">All Grades</option>
+                                        <option value="6">Grade 6</option>
+                                        <option value="7">Grade 7</option>
+                                        <option value="8">Grade 8</option>
+                                        <option value="9">Grade 9</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Scoring System</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="scoringType" id="pointsScoring" value="points" checked>
+                                <label class="form-check-label" for="pointsScoring">
+                                    Points-based (highest score wins)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="scoringType" id="timeScoring" value="time">
+                                <label class="form-check-label" for="timeScoring">
+                                    Time-based (fastest time wins)
+                                </label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="scoringType" id="accuracyScoring" value="accuracy">
+                                <label class="form-check-label" for="accuracyScoring">
+                                    Accuracy-based (highest percentage wins)
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="allowRetries" checked>
+                                <label class="form-check-label" for="allowRetries">
+                                    Allow students to retry (multiple attempts)
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="showLeaderboard" checked>
+                                <label class="form-check-label" for="showLeaderboard">
+                                    Show live leaderboard to students
+                                </label>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="prizeDescription" class="form-label">Prize/Recognition</label>
+                            <input type="text" class="form-control" id="prizeDescription" placeholder="e.g., Extra credit, Certificate, Special recognition">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" class="btn btn-primary" onclick="createCompetition()">
+                        <i class="fas fa-trophy"></i> Create Competition
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
   </body>
 </html>
